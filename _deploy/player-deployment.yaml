@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: player
-        image: nschultz/fantasy-baseball-player:0.5.2
+        image: nschultz/fantasy-baseball-player:0.5.3
         ports:
           - name: web
             containerPort: 8080
