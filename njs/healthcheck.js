@@ -4,11 +4,13 @@ async function check(r) {
 
 async function check_all(r, subs) {
   let results = await Promise.all(subs.map(uri => r.subrequest(uri)));
-  let response = results.map(reply => ({ 
-    uri:  reply.uri, 
-    code: reply.status
-  }));
-  r.return(Math.max(response.map((res) => res.code)), JSON.stringify(response));
+  for (var i = 0; i < results.length; i++) {
+    if (results[i].status != 200) {
+      r.return(results[i].status, JSON.stringify({ uri: results[i].uri, code: results[i].status }));
+      return;
+    }
+  }
+  r.return(200, 'Healthy');
 }
 
 export default {check};
