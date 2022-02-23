@@ -8,7 +8,7 @@ async function check_all(r, subs) {
     uri:  reply.uri, 
     code: reply.status
   }));
-  r.return(Math.max(response.map(res => res.code)), JSON.stringify(response));
+  r.return(200, JSON.stringify(response));
 }
 
 export default {check};
