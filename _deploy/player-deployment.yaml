@@ -16,14 +16,14 @@ spec:
         app: player
     spec:
       containers:
-      - name: player
-        image: nschultz/fantasy-baseball-player:{{version}}
-        ports:
-          - name: web
-            containerPort: 8080
-        livenessProbe:
-          httpGet:
-            path: /api/health
-            port: 8080
-          initialDelaySeconds: 15
-          periodSeconds: 5
+        - name: player
+          image: nschultz/fantasy-baseball-player:{{version}}
+          ports:
+            - name: web
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 60
