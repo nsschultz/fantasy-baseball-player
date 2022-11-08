@@ -1,7 +1,8 @@
 pipeline {
     agent { label 'builder' }
     environment {
-        VERSION_NUMBER = '1.2.0'
+        def ver = readFile file: 'version.txt'
+        VERSION_NUMBER = "${ver}"
         IMAGE_VERSION = "${GIT_BRANCH == "main" ? VERSION_NUMBER : VERSION_NUMBER+"-"+GIT_BRANCH}"
         DOCKER_HUB = credentials("dockerhub-creds")
     }
