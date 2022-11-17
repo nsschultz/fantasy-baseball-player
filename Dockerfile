@@ -1,5 +1,8 @@
 # syntax=docker/dockerfile:1
-FROM nschultz/base-nginx-runner:1.23.2
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY default.conf /etc/nginx/conf.d/
-COPY njs/ /etc/nginx/njs/
+FROM nschultz/fantasy-baseball-common:2.1.0 AS build
+COPY . /app
+RUN dotnet publish -c Release -o /app/out -v minimal
+
+FROM nschultz/base-csharp-runner:6.0.10
+COPY --from=build /app/out ./
+ENTRYPOINT ["dotnet", "FantasyBaseball.PlayerService.dll"]

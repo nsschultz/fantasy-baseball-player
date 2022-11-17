@@ -1,0 +1,15 @@
+# compiled files
+bin/
+obj/
+# test data
+bak/
+data/
+libs/
+reports/
+# scanning data
+.sonarqube/
+coverage-hits/
+coverage-results/
+out/
+coverage.json
+opencovercoverage.xml

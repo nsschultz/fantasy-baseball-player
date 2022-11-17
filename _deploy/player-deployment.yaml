@@ -21,6 +21,28 @@ spec:
           ports:
             - name: web
               containerPort: 8080
+          env:
+            - name: PLAYER_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: player-postgres-secret
+                  key: dbname
+            - name: PLAYER_DATABASE_HOST
+              value: "player-database"
+            - name: PLAYER_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: player-postgres-secret
+                  key: password
+            - name: PLAYER_DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: player-postgres-secret
+                  key: username
+            - name: POSITION_SERVICE_HOST
+              value: "position:8080"
+            - name: POSITION_SERVICE_VERSION
+              value: "v1"
           livenessProbe:
             httpGet:
               path: /api/health
