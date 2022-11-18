@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace FantasyBaseball.PlayerService.Migrations
+namespace FantasyBaseball.PlayerService.Database.Migrations
 {
     [DbContext(typeof(PlayerContext))]
     partial class PlayerContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace FantasyBaseball.PlayerService.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.BattingStatsEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.BattingStatsEntity", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
@@ -75,7 +75,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("BattingStats");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PitchingStatsEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PitchingStatsEntity", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
@@ -131,7 +131,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("PitchingStats");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -189,7 +189,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerLeagueStatusEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerLeagueStatusEntity", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
@@ -206,7 +206,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("LeagueStatuses");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerPositionEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerPositionEntity", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
@@ -220,7 +220,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("PlayerPositionEntity");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.TeamEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.TeamEntity", b =>
                 {
                     b.Property<string>("Code")
                         .HasMaxLength(3)
@@ -471,9 +471,9 @@ namespace FantasyBaseball.PlayerService.Migrations
                         });
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.BattingStatsEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.BattingStatsEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PlayerEntity", "Player")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", "Player")
                         .WithMany("BattingStats")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -483,9 +483,9 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PitchingStatsEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PitchingStatsEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PlayerEntity", "Player")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", "Player")
                         .WithMany("PitchingStats")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -495,9 +495,9 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.TeamEntity", "PlayerTeam")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.TeamEntity", "PlayerTeam")
                         .WithMany("Players")
                         .HasForeignKey("Team")
                         .HasConstraintName("Player_Team_FK");
@@ -505,9 +505,9 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.Navigation("PlayerTeam");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerLeagueStatusEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerLeagueStatusEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PlayerEntity", "Player")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", "Player")
                         .WithMany("LeagueStatuses")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -517,9 +517,9 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerPositionEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerPositionEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PlayerEntity", "Player")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", "Player")
                         .WithMany("Positions")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -529,7 +529,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", b =>
                 {
                     b.Navigation("BattingStats");
 
@@ -540,7 +540,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.Navigation("Positions");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.TeamEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.TeamEntity", b =>
                 {
                     b.Navigation("Players");
                 });

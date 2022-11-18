@@ -1,6 +1,6 @@
 using System;
 
-namespace FantasyBaseball.PlayerService.Entities
+namespace FantasyBaseball.PlayerService.Database.Entities
 {
     /// <summary>Entity for mapping the many to many relationship between players and positions.</summary>
     public class PlayerPositionEntity

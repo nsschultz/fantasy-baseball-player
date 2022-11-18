@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace FantasyBaseball.PlayerService.Migrations
+namespace FantasyBaseball.PlayerService.Database.Migrations
 {
     [DbContext(typeof(PlayerContext))]
-    [Migration("20221101060806_RemovePosition")]
-    partial class RemovePosition
+    [Migration("20221114075540_RenameTeams")]
+    partial class RenameTeams
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace FantasyBaseball.PlayerService.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.BattingStatsEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.BattingStatsEntity", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
@@ -77,258 +77,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("BattingStats");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.MlbTeamEntity", b =>
-                {
-                    b.Property<string>("Code")
-                        .HasMaxLength(3)
-                        .HasColumnType("character varying(3)");
-
-                    b.Property<string>("AlternativeCode")
-                        .HasMaxLength(3)
-                        .HasColumnType("character varying(3)");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("MlbLeagueId")
-                        .HasMaxLength(2)
-                        .HasColumnType("character varying(2)");
-
-                    b.Property<string>("Nickname")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.HasKey("Code")
-                        .HasName("MlbTeam_PK");
-
-                    b.ToTable("MlbTeams");
-
-                    b.HasData(
-                        new
-                        {
-                            Code = "",
-                            City = "Free Agent",
-                            MlbLeagueId = "",
-                            Nickname = "Free Agent"
-                        },
-                        new
-                        {
-                            Code = "BAL",
-                            City = "Baltimore",
-                            MlbLeagueId = "AL",
-                            Nickname = "Orioles"
-                        },
-                        new
-                        {
-                            Code = "BOS",
-                            City = "Boston",
-                            MlbLeagueId = "AL",
-                            Nickname = "Red Sox"
-                        },
-                        new
-                        {
-                            Code = "NYY",
-                            City = "New York",
-                            MlbLeagueId = "AL",
-                            Nickname = "Yankees"
-                        },
-                        new
-                        {
-                            Code = "TB",
-                            AlternativeCode = "TAM",
-                            City = "Tampa Bay",
-                            MlbLeagueId = "AL",
-                            Nickname = "Rays"
-                        },
-                        new
-                        {
-                            Code = "TOR",
-                            City = "Toronto",
-                            MlbLeagueId = "AL",
-                            Nickname = "Blue Jays"
-                        },
-                        new
-                        {
-                            Code = "CWS",
-                            AlternativeCode = "CHW",
-                            City = "Chicago",
-                            MlbLeagueId = "AL",
-                            Nickname = "White Sox"
-                        },
-                        new
-                        {
-                            Code = "CLE",
-                            City = "Cleveland",
-                            MlbLeagueId = "AL",
-                            Nickname = "Indians"
-                        },
-                        new
-                        {
-                            Code = "DET",
-                            City = "Detriot",
-                            MlbLeagueId = "AL",
-                            Nickname = "Tigers"
-                        },
-                        new
-                        {
-                            Code = "KC",
-                            City = "Kansas City",
-                            MlbLeagueId = "AL",
-                            Nickname = "Royals"
-                        },
-                        new
-                        {
-                            Code = "MIN",
-                            City = "Minnesota",
-                            MlbLeagueId = "AL",
-                            Nickname = "Twins"
-                        },
-                        new
-                        {
-                            Code = "HOU",
-                            City = "Houston",
-                            MlbLeagueId = "AL",
-                            Nickname = "Astros"
-                        },
-                        new
-                        {
-                            Code = "LAA",
-                            City = "Los Angeles",
-                            MlbLeagueId = "AL",
-                            Nickname = "Angels"
-                        },
-                        new
-                        {
-                            Code = "OAK",
-                            City = "Oakland",
-                            MlbLeagueId = "AL",
-                            Nickname = "Athletics"
-                        },
-                        new
-                        {
-                            Code = "SEA",
-                            City = "Seattle",
-                            MlbLeagueId = "AL",
-                            Nickname = "Mariners"
-                        },
-                        new
-                        {
-                            Code = "TEX",
-                            City = "Texas",
-                            MlbLeagueId = "AL",
-                            Nickname = "Rangers"
-                        },
-                        new
-                        {
-                            Code = "ATL",
-                            City = "Atlanta",
-                            MlbLeagueId = "NL",
-                            Nickname = "Braves"
-                        },
-                        new
-                        {
-                            Code = "MIA",
-                            City = "Miami",
-                            MlbLeagueId = "NL",
-                            Nickname = "Marlins"
-                        },
-                        new
-                        {
-                            Code = "NYM",
-                            City = "New York",
-                            MlbLeagueId = "NL",
-                            Nickname = "Mets"
-                        },
-                        new
-                        {
-                            Code = "PHI",
-                            City = "Philadelphia",
-                            MlbLeagueId = "NL",
-                            Nickname = "Phillies"
-                        },
-                        new
-                        {
-                            Code = "WAS",
-                            City = "Washington",
-                            MlbLeagueId = "NL",
-                            Nickname = "Nationals"
-                        },
-                        new
-                        {
-                            Code = "CHC",
-                            City = "Chicago",
-                            MlbLeagueId = "NL",
-                            Nickname = "Cubs"
-                        },
-                        new
-                        {
-                            Code = "CIN",
-                            City = "Cincinnati",
-                            MlbLeagueId = "NL",
-                            Nickname = "Reds"
-                        },
-                        new
-                        {
-                            Code = "MIL",
-                            City = "Milwaukee",
-                            MlbLeagueId = "NL",
-                            Nickname = "Brewers"
-                        },
-                        new
-                        {
-                            Code = "PIT",
-                            City = "Pittsburgh",
-                            MlbLeagueId = "NL",
-                            Nickname = "Pirates"
-                        },
-                        new
-                        {
-                            Code = "STL",
-                            City = "St. Louis",
-                            MlbLeagueId = "NL",
-                            Nickname = "Cardinals"
-                        },
-                        new
-                        {
-                            Code = "ARZ",
-                            AlternativeCode = "ARI",
-                            City = "Arizona",
-                            MlbLeagueId = "NL",
-                            Nickname = "Diamondbacks"
-                        },
-                        new
-                        {
-                            Code = "COL",
-                            City = "Colorado",
-                            MlbLeagueId = "NL",
-                            Nickname = "Rockies"
-                        },
-                        new
-                        {
-                            Code = "LAD",
-                            AlternativeCode = "LA",
-                            City = "Los Angeles",
-                            MlbLeagueId = "NL",
-                            Nickname = "Dodgers"
-                        },
-                        new
-                        {
-                            Code = "SD",
-                            City = "San Diego",
-                            MlbLeagueId = "NL",
-                            Nickname = "Padres"
-                        },
-                        new
-                        {
-                            Code = "SF",
-                            City = "San Francisco",
-                            MlbLeagueId = "NL",
-                            Nickname = "Giants"
-                        });
-                });
-
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PitchingStatsEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PitchingStatsEntity", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
@@ -384,7 +133,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("PitchingStats");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -442,7 +191,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerLeagueStatusEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerLeagueStatusEntity", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
@@ -459,7 +208,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("LeagueStatuses");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerPositionEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerPositionEntity", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
@@ -473,9 +222,260 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("PlayerPositionEntity");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.BattingStatsEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.TeamEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PlayerEntity", "Player")
+                    b.Property<string>("Code")
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
+
+                    b.Property<string>("AlternativeCode")
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("LeagueId")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)");
+
+                    b.Property<string>("Nickname")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Code")
+                        .HasName("Team_PK");
+
+                    b.ToTable("Teams");
+
+                    b.HasData(
+                        new
+                        {
+                            Code = "",
+                            City = "Free Agent",
+                            LeagueId = "",
+                            Nickname = "Free Agent"
+                        },
+                        new
+                        {
+                            Code = "BAL",
+                            City = "Baltimore",
+                            LeagueId = "AL",
+                            Nickname = "Orioles"
+                        },
+                        new
+                        {
+                            Code = "BOS",
+                            City = "Boston",
+                            LeagueId = "AL",
+                            Nickname = "Red Sox"
+                        },
+                        new
+                        {
+                            Code = "NYY",
+                            City = "New York",
+                            LeagueId = "AL",
+                            Nickname = "Yankees"
+                        },
+                        new
+                        {
+                            Code = "TB",
+                            AlternativeCode = "TAM",
+                            City = "Tampa Bay",
+                            LeagueId = "AL",
+                            Nickname = "Rays"
+                        },
+                        new
+                        {
+                            Code = "TOR",
+                            City = "Toronto",
+                            LeagueId = "AL",
+                            Nickname = "Blue Jays"
+                        },
+                        new
+                        {
+                            Code = "CWS",
+                            AlternativeCode = "CHW",
+                            City = "Chicago",
+                            LeagueId = "AL",
+                            Nickname = "White Sox"
+                        },
+                        new
+                        {
+                            Code = "CLE",
+                            City = "Cleveland",
+                            LeagueId = "AL",
+                            Nickname = "Guardians"
+                        },
+                        new
+                        {
+                            Code = "DET",
+                            City = "Detriot",
+                            LeagueId = "AL",
+                            Nickname = "Tigers"
+                        },
+                        new
+                        {
+                            Code = "KC",
+                            City = "Kansas City",
+                            LeagueId = "AL",
+                            Nickname = "Royals"
+                        },
+                        new
+                        {
+                            Code = "MIN",
+                            City = "Minnesota",
+                            LeagueId = "AL",
+                            Nickname = "Twins"
+                        },
+                        new
+                        {
+                            Code = "HOU",
+                            City = "Houston",
+                            LeagueId = "AL",
+                            Nickname = "Astros"
+                        },
+                        new
+                        {
+                            Code = "LAA",
+                            City = "Los Angeles",
+                            LeagueId = "AL",
+                            Nickname = "Angels"
+                        },
+                        new
+                        {
+                            Code = "OAK",
+                            City = "Oakland",
+                            LeagueId = "AL",
+                            Nickname = "Athletics"
+                        },
+                        new
+                        {
+                            Code = "SEA",
+                            City = "Seattle",
+                            LeagueId = "AL",
+                            Nickname = "Mariners"
+                        },
+                        new
+                        {
+                            Code = "TEX",
+                            City = "Texas",
+                            LeagueId = "AL",
+                            Nickname = "Rangers"
+                        },
+                        new
+                        {
+                            Code = "ATL",
+                            City = "Atlanta",
+                            LeagueId = "NL",
+                            Nickname = "Braves"
+                        },
+                        new
+                        {
+                            Code = "MIA",
+                            City = "Miami",
+                            LeagueId = "NL",
+                            Nickname = "Marlins"
+                        },
+                        new
+                        {
+                            Code = "NYM",
+                            City = "New York",
+                            LeagueId = "NL",
+                            Nickname = "Mets"
+                        },
+                        new
+                        {
+                            Code = "PHI",
+                            City = "Philadelphia",
+                            LeagueId = "NL",
+                            Nickname = "Phillies"
+                        },
+                        new
+                        {
+                            Code = "WAS",
+                            City = "Washington",
+                            LeagueId = "NL",
+                            Nickname = "Nationals"
+                        },
+                        new
+                        {
+                            Code = "CHC",
+                            City = "Chicago",
+                            LeagueId = "NL",
+                            Nickname = "Cubs"
+                        },
+                        new
+                        {
+                            Code = "CIN",
+                            City = "Cincinnati",
+                            LeagueId = "NL",
+                            Nickname = "Reds"
+                        },
+                        new
+                        {
+                            Code = "MIL",
+                            City = "Milwaukee",
+                            LeagueId = "NL",
+                            Nickname = "Brewers"
+                        },
+                        new
+                        {
+                            Code = "PIT",
+                            City = "Pittsburgh",
+                            LeagueId = "NL",
+                            Nickname = "Pirates"
+                        },
+                        new
+                        {
+                            Code = "STL",
+                            City = "St. Louis",
+                            LeagueId = "NL",
+                            Nickname = "Cardinals"
+                        },
+                        new
+                        {
+                            Code = "ARZ",
+                            AlternativeCode = "ARI",
+                            City = "Arizona",
+                            LeagueId = "NL",
+                            Nickname = "Diamondbacks"
+                        },
+                        new
+                        {
+                            Code = "COL",
+                            City = "Colorado",
+                            LeagueId = "NL",
+                            Nickname = "Rockies"
+                        },
+                        new
+                        {
+                            Code = "LAD",
+                            AlternativeCode = "LA",
+                            City = "Los Angeles",
+                            LeagueId = "NL",
+                            Nickname = "Dodgers"
+                        },
+                        new
+                        {
+                            Code = "SD",
+                            City = "San Diego",
+                            LeagueId = "NL",
+                            Nickname = "Padres"
+                        },
+                        new
+                        {
+                            Code = "SF",
+                            City = "San Francisco",
+                            LeagueId = "NL",
+                            Nickname = "Giants"
+                        });
+                });
+
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.BattingStatsEntity", b =>
+                {
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", "Player")
                         .WithMany("BattingStats")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -485,9 +485,9 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PitchingStatsEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PitchingStatsEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PlayerEntity", "Player")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", "Player")
                         .WithMany("PitchingStats")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -497,19 +497,19 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.MlbTeamEntity", "MlbTeam")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.TeamEntity", "PlayerTeam")
                         .WithMany("Players")
                         .HasForeignKey("Team")
-                        .HasConstraintName("Player_MlbTeam_FK");
+                        .HasConstraintName("Player_Team_FK");
 
-                    b.Navigation("MlbTeam");
+                    b.Navigation("PlayerTeam");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerLeagueStatusEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerLeagueStatusEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PlayerEntity", "Player")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", "Player")
                         .WithMany("LeagueStatuses")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -519,9 +519,9 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerPositionEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerPositionEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PlayerEntity", "Player")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", "Player")
                         .WithMany("Positions")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -531,12 +531,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.MlbTeamEntity", b =>
-                {
-                    b.Navigation("Players");
-                });
-
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", b =>
                 {
                     b.Navigation("BattingStats");
 
@@ -545,6 +540,11 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.Navigation("PitchingStats");
 
                     b.Navigation("Positions");
+                });
+
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.TeamEntity", b =>
+                {
+                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }

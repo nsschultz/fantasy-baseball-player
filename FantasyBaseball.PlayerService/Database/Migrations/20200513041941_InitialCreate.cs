@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace FantasyBaseball.PlayerService.Migrations
+namespace FantasyBaseball.PlayerService.Database.Migrations
 {
     public partial class InitialCreate : Migration
     {

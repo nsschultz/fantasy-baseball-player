@@ -1,7 +1,7 @@
 using System;
 using FantasyBaseball.Common.Enums;
 
-namespace FantasyBaseball.PlayerService.Entities
+namespace FantasyBaseball.PlayerService.Database.Entities
 {
     /// <summary>A single type of pitching stats for a player.</summary>
     public class PitchingStatsEntity

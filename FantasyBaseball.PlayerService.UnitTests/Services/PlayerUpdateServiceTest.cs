@@ -5,7 +5,7 @@ using FantasyBaseball.Common.Enums;
 using FantasyBaseball.Common.Exceptions;
 using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database;
-using FantasyBaseball.PlayerService.Entities;
+using FantasyBaseball.PlayerService.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Moq;

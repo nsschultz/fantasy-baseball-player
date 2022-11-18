@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace FantasyBaseball.PlayerService.Migrations
+namespace FantasyBaseball.PlayerService.Database.Migrations
 {
     public partial class RemovePosition : Migration
     {

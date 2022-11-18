@@ -5,7 +5,7 @@ using AutoMapper;
 using FantasyBaseball.Common.Enums;
 using FantasyBaseball.Common.Models;
 using FantasyBaseball.Common.Models.Builders;
-using FantasyBaseball.PlayerService.Entities;
+using FantasyBaseball.PlayerService.Database.Entities;
 
 namespace FantasyBaseball.PlayerService.Maps
 {

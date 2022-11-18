@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using FantasyBaseball.Common.Models;
-using FantasyBaseball.PlayerService.Entities;
+using FantasyBaseball.PlayerService.Database.Entities;
 
 namespace FantasyBaseball.PlayerService.Services
 {

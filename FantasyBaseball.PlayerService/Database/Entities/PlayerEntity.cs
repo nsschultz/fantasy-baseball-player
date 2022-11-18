@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using FantasyBaseball.Common.Enums;
 
-namespace FantasyBaseball.PlayerService.Entities
+namespace FantasyBaseball.PlayerService.Database.Entities
 {
     /// <summary>Entity for saving/retrieving a Player.</summary>
     public class PlayerEntity

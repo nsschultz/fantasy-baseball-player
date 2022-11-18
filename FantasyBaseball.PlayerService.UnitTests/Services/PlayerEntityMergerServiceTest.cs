@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FantasyBaseball.Common.Enums;
 using FantasyBaseball.Common.Models;
-using FantasyBaseball.PlayerService.Entities;
+using FantasyBaseball.PlayerService.Database.Entities;
 using Moq;
 using Xunit;
 

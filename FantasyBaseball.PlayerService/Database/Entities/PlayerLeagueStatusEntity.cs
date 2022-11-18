@@ -1,7 +1,7 @@
 using System;
 using FantasyBaseball.Common.Enums;
 
-namespace FantasyBaseball.PlayerService.Entities
+namespace FantasyBaseball.PlayerService.Database.Entities
 {
     /// <summary>Info for a given Player within a given League.</summary>
     public class PlayerLeagueStatusEntity

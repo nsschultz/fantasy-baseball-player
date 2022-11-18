@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace FantasyBaseball.PlayerService.Entities
+namespace FantasyBaseball.PlayerService.Database.Entities
 {
     /// <summary>Info for a given team.</summary>
     public class TeamEntity

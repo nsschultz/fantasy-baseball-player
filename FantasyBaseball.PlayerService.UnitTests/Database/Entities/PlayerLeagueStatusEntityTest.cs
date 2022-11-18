@@ -2,7 +2,7 @@ using System;
 using FantasyBaseball.Common.Enums;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Entities.UnitTests
+namespace FantasyBaseball.PlayerService.Database.Entities.UnitTests
 {
     public class PlayerLeagueStatusEntityTest
     {

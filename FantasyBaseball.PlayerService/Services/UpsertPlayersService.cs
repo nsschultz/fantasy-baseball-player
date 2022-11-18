@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database;
-using FantasyBaseball.PlayerService.Entities;
+using FantasyBaseball.PlayerService.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FantasyBaseball.PlayerService.Services

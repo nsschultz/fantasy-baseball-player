@@ -6,7 +6,7 @@ using AutoMapper;
 using FantasyBaseball.Common.Enums;
 using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database;
-using FantasyBaseball.PlayerService.Entities;
+using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Maps;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;

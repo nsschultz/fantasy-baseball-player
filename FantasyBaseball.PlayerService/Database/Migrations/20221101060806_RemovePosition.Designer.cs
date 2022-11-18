@@ -7,21 +7,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace FantasyBaseball.PlayerService.Migrations
+#nullable disable
+
+namespace FantasyBaseball.PlayerService.Database.Migrations
 {
     [DbContext(typeof(PlayerContext))]
-    [Migration("20200513041941_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20221101060806_RemovePosition")]
+    partial class RemovePosition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "6.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.BattingStatsEntity", b =>
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.BattingStatsEntity", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
@@ -74,27 +77,27 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("BattingStats");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.MlbTeamEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.MlbTeamEntity", b =>
                 {
                     b.Property<string>("Code")
-                        .HasColumnType("character varying(3)")
-                        .HasMaxLength(3);
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
 
                     b.Property<string>("AlternativeCode")
-                        .HasColumnType("character varying(3)")
-                        .HasMaxLength(3);
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
 
                     b.Property<string>("City")
-                        .HasColumnType("character varying(20)")
-                        .HasMaxLength(20);
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("MlbLeagueId")
-                        .HasColumnType("character varying(2)")
-                        .HasMaxLength(2);
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)");
 
                     b.Property<string>("Nickname")
-                        .HasColumnType("character varying(20)")
-                        .HasMaxLength(20);
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.HasKey("Code")
                         .HasName("MlbTeam_PK");
@@ -325,7 +328,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                         });
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PitchingStatsEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PitchingStatsEntity", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
@@ -381,7 +384,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("PitchingStats");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -403,15 +406,15 @@ namespace FantasyBaseball.PlayerService.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("character varying(20)")
-                        .HasMaxLength(20);
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<int>("HighestPick")
                         .HasColumnType("integer");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("character varying(20)")
-                        .HasMaxLength(20);
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<int>("MayberryMethod")
                         .HasColumnType("integer");
@@ -439,7 +442,7 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerLeagueStatusEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerLeagueStatusEntity", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
@@ -456,206 +459,92 @@ namespace FantasyBaseball.PlayerService.Migrations
                     b.ToTable("LeagueStatuses");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerPositionEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerPositionEntity", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("PositionCode")
+                        .HasMaxLength(3)
                         .HasColumnType("character varying(3)");
 
                     b.HasKey("PlayerId", "PositionCode");
 
-                    b.HasIndex("PositionCode");
-
                     b.ToTable("PlayerPositionEntity");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PositionEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.BattingStatsEntity", b =>
                 {
-                    b.Property<string>("Code")
-                        .HasColumnType("character varying(3)")
-                        .HasMaxLength(3);
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("character varying(20)")
-                        .HasMaxLength(20);
-
-                    b.Property<int>("PlayerType")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SortOrder")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Code")
-                        .HasName("Position_PK");
-
-                    b.HasIndex("SortOrder")
-                        .IsUnique();
-
-                    b.ToTable("Positions");
-
-                    b.HasData(
-                        new
-                        {
-                            Code = "",
-                            FullName = "Unknown",
-                            PlayerType = 0,
-                            SortOrder = 2147483647
-                        },
-                        new
-                        {
-                            Code = "C",
-                            FullName = "Catcher",
-                            PlayerType = 1,
-                            SortOrder = 0
-                        },
-                        new
-                        {
-                            Code = "1B",
-                            FullName = "First Baseman",
-                            PlayerType = 1,
-                            SortOrder = 1
-                        },
-                        new
-                        {
-                            Code = "2B",
-                            FullName = "Second Baseman",
-                            PlayerType = 1,
-                            SortOrder = 2
-                        },
-                        new
-                        {
-                            Code = "3B",
-                            FullName = "Third Baseman",
-                            PlayerType = 1,
-                            SortOrder = 3
-                        },
-                        new
-                        {
-                            Code = "SS",
-                            FullName = "Shortstop",
-                            PlayerType = 1,
-                            SortOrder = 4
-                        },
-                        new
-                        {
-                            Code = "IF",
-                            FullName = "Infielder",
-                            PlayerType = 1,
-                            SortOrder = 5
-                        },
-                        new
-                        {
-                            Code = "LF",
-                            FullName = "Left Fielder",
-                            PlayerType = 1,
-                            SortOrder = 6
-                        },
-                        new
-                        {
-                            Code = "CF",
-                            FullName = "Center Feilder",
-                            PlayerType = 1,
-                            SortOrder = 7
-                        },
-                        new
-                        {
-                            Code = "RF",
-                            FullName = "Right Fielder",
-                            PlayerType = 1,
-                            SortOrder = 8
-                        },
-                        new
-                        {
-                            Code = "OF",
-                            FullName = "Outfielder",
-                            PlayerType = 1,
-                            SortOrder = 9
-                        },
-                        new
-                        {
-                            Code = "DH",
-                            FullName = "Designated Hitter",
-                            PlayerType = 1,
-                            SortOrder = 10
-                        },
-                        new
-                        {
-                            Code = "SP",
-                            FullName = "Starting Pitcher",
-                            PlayerType = 1,
-                            SortOrder = 11
-                        },
-                        new
-                        {
-                            Code = "RP",
-                            FullName = "Relief Pitcher",
-                            PlayerType = 1,
-                            SortOrder = 12
-                        },
-                        new
-                        {
-                            Code = "P",
-                            FullName = "Pitcher",
-                            PlayerType = 1,
-                            SortOrder = 13
-                        });
-                });
-
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.BattingStatsEntity", b =>
-                {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PlayerEntity", "Player")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", "Player")
                         .WithMany("BattingStats")
                         .HasForeignKey("PlayerId")
-                        .HasConstraintName("BattingStats_Player_FK")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("BattingStats_Player_FK");
+
+                    b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PitchingStatsEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PitchingStatsEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PlayerEntity", "Player")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", "Player")
                         .WithMany("PitchingStats")
                         .HasForeignKey("PlayerId")
-                        .HasConstraintName("PitchingStats_Player_FK")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("PitchingStats_Player_FK");
+
+                    b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.MlbTeamEntity", "MlbTeam")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.MlbTeamEntity", "MlbTeam")
                         .WithMany("Players")
                         .HasForeignKey("Team")
                         .HasConstraintName("Player_MlbTeam_FK");
+
+                    b.Navigation("MlbTeam");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerLeagueStatusEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerLeagueStatusEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PlayerEntity", "Player")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", "Player")
                         .WithMany("LeagueStatuses")
                         .HasForeignKey("PlayerId")
-                        .HasConstraintName("LeagueStatus_Player_FK")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("LeagueStatus_Player_FK");
+
+                    b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("FantasyBaseball.PlayerService.Entities.PlayerPositionEntity", b =>
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerPositionEntity", b =>
                 {
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PlayerEntity", "Player")
+                    b.HasOne("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", "Player")
                         .WithMany("Positions")
                         .HasForeignKey("PlayerId")
-                        .HasConstraintName("PlayerPosition_Player_FK")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("PlayerPosition_Player_FK");
 
-                    b.HasOne("FantasyBaseball.PlayerService.Entities.PositionEntity", "Position")
-                        .WithMany("Players")
-                        .HasForeignKey("PositionCode")
-                        .HasConstraintName("PlayerPosition_Position_FK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.MlbTeamEntity", b =>
+                {
+                    b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("FantasyBaseball.PlayerService.Database.Entities.PlayerEntity", b =>
+                {
+                    b.Navigation("BattingStats");
+
+                    b.Navigation("LeagueStatuses");
+
+                    b.Navigation("PitchingStats");
+
+                    b.Navigation("Positions");
                 });
 #pragma warning restore 612, 618
         }
