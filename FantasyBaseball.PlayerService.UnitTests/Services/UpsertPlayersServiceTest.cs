@@ -4,138 +4,36 @@ using System.Linq;
 using System.Threading.Tasks;
 using FantasyBaseball.Common.Enums;
 using FantasyBaseball.Common.Models;
-using FantasyBaseball.PlayerService.Database;
 using FantasyBaseball.PlayerService.Database.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using FantasyBaseball.PlayerService.Database.Repositories;
 using Moq;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.Services.UnitTests
 {
-    public class UpdatePlayerServiceTest : IDisposable
+    public class UpdatePlayerServiceTest
     {
-        private readonly Guid PlayerMatchingId = Guid.NewGuid();
-        private readonly Guid PlayerMissingId = Guid.NewGuid();
-        private PlayerContext _context;
-
-        public UpdatePlayerServiceTest() => _context = CreateContext().Result;
-
-        [Fact]
-        public async void UpsertPlayersTestException()
-        {
-            var values = new List<BaseballPlayer>
-            {
-                new BaseballPlayer { BhqId = 1, Type = PlayerType.B, Team = new BaseballTeam { Code = "MIL" } },
-                new BaseballPlayer { BhqId = 2, Type = PlayerType.B, Team = new BaseballTeam { Code = "MIL" } },
-                new BaseballPlayer { BhqId = 4, Type = PlayerType.P, Team = new BaseballTeam { Code = "MIL" } },
-                new BaseballPlayer { Id = PlayerMatchingId, BhqId = 5, Type = PlayerType.P, Team = new BaseballTeam { Code = "MIL" } },
-                new BaseballPlayer { Id = PlayerMissingId, BhqId = 1, Type = PlayerType.B, Team = new BaseballTeam { Code = "MIL" } },
-            };
-            await Assert.ThrowsAsync<InvalidOperationException>(async () =>
-                await new UpsertPlayersService(_context, BuildMergeService()).UpsertPlayers(values));
-            Assert.Equal(4, _context.Players.Count());
-            Assert.Equal(4, _context.LeagueStatuses.Count());
-            Assert.Equal(3, _context.BattingStats.Count());
-            Assert.Equal(1, _context.PitchingStats.Count());
-            Assert.Equal(31, _context.Teams.Count());
-        }
-
         [Fact]
         public async void UpsertPlayersTestValid()
         {
+            var mergeService = new Mock<IPlayerEntityMergerService>();
+            mergeService.Setup(o => o.MergePlayerEntity(It.IsAny<BaseballPlayer>(), It.IsAny<PlayerEntity>())).Returns(Task.FromResult(new PlayerEntity()));
+            var playerRepo = new Mock<IPlayerRepository>();
+            playerRepo.Setup(o => o.GetPlayerById(It.IsAny<Guid>())).Returns(Task.FromResult(new PlayerEntity()));
+            playerRepo.Setup(o => o.GetPlayerByBhqId(It.IsAny<int>(), It.IsAny<PlayerType>())).Returns(Task.FromResult(new PlayerEntity()));
+            playerRepo.Setup(o => o.UpsertPlayers(It.Is<IEnumerable<PlayerEntity>>(e => e.Count() == 5))).Returns(Task.CompletedTask);
             var values = new List<BaseballPlayer>
             {
                 new BaseballPlayer { BhqId = 1, Type = PlayerType.B, Team = new BaseballTeam { Code = "MIL" } },
                 new BaseballPlayer { BhqId = 2, Type = PlayerType.B, Team = new BaseballTeam { Code = "MIL" } },
                 new BaseballPlayer { BhqId = 4, Type = PlayerType.P, Team = new BaseballTeam { Code = "MIL" } },
-                new BaseballPlayer { Id = PlayerMatchingId, BhqId = 5, Type = PlayerType.P, Team = new BaseballTeam { Code = "MIL" } },
-                new BaseballPlayer { Id = PlayerMissingId, BhqId = 1, Type = PlayerType.P, Team = new BaseballTeam { Code = "MIL" } },
+                new BaseballPlayer { Id = Guid.NewGuid(), BhqId = 5, Type = PlayerType.P, Team = new BaseballTeam { Code = "MIL" } },
+                new BaseballPlayer { Id = Guid.NewGuid(), BhqId = 1, Type = PlayerType.P, Team = new BaseballTeam { Code = "MIL" } },
             };
-            await new UpsertPlayersService(_context, BuildMergeService()).UpsertPlayers(values);
-            Assert.Equal(7, _context.Players.Count());
-            Assert.Equal(5, _context.LeagueStatuses.Count());
-            Assert.Equal(3, _context.BattingStats.Count());
-            Assert.Equal(1, _context.PitchingStats.Count());
-            Assert.Equal(31, _context.Teams.Count());
-        }
-
-        public void Dispose()
-        {
-            _context.Database.EnsureDeleted();
-            _context.Dispose();
-        }
-
-        private IPlayerEntityMergerService BuildMergeService()
-        {
-            var mergeService = new Mock<IPlayerEntityMergerService>();
-            mergeService.Setup(o => o.MergePlayerEntity(It.IsAny<BaseballPlayer>(), It.IsAny<PlayerEntity>()))
-                .ReturnsAsync((BaseballPlayer player, PlayerEntity entity) =>
-                    entity != null
-                    ? ModifyExisting(entity)
-                    : new PlayerEntity
-                    {
-                        BhqId = player.BhqId,
-                        Type = player.Type,
-                        Team = player.Team.Code,
-                        LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 1, LeagueStatus = LeagueStatus.X } }
-                    });
-            return mergeService.Object;
-        }
-
-        private async Task<PlayerContext> CreateContext()
-        {
-            var options = new DbContextOptionsBuilder<PlayerContext>()
-                .UseInMemoryDatabase(databaseName: "UpdatePlayerServiceTest")
-                .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-                .Options;
-            var context = new PlayerContext(options);
-            context.Database.EnsureCreated();
-            Assert.Equal(31, await context.Teams.CountAsync());
-            await context.AddRangeAsync(
-                new PlayerEntity
-                {
-                    BhqId = 1,
-                    Type = PlayerType.B,
-                    Team = "MIL",
-                    BattingStats = new List<BattingStatsEntity> { new BattingStatsEntity { StatsType = StatsType.UNKN, AtBats = 1 } },
-                    LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 1, LeagueStatus = LeagueStatus.R } }
-                },
-                new PlayerEntity
-                {
-                    BhqId = 2,
-                    Type = PlayerType.P,
-                    Team = "MIL",
-                    PitchingStats = new List<PitchingStatsEntity> { new PitchingStatsEntity { StatsType = StatsType.UNKN, InningsPitched = 2 } },
-                    LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 2, LeagueStatus = LeagueStatus.R } }
-                },
-                new PlayerEntity
-                {
-                    BhqId = 3,
-                    Type = PlayerType.B,
-                    Team = "TB",
-                    BattingStats = new List<BattingStatsEntity> { new BattingStatsEntity { StatsType = StatsType.UNKN, AtBats = 3 } },
-                    LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 3, LeagueStatus = LeagueStatus.R } }
-                },
-                new PlayerEntity
-                {
-                    Id = PlayerMatchingId,
-                    BhqId = 5,
-                    Type = PlayerType.B,
-                    Team = "MIL",
-                    BattingStats = new List<BattingStatsEntity> { new BattingStatsEntity { StatsType = StatsType.UNKN, AtBats = 5 } },
-                    LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 5, LeagueStatus = LeagueStatus.R } }
-                }
-            );
-            await context.SaveChangesAsync();
-            Assert.Equal(4, await context.Players.CountAsync());
-            return context;
-        }
-
-        private static PlayerEntity ModifyExisting(PlayerEntity player)
-        {
-            player.LeagueStatuses.Clear();
-            return player;
+            await new UpsertPlayersService(playerRepo.Object, mergeService.Object).UpsertPlayers(values);
+            playerRepo.Verify(x => x.GetPlayerById(It.IsAny<Guid>()), Times.Exactly(2));
+            playerRepo.Verify(x => x.GetPlayerByBhqId(It.IsAny<int>(), It.IsAny<PlayerType>()), Times.Exactly(3));
+            playerRepo.Verify(x => x.UpsertPlayers(It.Is<IEnumerable<PlayerEntity>>(e => e.Count() == 5)), Times.Once);
         }
     }
 }

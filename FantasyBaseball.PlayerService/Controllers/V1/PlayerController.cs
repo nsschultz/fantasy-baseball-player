@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FantasyBaseball.Common.Exceptions;
 using FantasyBaseball.Common.Models;
+using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,33 +17,27 @@ namespace FantasyBaseball.PlayerService.Controllers.V1
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        private readonly IClearPlayerService _clearPlayerService;
         private readonly IGetPlayersService _getService;
         private readonly IMapper _mapper;
+        private readonly IPlayerRepository _playerRepo;
         private readonly IPlayerUpdateService _updateService;
         private readonly IUpsertPlayersService _upsertService;
 
         /// <summary>Creates a new instance of the controller.</summary>
         /// <param name="mapper">Instance of the auto mapper.</param>
-        /// <param name="clearPlayerService">Service for removing all of the players from the database.</param>
+        /// <param name="playerRepo">Repo for CRUD functionality regarding to players.</param>
         /// <param name="getService">Service for getting players.</param>
         /// <param name="updateService">Service for updating a player.</param>
         /// <param name="upsertService">Service for upserting players.</param>
         public PlayerController(IMapper mapper,
-                                IClearPlayerService clearPlayerService,
+                                IPlayerRepository playerRepo,
                                 IGetPlayersService getService,
                                 IPlayerUpdateService updateService,
-                                IUpsertPlayersService upsertService)
-        {
-            _mapper = mapper;
-            _clearPlayerService = clearPlayerService;
-            _getService = getService;
-            _updateService = updateService;
-            _upsertService = upsertService;
-        }
+                                IUpsertPlayersService upsertService) =>
+            (_mapper, _playerRepo, _getService, _updateService, _upsertService) = (mapper, playerRepo, getService, updateService, upsertService);
 
         /// <summary>Removes all of the players from the source.</summary>
-        [HttpDelete] public async Task DeleteAllPlayers() => await _clearPlayerService.ClearAllPlayers();
+        [HttpDelete] public async Task DeleteAllPlayers() => await _playerRepo.DeleteAllPlayers();
 
         /// <summary>Gets all of the players from the source.</summary>
         /// <returns>All of the players from the source.</returns>

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using FantasyBaseball.PlayerService.Database;
+using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.Services;
 using FantasyBaseball.PlayerService.Services.HealthChecks;
 using Microsoft.AspNetCore.Builder;
@@ -59,10 +60,16 @@ builder.Services.AddHealthChecks()
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Setup DI
 builder.Services
+    // Config
     .AddSingleton(builder.Configuration)
+    // Context
     .AddScoped<IPlayerContext>(provider => provider.GetService<PlayerContext>())
+    // Cache
     .AddLazyCache()
-    .AddScoped<IClearPlayerService, ClearPlayerService>()
+    // Repos
+    .AddScoped<IPlayerRepository, PlayerRepository>()
+    .AddScoped<ITeamRepository, TeamRepository>()
+    // Services
     .AddSingleton<ICsvFileWriterService, CsvFileWriterService>()
     .AddSingleton<IGetPlayerEnumMapService, GetPlayerEnumMapService>()
     .AddScoped<IGetPlayersService, GetPlayersService>()
@@ -70,7 +77,6 @@ builder.Services
     .AddScoped<IGetTeamsService, GetTeamsService>()
     .AddScoped<IPlayerEntityMergerService, PlayerEntityMergerService>()
     .AddScoped<IPlayerUpdateService, PlayerUpdateService>()
-    .AddSingleton<ISortService, SortService>()
     .AddScoped<IUpsertPlayersService, UpsertPlayersService>();
 // Setup Swagger
 builder.Services.AddSwaggerGen(o =>

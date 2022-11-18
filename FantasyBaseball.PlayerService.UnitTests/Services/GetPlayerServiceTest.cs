@@ -1,22 +1,52 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FantasyBaseball.Common.Enums;
 using FantasyBaseball.Common.Models;
-using FantasyBaseball.PlayerService.Database;
 using FantasyBaseball.PlayerService.Database.Entities;
+using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.Maps;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Moq;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.Services.UnitTests
 {
-    public class GetPlayerServiceTest : IDisposable
+    public class GetPlayerServiceTest
     {
+        private static readonly List<PlayerEntity> PLAYERS = new List<PlayerEntity>
+        {
+            new PlayerEntity
+            {
+                BhqId = 1,
+                FirstName = "Christian",
+                LastName = "Yelich",
+                Type = PlayerType.B,
+                PlayerTeam = new TeamEntity { Code = "MIL"},
+                BattingStats = new List<BattingStatsEntity> { new BattingStatsEntity { StatsType = StatsType.YTD, AtBats = 1 } },
+                LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 1, LeagueStatus = LeagueStatus.R } }
+            },
+            new PlayerEntity
+            {
+                BhqId = 2,
+                FirstName = "Corbin",
+                LastName = "Burnes",
+                Type = PlayerType.P,
+                PlayerTeam = new TeamEntity { Code = "MIL"},
+                PitchingStats = new List<PitchingStatsEntity> { new PitchingStatsEntity { StatsType = StatsType.YTD, InningsPitched = 2 } },
+                LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 2, LeagueStatus = LeagueStatus.R } }
+            },
+            new PlayerEntity
+            {
+                BhqId = 3,
+                FirstName = "Wander",
+                LastName = "Franco",
+                Type = PlayerType.B,
+                PlayerTeam = new TeamEntity { Code = "TB"},
+                BattingStats = new List<BattingStatsEntity> { new BattingStatsEntity { StatsType = StatsType.PROJ, AtBats = 3 } },
+                LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 1, LeagueStatus = LeagueStatus.R } }
+            }
+        };
         private static readonly List<BaseballPosition> POSITIONS = new List<BaseballPosition>
         {
             new BaseballPosition { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
@@ -39,73 +69,23 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
             new BaseballPosition { Code = "P"   , FullName = "Pitcher"          , PlayerType = PlayerType.P, SortOrder = 102          }
         };
 
-        private PlayerContext _context;
-
-        public GetPlayerServiceTest() => _context = CreateContext().Result;
-
         [Fact]
         public async void GetPlayersTest()
         {
             var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile())).CreateMapper();
             var positionService = new Mock<IGetPositionService>();
             positionService.Setup(o => o.GetPositions()).Returns(Task.FromResult(POSITIONS));
-            var sortService = new Mock<ISortService>();
-            sortService.Setup(o => o.SortPlayers(It.IsAny<List<BaseballPlayer>>())).Returns((List<BaseballPlayer> players) => players);
-            var players = await new GetPlayersService(_context, mapper, positionService.Object, sortService.Object).GetPlayers();
+            var playerRepo = new Mock<IPlayerRepository>();
+            playerRepo.Setup(o => o.GetPlayers(It.IsAny<PlayerType?>())).Returns(Task.FromResult(PLAYERS));
+            var players = await new GetPlayersService(mapper, playerRepo.Object, positionService.Object).GetPlayers();
             Assert.Equal(3, players.Count);
             players.ForEach(player =>
             {
-                Assert.Equal(player.BhqId < 3 ? "Brewers" : "Rays", player.Team.Nickname);
+                Assert.Equal(player.BhqId < 3 ? "MIL" : "TB", player.Team.Code);
                 Assert.Equal(player.BhqId, player.Type == PlayerType.B ? player.BattingStats.First().AtBats : player.PitchingStats.First().InningsPitched);
                 Assert.Equal(player.BhqId % 2 == 0 ? LeagueStatus.A : LeagueStatus.R, player.League1);
                 Assert.Equal(player.BhqId % 2 == 0 ? LeagueStatus.R : LeagueStatus.A, player.League2);
             });
-        }
-
-        public void Dispose()
-        {
-            _context.Database.EnsureDeleted();
-            _context.Dispose();
-        }
-
-        private async Task<PlayerContext> CreateContext()
-        {
-            var options = new DbContextOptionsBuilder<PlayerContext>()
-                .UseInMemoryDatabase(databaseName: "GetPlayersTest")
-                .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-                .Options;
-            var context = new PlayerContext(options);
-            context.Database.EnsureCreated();
-            Assert.Equal(31, await context.Teams.CountAsync());
-            await context.AddRangeAsync(
-                new PlayerEntity
-                {
-                    BhqId = 1,
-                    Type = PlayerType.B,
-                    Team = "MIL",
-                    BattingStats = new List<BattingStatsEntity> { new BattingStatsEntity { StatsType = StatsType.YTD, AtBats = 1 } },
-                    LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 1, LeagueStatus = LeagueStatus.R } }
-                },
-                new PlayerEntity
-                {
-                    BhqId = 2,
-                    Type = PlayerType.P,
-                    Team = "MIL",
-                    PitchingStats = new List<PitchingStatsEntity> { new PitchingStatsEntity { StatsType = StatsType.YTD, InningsPitched = 2 } },
-                    LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 2, LeagueStatus = LeagueStatus.R } }
-                },
-                new PlayerEntity
-                {
-                    BhqId = 3,
-                    Type = PlayerType.B,
-                    Team = "TB",
-                    BattingStats = new List<BattingStatsEntity> { new BattingStatsEntity { StatsType = StatsType.PROJ, AtBats = 3 } },
-                    LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 1, LeagueStatus = LeagueStatus.R } }
-                }
-            );
-            await context.SaveChangesAsync();
-            Assert.Equal(3, await context.Players.CountAsync());
-            return context;
         }
     }
 }

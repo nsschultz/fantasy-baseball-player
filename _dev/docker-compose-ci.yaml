@@ -15,8 +15,8 @@ services:
       - PLAYER_DATABASE_USER=postgres
       - POSITION_SERVICE_HOST=mountebank:5555
       - POSITION_SERVICE_VERSION=v1
-      - SONAR_CODE_EXCLUSIONS=Migrations/*.cs
-      - SONAR_COVERGE_EXCLUSIONS=Migrations/*.cs
+      - SONAR_CODE_EXCLUSIONS=Database/Migrations/*.cs
+      - SONAR_COVERGE_EXCLUSIONS=Database/Migrations/*.cs
       - SONAR_KEY=fantasy-baseball-player
       - SONAR_URL=http://sonarqube.schultz.local/
       - VERSION=${VERSION_NUMBER}

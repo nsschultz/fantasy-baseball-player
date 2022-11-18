@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FantasyBaseball.Common.Exceptions;
 using FantasyBaseball.Common.Models;
+using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.Maps;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Services;
@@ -21,9 +22,9 @@ namespace FantasyBaseball.PlayerService.Controllers.V1.UnitTests
         [Fact]
         public async void DeleteAllPlayersTest()
         {
-            var clearPlayerService = new Mock<IClearPlayerService>();
-            await new PlayerController(null, clearPlayerService.Object, null, null, null).DeleteAllPlayers();
-            clearPlayerService.VerifyAll();
+            var playerRepo = new Mock<IPlayerRepository>();
+            await new PlayerController(null, playerRepo.Object, null, null, null).DeleteAllPlayers();
+            playerRepo.VerifyAll();
         }
 
         [Fact]

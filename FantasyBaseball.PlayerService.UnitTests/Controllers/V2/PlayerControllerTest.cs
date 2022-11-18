@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FantasyBaseball.Common.Exceptions;
 using FantasyBaseball.Common.Models;
+using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.Services;
 using Moq;
 using Xunit;
@@ -14,9 +15,9 @@ namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
         [Fact]
         public async void DeleteAllPlayersTest()
         {
-            var clearPlayerService = new Mock<IClearPlayerService>();
-            await new PlayerController(clearPlayerService.Object, null, null, null).DeleteAllPlayers();
-            clearPlayerService.VerifyAll();
+            var playerRepo = new Mock<IPlayerRepository>();
+            await new PlayerController(playerRepo.Object, null, null, null).DeleteAllPlayers();
+            playerRepo.VerifyAll();
         }
 
         [Fact]

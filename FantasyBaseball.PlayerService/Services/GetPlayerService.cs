@@ -3,9 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FantasyBaseball.Common.Models;
-using FantasyBaseball.PlayerService.Database;
 using FantasyBaseball.PlayerService.Database.Entities;
-using Microsoft.EntityFrameworkCore;
+using FantasyBaseball.PlayerService.Database.Repositories;
 
 namespace FantasyBaseball.PlayerService.Services
 {
@@ -14,38 +13,35 @@ namespace FantasyBaseball.PlayerService.Services
     {
         private readonly IGetPositionService _positionsService;
         private readonly IMapper _mapper;
-        private readonly IPlayerContext _context;
-        private readonly ISortService _sortService;
+        private readonly IPlayerRepository _playreRepo;
 
         /// <summary>Creates a new instance of the service.</summary>
-        /// <param name="context">The player context.</param>
         /// <param name="mapper">Instance of the auto mapper.</param>
+        /// <param name="playerRepo">Repo for CRUD functionality regarding to players.</param>
         /// <param name="positionsService">Service for getting players.</param>
-        /// <param name="sortService">The service for sorting the players.</param>
-        public GetPlayersService(IPlayerContext context,
-                                 IMapper mapper,
-                                 IGetPositionService positionsService,
-                                 ISortService sortService) =>
-            (_context, _mapper, _positionsService, _sortService) = (context, mapper, positionsService, sortService);
+        public GetPlayersService(IMapper mapper, IPlayerRepository playerRepo, IGetPositionService positionsService) =>
+            (_mapper, _playreRepo, _positionsService) = (mapper, playerRepo, positionsService);
 
         /// <summary>Gets the players from the underlying source.</summary>
         /// <returns>A list of the players.</returns>
         public async Task<List<BaseballPlayer>> GetPlayers()
         {
             var positions = await _positionsService.GetPositions();
-            var players = await _context.Players
-                .Include(p => p.LeagueStatuses)
-                .Include(p => p.PlayerTeam)
-                .Include(p => p.Positions)
-                .Include(p => p.BattingStats)
-                .Include(p => p.PitchingStats)
-                .ToListAsync();
+            var players = await _playreRepo.GetPlayers();
             var baseballPlayers = players.Select(player => _mapper.Map<PlayerEntity, BaseballPlayer>(player, opt =>
                 opt.AfterMap((src, dest) => dest.Positions = BuildBaseballPositions(src, positions))));
-            return _sortService.SortPlayers(baseballPlayers.ToList());
+            return SortPlayers(baseballPlayers.ToList());
         }
 
         private static List<BaseballPosition> BuildBaseballPositions(PlayerEntity player, List<BaseballPosition> positions) =>
             player.Positions.SelectMany(p => positions.Where(pp => pp.Code == p.PositionCode)).OrderBy(p => p.SortOrder).ToList();
+
+        private static List<BaseballPlayer> SortPlayers(List<BaseballPlayer> players) =>
+            players
+                .OrderBy(p => p.Type)
+                .ThenBy(p => p.LastName.ToUpper())
+                .ThenBy(p => p.FirstName.ToUpper())
+                .ThenBy(p => p.BhqId)
+                .ToList();
     }
 }

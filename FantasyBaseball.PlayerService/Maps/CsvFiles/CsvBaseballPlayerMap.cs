@@ -2,7 +2,7 @@ using CsvHelper.Configuration;
 using FantasyBaseball.PlayerService.Maps.Converters;
 using FantasyBaseball.PlayerService.Models;
 
-namespace FantasyBaseball.PlayerService.Maps
+namespace FantasyBaseball.PlayerService.Maps.CsvFiles
 {
     /// <summary>Mapper for existing/outgoing file.</summary>
     public class CsvBaseballPlayerMap : ClassMap<CsvBaseballPlayer>

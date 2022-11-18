@@ -6,7 +6,7 @@ using AutoMapper;
 using CsvHelper;
 using CsvHelper.Configuration;
 using FantasyBaseball.Common.Models;
-using FantasyBaseball.PlayerService.Maps;
+using FantasyBaseball.PlayerService.Maps.CsvFiles;
 using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Services
