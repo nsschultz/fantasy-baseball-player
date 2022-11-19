@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
+using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Services
 {
@@ -11,6 +11,6 @@ namespace FantasyBaseball.PlayerService.Services
         /// <param name="incoming">The incoming player values.</param>
         /// <param name="existing">The existing player values.</param>
         /// <returns>An object that can be saved to the database.</returns>
-        Task<PlayerEntity> MergePlayerEntity(BaseballPlayer incoming, PlayerEntity existing);
+        Task<PlayerEntity> MergePlayerEntity(BaseballPlayerV2 incoming, PlayerEntity existing);
     }
 }

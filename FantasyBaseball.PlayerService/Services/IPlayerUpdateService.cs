@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using FantasyBaseball.Common.Models;
+using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Services
 {
@@ -8,6 +8,6 @@ namespace FantasyBaseball.PlayerService.Services
     {
         /// <summary>Updates the given player.</summary>
         /// <param name="player">The player to update.</param>
-        Task UpdatePlayer(BaseballPlayer player);
+        Task UpdatePlayer(BaseballPlayerV2 player);
     }
 }

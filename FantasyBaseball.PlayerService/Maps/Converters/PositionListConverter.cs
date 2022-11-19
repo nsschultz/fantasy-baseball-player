@@ -3,7 +3,7 @@ using System.Linq;
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
-using FantasyBaseball.Common.Models;
+using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Maps.Converters
 {

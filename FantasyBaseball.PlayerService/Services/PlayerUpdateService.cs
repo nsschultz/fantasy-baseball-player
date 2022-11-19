@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using FantasyBaseball.Common.Exceptions;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Repositories;
+using FantasyBaseball.PlayerService.Exceptions;
+using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Services
 {
@@ -19,7 +19,7 @@ namespace FantasyBaseball.PlayerService.Services
 
         /// <summary>Updates the given player.</summary>
         /// <param name="player">The player to update.</param>
-        public async Task UpdatePlayer(BaseballPlayer player)
+        public async Task UpdatePlayer(BaseballPlayerV2 player)
         {
             var existingPlayer = await _playerRepo.GetPlayerById(player.Id);
             if (existingPlayer == null) throw new BadRequestException("This player does not exist");

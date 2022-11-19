@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
+using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Services;
 using Moq;
 using Xunit;

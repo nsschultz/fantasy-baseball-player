@@ -1,7 +1,7 @@
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
-using FantasyBaseball.Common.Enums;
+using FantasyBaseball.PlayerService.Models.Enums;
 
 namespace FantasyBaseball.PlayerService.Maps.Converters
 {

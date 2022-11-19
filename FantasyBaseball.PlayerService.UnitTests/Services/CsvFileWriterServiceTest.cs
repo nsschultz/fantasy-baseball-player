@@ -2,10 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutoMapper;
-using FantasyBaseball.Common.Enums;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Maps;
 using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.PlayerService.Models.Enums;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.Services.UnitTests
@@ -43,7 +42,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         public void WritePlayersEmpty()
         {
             var expected = HEADER + "\n";
-            Assert.Equal(expected, Encoding.ASCII.GetString(new CsvFileWriterService(_mapper).WriteCsvData(new List<BaseballPlayer>())));
+            Assert.Equal(expected, Encoding.ASCII.GetString(new CsvFileWriterService(_mapper).WriteCsvData(new List<BaseballPlayerV2>())));
         }
 
         [Fact]
@@ -59,7 +58,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
             var expected = HEADER + "\n";
             expected += "1,First-1,Last-1,1,B,1B-OF,Team-1,XX,A,A,1,9999,9999,0,0,1,300,75,96,24,6,12,48,30,60,9,3,0,0,0,0,0,0,100,0,61,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,200,50,64,16,4,8,32,20,40,6,2,0,0,0,0,0,0,225,0,96,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,500,125,160,40,10,20,80,50,100,15,5,280,0.32,0.38181818181818183,0.56,0.9418181818181819,0.8,150,0.09090909090909091,75,82.6818181818182,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0\n";
             expected += "2,First-2,Last-2,2,P,SP-RP,Team-2,XX,A,A,2,9999,9999,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,6,18,9,3,15,60,45,24,1,30,120,0.2,0.31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,4,12,6,2,10,40,30,16,0,20,80,0.45,0.66,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,20,10,30,15,5,25,100,75,40,1,50,200,0.3,0.45,3.6,1.25,0.47435897435897434,0.6854838709677419,4,18,4.5,1.5,225.5\n";
-            var players = new List<BaseballPlayer> { BuildPlayer(1, PlayerType.B), BuildPlayer(2, PlayerType.P) };
+            var players = new List<BaseballPlayerV2> { BuildPlayer(1, PlayerType.B), BuildPlayer(2, PlayerType.P) };
             Assert.Equal(expected, Encoding.ASCII.GetString(new CsvFileWriterService(_mapper).WriteCsvData(players)));
         }
 

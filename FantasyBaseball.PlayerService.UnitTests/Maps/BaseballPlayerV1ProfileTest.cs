@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using FantasyBaseball.Common.Enums;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.PlayerService.Models.Enums;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.Maps.UnitTests
@@ -25,7 +24,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
         public void ConvertFromV1ValidTest(int value, PlayerType type)
         {
             var player = BuildBaseballPlayerV1(value, type);
-            ValidatePlayer(player, _mapper.Map<BaseballPlayer>(player));
+            ValidatePlayer(player, _mapper.Map<BaseballPlayerV2>(player));
         }
 
         [Fact] public void ConvertToV1NullTest() => Assert.Null(_mapper.Map<BaseballPlayerV1>((BaseballPlayer)null));
@@ -39,8 +38,8 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
             ValidatePlayer(player, _mapper.Map<BaseballPlayerV1>(player));
         }
 
-        private static BaseballPlayer BuildBaseballPlayer(int value, PlayerType type) =>
-            new BaseballPlayer
+        private static BaseballPlayerV2 BuildBaseballPlayer(int value, PlayerType type) =>
+            new BaseballPlayerV2
             {
                 Id = Guid.NewGuid(),
                 BhqId = value,
@@ -171,7 +170,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
 
         private static string BuildPositionString(List<PlayerPositionEntity> positions) => string.Join("-", positions.Select(p => p.PositionCode));
 
-        private static void ValidatePlayer(BaseballPlayer expected, BaseballPlayerV1 actual)
+        private static void ValidatePlayer(BaseballPlayerV2 expected, BaseballPlayerV1 actual)
         {
             Assert.Equal(expected.Id, actual.Id);
             Assert.Equal(expected.BhqId, actual.BhqId);
@@ -194,7 +193,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
             ValidatePlayerPitchingStats(expected.PitchingStats.First(), actual.PitchingStats.First());
         }
 
-        private static void ValidatePlayer(BaseballPlayerV1 expected, BaseballPlayer actual)
+        private static void ValidatePlayer(BaseballPlayerV1 expected, BaseballPlayerV2 actual)
         {
             Assert.Equal(expected.Id, actual.Id);
             Assert.Equal(expected.BhqId, actual.BhqId);

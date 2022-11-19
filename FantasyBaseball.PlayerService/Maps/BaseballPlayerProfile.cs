@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using FantasyBaseball.Common.Enums;
-using FantasyBaseball.Common.Models;
-using FantasyBaseball.Common.Models.Builders;
 using FantasyBaseball.PlayerService.Database.Entities;
+using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.PlayerService.Models.Builders;
+using FantasyBaseball.PlayerService.Models.Enums;
 
 namespace FantasyBaseball.PlayerService.Maps
 {
@@ -17,7 +17,7 @@ namespace FantasyBaseball.PlayerService.Maps
         {
             CreateMap<BattingStatsEntity, BattingStats>();
             CreateMap<PitchingStatsEntity, PitchingStats>();
-            CreateMap<PlayerEntity, BaseballPlayer>()
+            CreateMap<PlayerEntity, BaseballPlayerV2>()
                 .ForMember(dest => dest.League1, opt => opt.MapFrom(src => GetLeagueStatus(src, 1)))
                 .ForMember(dest => dest.League2, opt => opt.MapFrom(src => GetLeagueStatus(src, 2)))
                 .ForMember(dest => dest.Positions, opt => opt.Ignore())

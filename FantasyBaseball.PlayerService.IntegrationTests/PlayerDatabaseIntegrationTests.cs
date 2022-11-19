@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Models;
 using Xunit;
 
@@ -16,7 +15,7 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
 
         [Fact] public async void GetPlayersV1Test() => await GetCountTest<BaseballPlayerV1>("/api/v1/player", 92);
 
-        [Fact] public async void GetPlayersV2Test() => await GetCountTest<BaseballPlayer>("/api/v2/player", 92);
+        [Fact] public async void GetPlayersV2Test() => await GetCountTest<BaseballPlayerV2>("/api/v2/player", 92);
 
         [Theory]
         [InlineData("/api/health")]

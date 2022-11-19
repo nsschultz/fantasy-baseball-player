@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using FantasyBaseball.Common.Exceptions;
-using FantasyBaseball.Common.Models;
+using FantasyBaseball.PlayerService.Exceptions;
+using FantasyBaseball.PlayerService.Models;
 using LazyCache;
 using Microsoft.Extensions.Configuration;
 

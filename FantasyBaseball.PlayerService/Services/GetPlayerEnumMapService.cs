@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using FantasyBaseball.Common.Enums;
+using FantasyBaseball.PlayerService.Models.Enums;
 
 namespace FantasyBaseball.PlayerService.Services
 {

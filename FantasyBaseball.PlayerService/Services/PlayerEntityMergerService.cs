@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FantasyBaseball.Common.Enums;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
+using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.PlayerService.Models.Enums;
 
 namespace FantasyBaseball.PlayerService.Services
 {
@@ -25,7 +25,7 @@ namespace FantasyBaseball.PlayerService.Services
         /// <param name="incoming">The incoming player values.</param>
         /// <param name="existing">The existing player values.</param>
         /// <returns>An object that can be saved to the database.</returns>
-        public async Task<PlayerEntity> MergePlayerEntity(BaseballPlayer incoming, PlayerEntity existing)
+        public async Task<PlayerEntity> MergePlayerEntity(BaseballPlayerV2 incoming, PlayerEntity existing)
         {
             if (incoming == null) return existing;
             var positions = await _positionsService.GetPositions();

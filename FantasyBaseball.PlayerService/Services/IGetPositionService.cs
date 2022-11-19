@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FantasyBaseball.Common.Models;
+using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Services
 {

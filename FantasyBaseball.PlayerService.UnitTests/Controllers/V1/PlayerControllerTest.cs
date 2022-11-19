@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using FantasyBaseball.Common.Exceptions;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Repositories;
+using FantasyBaseball.PlayerService.Exceptions;
 using FantasyBaseball.PlayerService.Maps;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Services;
@@ -31,7 +30,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V1.UnitTests
         public async void GetPlayersTest()
         {
             var getService = new Mock<IGetPlayersService>();
-            getService.Setup(o => o.GetPlayers()).ReturnsAsync(new List<BaseballPlayer> { new BaseballPlayer() });
+            getService.Setup(o => o.GetPlayers()).ReturnsAsync(new List<BaseballPlayerV2> { new BaseballPlayerV2() });
             Assert.NotEmpty((await new PlayerController(_mapper, null, getService.Object, null, null).GetPlayers()));
         }
 
@@ -40,7 +39,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V1.UnitTests
         {
             var id = Guid.NewGuid();
             var updateService = new Mock<IPlayerUpdateService>();
-            updateService.Setup(o => o.UpdatePlayer(It.Is<BaseballPlayer>(p => p.Id == id))).Returns(Task.FromResult(0));
+            updateService.Setup(o => o.UpdatePlayer(It.Is<BaseballPlayerV2>(p => p.Id == id))).Returns(Task.FromResult(0));
             await new PlayerController(_mapper, null, null, updateService.Object, null).UpdatePlayer(id, new BaseballPlayerV1 { Id = id });
             updateService.VerifyAll();
         }
@@ -63,7 +62,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V1.UnitTests
         public async void UpsertPlayersTest()
         {
             var upsertService = new Mock<IUpsertPlayersService>();
-            upsertService.Setup(o => o.UpsertPlayers(It.Is<List<BaseballPlayer>>(l => l.Count == 3))).Returns(Task.FromResult(0));
+            upsertService.Setup(o => o.UpsertPlayers(It.Is<List<BaseballPlayerV2>>(l => l.Count == 3))).Returns(Task.FromResult(0));
             var input = new List<BaseballPlayerV1> { new BaseballPlayerV1(), null, new BaseballPlayerV1() };
             await new PlayerController(_mapper, null, null, null, upsertService.Object).UpsertPlayers(input);
             upsertService.VerifyAll();

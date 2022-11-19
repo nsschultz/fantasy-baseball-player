@@ -1,12 +1,11 @@
 using System.Linq;
 using System.Text.Json.Serialization;
-using FantasyBaseball.Common.Enums;
-using FantasyBaseball.Common.Models;
+using FantasyBaseball.PlayerService.Models.Enums;
 
 namespace FantasyBaseball.PlayerService.Models
 {
     /// <summary>A marker object for breaking up the mappers.</summary>
-    public class CsvBaseballPlayer : BaseballPlayer
+    public class CsvBaseballPlayer : BaseballPlayerV2
     {
         /// <summary>Pitching Stats (Projected) for a given player.</summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.Always)]

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FantasyBaseball.Common.Models;
+using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Services
 {
@@ -9,6 +9,6 @@ namespace FantasyBaseball.PlayerService.Services
     {
         /// <summary>Gets the players from the underlying source.</summary>
         /// <returns>A list of the players.</returns>
-        Task<List<BaseballPlayer>> GetPlayers();
+        Task<List<BaseballPlayerV2>> GetPlayers();
     }
 }

@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using FantasyBaseball.Common.Enums;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.Maps;
+using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.PlayerService.Models.Enums;
 using Moq;
 using Xunit;
 

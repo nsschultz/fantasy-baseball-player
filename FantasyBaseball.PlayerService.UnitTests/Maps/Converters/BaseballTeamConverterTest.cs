@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using FantasyBaseball.Common.Models;
+using FantasyBaseball.PlayerService.Models;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.Maps.Converters.UnitTests

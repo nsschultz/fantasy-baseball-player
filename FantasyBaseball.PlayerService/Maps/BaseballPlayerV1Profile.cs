@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Maps
@@ -12,10 +11,10 @@ namespace FantasyBaseball.PlayerService.Maps
         /// <summary>Create a new instance of the profile.</summary>
         public BaseballPlayerV1Profile()
         {
-            CreateMap<BaseballPlayer, BaseballPlayerV1>()
+            CreateMap<BaseballPlayerV2, BaseballPlayerV1>()
                 .ForMember(dest => dest.Positions, opt => opt.MapFrom(src => ConvertPositionsToV1(src.Positions)))
                 .ForMember(dest => dest.Team, opt => opt.MapFrom(src => src.Team.Code));
-            CreateMap<BaseballPlayerV1, BaseballPlayer>()
+            CreateMap<BaseballPlayerV1, BaseballPlayerV2>()
                 .ForMember(dest => dest.Positions, opt => opt.MapFrom(src => ConvertPositionsFromV1(src.Positions)))
                 .ForMember(dest => dest.Team, opt => opt.MapFrom(src => new BaseballTeam { Code = src.Team }));
         }

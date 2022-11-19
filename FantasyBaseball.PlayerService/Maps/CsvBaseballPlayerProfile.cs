@@ -1,5 +1,4 @@
 using AutoMapper;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Maps
@@ -10,7 +9,7 @@ namespace FantasyBaseball.PlayerService.Maps
         /// <summary>Create a new instance of the profile.</summary>
         public CsvBaseballPlayerProfile()
         {
-            CreateMap<BaseballPlayer, CsvBaseballPlayer>()
+            CreateMap<BaseballPlayerV2, CsvBaseballPlayer>()
                 .ForMember(dest => dest.CombinedBattingStats, opt => opt.Ignore())
                 .ForMember(dest => dest.CombinedPitchingStats, opt => opt.Ignore())
                 .ForMember(dest => dest.ProjectedBattingStats, opt => opt.Ignore())

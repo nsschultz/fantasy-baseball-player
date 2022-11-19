@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using FantasyBaseball.Common.Exceptions;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Repositories;
+using FantasyBaseball.PlayerService.Exceptions;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -55,7 +54,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V1
             if (player == null) throw new BadRequestException("Player not set");
             if (id == default) throw new BadRequestException("Invalid player id used");
             if (id != player.Id) throw new BadRequestException("The ids must match");
-            var convertedPlayer = _mapper.Map<BaseballPlayer>(player);
+            var convertedPlayer = _mapper.Map<BaseballPlayerV2>(player);
             await _updateService.UpdatePlayer(convertedPlayer);
         }
 
@@ -65,7 +64,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V1
         public async Task UpsertPlayers([FromBody] List<BaseballPlayerV1> players)
         {
             if (players == null) throw new BadRequestException("Players not set");
-            var convertedPlayers = players.Select(p => _mapper.Map<BaseballPlayer>(p)).ToList();
+            var convertedPlayers = players.Select(p => _mapper.Map<BaseballPlayerV2>(p)).ToList();
             await _upsertService.UpsertPlayers(convertedPlayers);
         }
     }

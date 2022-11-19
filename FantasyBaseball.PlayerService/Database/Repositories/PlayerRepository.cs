@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FantasyBaseball.Common.Enums;
 using FantasyBaseball.PlayerService.Database.Entities;
+using FantasyBaseball.PlayerService.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace FantasyBaseball.PlayerService.Database.Repositories

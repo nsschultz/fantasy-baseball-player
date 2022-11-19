@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using FantasyBaseball.Common.Enums;
-using FantasyBaseball.Common.Models;
+using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.PlayerService.Models.Enums;
 using LazyCache;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

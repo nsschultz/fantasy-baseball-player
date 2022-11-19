@@ -10,17 +10,6 @@
     <None Include="appsettings.json" CopyToPublishDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="FantasyBaseball.Common.Enums">
-      <HintPath>..\..\libs\FantasyBaseball.Common.Enums.dll</HintPath>
-    </Reference>
-    <Reference Include="FantasyBaseball.Common.Exceptions">
-      <HintPath>..\..\libs\FantasyBaseball.Common.Exceptions.dll</HintPath>
-    </Reference>
-    <Reference Include="FantasyBaseball.Common.Models">
-      <HintPath>..\..\libs\FantasyBaseball.Common.Models.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="CsvHelper" Version="15.0.5" />
     <PackageReference Include="LazyCache.AspNetCore" Version="2.4.0" />

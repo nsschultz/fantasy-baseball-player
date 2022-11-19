@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using FantasyBaseball.Common.Enums;
-using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
+using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.PlayerService.Models.Enums;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.Maps.UnitTests
@@ -23,7 +23,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
         public void BuildBaseballPlayerValidTest(int value, PlayerType type)
         {
             var player = BuildPlayer(value, type);
-            ValidatePlayer(value, player, _mapper.Map<BaseballPlayer>(player));
+            ValidatePlayer(value, player, _mapper.Map<BaseballPlayerV2>(player));
         }
 
         private static PlayerEntity BuildPlayer(int value, PlayerType type) =>
@@ -103,7 +103,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
         private static List<PlayerPositionEntity> BuildPositionList(string[] positions) =>
             positions.Select(p => new PlayerPositionEntity { PositionCode = p }).ToList();
 
-        private static void ValidatePlayer(int value, PlayerEntity expected, BaseballPlayer actual)
+        private static void ValidatePlayer(int value, PlayerEntity expected, BaseballPlayerV2 actual)
         {
             Assert.Equal(expected.Id, actual.Id);
             Assert.Equal(expected.BhqId, actual.BhqId);
