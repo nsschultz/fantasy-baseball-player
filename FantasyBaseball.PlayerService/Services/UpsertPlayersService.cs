@@ -31,6 +31,5 @@ namespace FantasyBaseball.PlayerService.Services
             player.Id != default
                 ? await _playerRepo.GetPlayerById(player.Id)
                 : await _playerRepo.GetPlayerByBhqId(player.BhqId, player.Type);
-
     }
 }

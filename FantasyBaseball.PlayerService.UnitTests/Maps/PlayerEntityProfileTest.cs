@@ -1,19 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using FantasyBaseball.PlayerDatabaseService.Maps;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Models.Enums;
-using Moq;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.Services.UnitTests
 {
-    public class PlayerEntityMergerServiceTest
+    public class PlayerEntityProfileTest
     {
-        private static readonly Dictionary<int, string> EXPECTED_TEAMS = new Dictionary<int, string> { { 10, "MIL" }, { 100, "TB" }, { 123, "" } };
         private static readonly List<BaseballPosition> POSITIONS = new List<BaseballPosition>
         {
             new BaseballPosition { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
@@ -35,89 +32,20 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
             new BaseballPosition { Code = "RP"  , FullName = "Relief Pitcher"   , PlayerType = PlayerType.P, SortOrder = 101          },
             new BaseballPosition { Code = "P"   , FullName = "Pitcher"          , PlayerType = PlayerType.P, SortOrder = 102          }
         };
-        private static readonly List<TeamEntity> TEAMS = new List<TeamEntity>
-        {
-            new TeamEntity { Code = ""   , LeagueId = ""  , City = "Free Agent"   , Nickname = "Free Agent"                            },
-            new TeamEntity { Code = "BAL", LeagueId = "AL", City = "Baltimore"    , Nickname = "Orioles"                               },
-            new TeamEntity { Code = "BOS", LeagueId = "AL", City = "Boston"       , Nickname = "Red Sox"                               },
-            new TeamEntity { Code = "NYY", LeagueId = "AL", City = "New York"     , Nickname = "Yankees"                               },
-            new TeamEntity { Code = "TB" , LeagueId = "AL", City = "Tampa Bay"    , Nickname = "Rays"       , AlternativeCode = "TAM"  },
-            new TeamEntity { Code = "TOR", LeagueId = "AL", City = "Toronto"      , Nickname = "Blue Jays"                             },
-            new TeamEntity { Code = "CWS", LeagueId = "AL", City = "Chicago"      , Nickname = "White Sox"  , AlternativeCode = "CHW"  },
-            new TeamEntity { Code = "CLE", LeagueId = "AL", City = "Cleveland"    , Nickname = "Indians"                               },
-            new TeamEntity { Code = "DET", LeagueId = "AL", City = "Detriot"      , Nickname = "Tigers"                                },
-            new TeamEntity { Code = "KC" , LeagueId = "AL", City = "Kansas City"  , Nickname = "Royals"                                },
-            new TeamEntity { Code = "MIN", LeagueId = "AL", City = "Minnesota"    , Nickname = "Twins"                                 },
-            new TeamEntity { Code = "HOU", LeagueId = "AL", City = "Houston"      , Nickname = "Astros"                                },
-            new TeamEntity { Code = "LAA", LeagueId = "AL", City = "Los Angeles"  , Nickname = "Angels"                                },
-            new TeamEntity { Code = "OAK", LeagueId = "AL", City = "Oakland"      , Nickname = "Athletics"                             },
-            new TeamEntity { Code = "SEA", LeagueId = "AL", City = "Seattle"      , Nickname = "Mariners"                              },
-            new TeamEntity { Code = "TEX", LeagueId = "AL", City = "Texas"        , Nickname = "Rangers"                               },
-            new TeamEntity { Code = "ATL", LeagueId = "NL", City = "Atlanta"      , Nickname = "Braves"                                },
-            new TeamEntity { Code = "MIA", LeagueId = "NL", City = "Miami"        , Nickname = "Marlins"                               },
-            new TeamEntity { Code = "NYM", LeagueId = "NL", City = "New York"     , Nickname = "Mets"                                  },
-            new TeamEntity { Code = "PHI", LeagueId = "NL", City = "Philadelphia" , Nickname = "Phillies"                              },
-            new TeamEntity { Code = "WAS", LeagueId = "NL", City = "Washington"   , Nickname = "Nationals"                             },
-            new TeamEntity { Code = "CHC", LeagueId = "NL", City = "Chicago"      , Nickname = "Cubs"                                  },
-            new TeamEntity { Code = "CIN", LeagueId = "NL", City = "Cincinnati"   , Nickname = "Reds"                                  },
-            new TeamEntity { Code = "MIL", LeagueId = "NL", City = "Milwaukee"    , Nickname = "Brewers"                               },
-            new TeamEntity { Code = "PIT", LeagueId = "NL", City = "Pittsburgh"   , Nickname = "Pirates"                               },
-            new TeamEntity { Code = "STL", LeagueId = "NL", City = "St. Louis"    , Nickname = "Cardinals"                             },
-            new TeamEntity { Code = "ARZ", LeagueId = "NL", City = "Arizona"      , Nickname = "Diamondbacks", AlternativeCode = "ARI" },
-            new TeamEntity { Code = "COL", LeagueId = "NL", City = "Colorado"     , Nickname = "Rockies"                               },
-            new TeamEntity { Code = "LAD", LeagueId = "NL", City = "Los Angeles"  , Nickname = "Dodgers"     , AlternativeCode = "LA"  },
-            new TeamEntity { Code = "SD" , LeagueId = "NL", City = "San Diego"    , Nickname = "Padres"                                },
-            new TeamEntity { Code = "SF" , LeagueId = "NL", City = "San Francisco", Nickname = "Giants"                                }
-        };
+        private IMapper _mapper;
 
-        [Fact]
-        public async Task MergePlayerEntityNullTest()
-        {
-            var existingPlayer = new PlayerEntity();
-            Assert.Equal(existingPlayer, await new PlayerEntityMergerService(null, null, null).MergePlayerEntity(null, existingPlayer));
-        }
+        public PlayerEntityProfileTest() => _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+
+        [Fact] public void ConvertToPlayerEntityNullTest() => Assert.Null(_mapper.Map<PlayerEntity>((BaseballPlayerV2)null));
 
         [Theory]
         [InlineData(10, PlayerType.B)]
         [InlineData(100, PlayerType.P)]
         [InlineData(123, PlayerType.U)]
-        public async Task MergePlayerEntityMatchMissingEntriesTest(int value, PlayerType type)
+        public void ConvertToPlayerEntityValidTest(int value, PlayerType type)
         {
             var player = BuildPlayer(value, type);
-            var otherEntity = await BuildPlayerEntityMergerService().MergePlayerEntity(BuildPlayer(value == 10 ? 100 : 10, PlayerType.U), null);
-            ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayerEntity(player, otherEntity));
-        }
-
-        [Theory]
-        [InlineData(10, PlayerType.B)]
-        [InlineData(100, PlayerType.P)]
-        [InlineData(123, PlayerType.U)]
-        public async Task MergePlayerEntityMatchSameEntriesTest(int value, PlayerType type)
-        {
-            var player = BuildPlayer(value, type);
-            var otherEntity = await BuildPlayerEntityMergerService().MergePlayerEntity(BuildPlayer(value, type), null);
-            ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayerEntity(player, otherEntity));
-        }
-
-        [Theory]
-        [InlineData(10, PlayerType.B)]
-        [InlineData(100, PlayerType.P)]
-        [InlineData(123, PlayerType.U)]
-        public async Task MergePlayerEntityNoMatchTest(int value, PlayerType type)
-        {
-            var player = BuildPlayer(value, type);
-            ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayerEntity(player, null));
-        }
-
-        [Theory]
-        [InlineData(10, PlayerType.B)]
-        [InlineData(100, PlayerType.P)]
-        [InlineData(123, PlayerType.U)]
-        public async Task MergePlayerEntityStatsMismatchTest(int value, PlayerType type)
-        {
-            var player = BuildPlayer(value, type);
-            var otherEntity = await BuildPlayerEntityMergerService().MergePlayerEntity(BuildPlayer(value, type, true), null);
-            ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayerEntity(player, null));
+            ValidatePlayer(value, player, _mapper.Map<PlayerEntity>(player));
         }
 
         private static BattingStats BuildBattingStats(StatsType statsType) =>
@@ -138,16 +66,6 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
                 Power = 100,
                 Speed = 61
             };
-
-        private static PlayerEntityMergerService BuildPlayerEntityMergerService()
-        {
-            var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
-            var positionService = new Mock<IGetPositionService>();
-            positionService.Setup(o => o.GetPositions()).Returns(Task.FromResult(POSITIONS));
-            var teamService = new Mock<IGetTeamsService>();
-            teamService.Setup(o => o.GetTeams()).Returns(Task.FromResult(TEAMS));
-            return new PlayerEntityMergerService(mapper, positionService.Object, teamService.Object);
-        }
 
         private static PitchingStats BuildPitchingStats(StatsType statsType) =>
             new PitchingStats
@@ -224,7 +142,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
             Assert.Equal(expected.Age, actual.Age);
             Assert.Equal(expected.Type, actual.Type);
             Assert.Equal(BuildPositionString(expected.Positions), BuildPositionString(actual.Positions));
-            Assert.Equal(EXPECTED_TEAMS[value], actual.Team);
+            Assert.Equal(expected.Team.Code, actual.Team);
             Assert.Equal(expected.Status, actual.Status);
             Assert.Equal(expected.DraftRank, actual.DraftRank);
             Assert.Equal(expected.AverageDraftPick, actual.AverageDraftPick);

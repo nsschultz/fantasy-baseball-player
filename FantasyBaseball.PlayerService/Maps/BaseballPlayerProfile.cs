@@ -26,7 +26,7 @@ namespace FantasyBaseball.PlayerService.Maps
             CreateMap<TeamEntity, BaseballTeam>();
         }
 
-        private static void BuildStats(BaseballPlayer player)
+        private static void BuildStats(BaseballPlayerV2 player)
         {
             ReplaceBattingStats(player.BattingStats, StatsType.YTD);
             ReplaceBattingStats(player.BattingStats, StatsType.PROJ);

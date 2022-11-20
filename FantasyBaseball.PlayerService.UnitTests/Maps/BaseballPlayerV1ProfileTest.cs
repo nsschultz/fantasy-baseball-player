@@ -16,7 +16,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
         public BaseballPlayerV1ProfileTest() =>
             _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerV1Profile())).CreateMapper();
 
-        [Fact] public void ConvertFromV1NullTest() => Assert.Null(_mapper.Map<BaseballPlayer>((BaseballPlayerV1)null));
+        [Fact] public void ConvertFromV1NullTest() => Assert.Null(_mapper.Map<BaseballPlayerV1>((BaseballPlayerV1)null));
 
         [Theory]
         [InlineData(10, PlayerType.B)]
