@@ -76,7 +76,7 @@ builder.Services
     .AddSingleton<IGetPositionService, GetPositionService>()
     .AddScoped<IGetTeamsService, GetTeamsService>()
     .AddScoped<IPlayerEntityMergerService, PlayerEntityMergerService>()
-    .AddScoped<IPlayerUpdateService, PlayerUpdateService>()
+    .AddScoped<IUpdatePlayerService, UpdatePlayerService>()
     .AddScoped<IUpsertPlayersService, UpsertPlayersService>();
 // Setup Swagger
 builder.Services.AddSwaggerGen(o =>

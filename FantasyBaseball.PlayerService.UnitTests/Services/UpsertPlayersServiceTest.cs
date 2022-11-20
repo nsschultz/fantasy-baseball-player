@@ -11,7 +11,7 @@ using Xunit;
 
 namespace FantasyBaseball.PlayerService.Services.UnitTests
 {
-    public class UpdatePlayerServiceTest
+    public class UpsertPlayerServiceTest
     {
         [Fact]
         public async void UpsertPlayersTestValid()

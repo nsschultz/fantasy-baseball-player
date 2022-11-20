@@ -32,7 +32,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
         public async void UpdatePlayersTest()
         {
             var id = Guid.NewGuid();
-            var updateService = new Mock<IPlayerUpdateService>();
+            var updateService = new Mock<IUpdatePlayerService>();
             updateService.Setup(o => o.UpdatePlayer(It.Is<BaseballPlayerV2>(p => p.Id == id))).Returns(Task.FromResult(0));
             await new PlayerController(null, null, updateService.Object, null).UpdatePlayer(id, new BaseballPlayerV2 { Id = id });
             updateService.VerifyAll();

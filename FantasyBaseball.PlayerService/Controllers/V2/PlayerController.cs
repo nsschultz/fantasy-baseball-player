@@ -16,7 +16,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
     {
         private readonly IGetPlayersService _getService;
         private readonly IPlayerRepository _playerRepo;
-        private readonly IPlayerUpdateService _updateService;
+        private readonly IUpdatePlayerService _updateService;
         private readonly IUpsertPlayersService _upsertService;
 
         /// <summary>Creates a new instance of the controller.</summary>
@@ -26,7 +26,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
         /// <param name="upsertService">Service for upserting players.</param>
         public PlayerController(IPlayerRepository playerRepo,
                                 IGetPlayersService getService,
-                                IPlayerUpdateService updateService,
+                                IUpdatePlayerService updateService,
                                 IUpsertPlayersService upsertService) =>
             (_playerRepo, _getService, _updateService, _upsertService) = (playerRepo, getService, updateService, upsertService);
 

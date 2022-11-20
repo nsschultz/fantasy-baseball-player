@@ -6,7 +6,7 @@ using FantasyBaseball.PlayerService.Models;
 namespace FantasyBaseball.PlayerService.Services
 {
     /// <summary>Service for updaing a player.</summary>
-    public class PlayerUpdateService : IPlayerUpdateService
+    public class UpdatePlayerService : IUpdatePlayerService
     {
         private readonly IPlayerEntityMergerService _entityMerger;
         private readonly IPlayerRepository _playerRepo;
@@ -14,7 +14,7 @@ namespace FantasyBaseball.PlayerService.Services
         /// <summary>Creates a new instance of the service.</summary>
         /// <param name="playerRepo">Repo for CRUD functionality regarding to players.</param>
         /// <param name="entityMerger">Service for converting a BaseballPlayer to a PlayerEntity.</param>
-        public PlayerUpdateService(IPlayerRepository playerRepo, IPlayerEntityMergerService entityMerger) =>
+        public UpdatePlayerService(IPlayerRepository playerRepo, IPlayerEntityMergerService entityMerger) =>
             (_playerRepo, _entityMerger) = (playerRepo, entityMerger);
 
         /// <summary>Updates the given player.</summary>

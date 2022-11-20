@@ -10,7 +10,7 @@ using Xunit;
 
 namespace FantasyBaseball.PlayerService.Services.UnitTests
 {
-    public class PlayerUpdateServiceTest
+    public class UpdatePlayerServiceTest
     {
         [Fact]
         public async void UpdatePlayerTestMissingIdException()
@@ -18,7 +18,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
             var playerRepo = new Mock<IPlayerRepository>();
             playerRepo.Setup(o => o.GetPlayerById(It.IsAny<Guid>())).Returns(Task.FromResult<PlayerEntity>(null));
             var player = new BaseballPlayerV2 { Id = Guid.NewGuid(), BhqId = 1, Type = PlayerType.B, Team = new BaseballTeam { Code = "MIL" } };
-            await Assert.ThrowsAsync<BadRequestException>(async () => await new PlayerUpdateService(playerRepo.Object, null).UpdatePlayer(player));
+            await Assert.ThrowsAsync<BadRequestException>(async () => await new UpdatePlayerService(playerRepo.Object, null).UpdatePlayer(player));
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
             playerRepo.Setup(o => o.UpdatePlayer(It.Is<PlayerEntity>(p => p.Id == id))).Returns(Task.FromResult(entity));
             var mergeService = new Mock<IPlayerEntityMergerService>();
             mergeService.Setup(o => o.MergePlayerEntity(It.IsAny<BaseballPlayerV2>(), It.IsAny<PlayerEntity>())).Returns(Task.FromResult(entity));
-            await new PlayerUpdateService(playerRepo.Object, mergeService.Object).UpdatePlayer(player);
+            await new UpdatePlayerService(playerRepo.Object, mergeService.Object).UpdatePlayer(player);
             playerRepo.Verify(x => x.UpdatePlayer(It.Is<PlayerEntity>(p => p.Id == id)), Times.Once);
         }
     }

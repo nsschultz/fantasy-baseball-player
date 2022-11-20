@@ -38,7 +38,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V1.UnitTests
         public async void UpdatePlayersTest()
         {
             var id = Guid.NewGuid();
-            var updateService = new Mock<IPlayerUpdateService>();
+            var updateService = new Mock<IUpdatePlayerService>();
             updateService.Setup(o => o.UpdatePlayer(It.Is<BaseballPlayerV2>(p => p.Id == id))).Returns(Task.FromResult(0));
             await new PlayerController(_mapper, null, null, updateService.Object, null).UpdatePlayer(id, new BaseballPlayerV1 { Id = id });
             updateService.VerifyAll();
