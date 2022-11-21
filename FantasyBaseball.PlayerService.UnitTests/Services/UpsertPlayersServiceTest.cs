@@ -16,8 +16,8 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         [Fact]
         public async void UpsertPlayersTestValid()
         {
-            var mergeService = new Mock<IPlayerEntityMergerService>();
-            mergeService.Setup(o => o.MergePlayerEntity(It.IsAny<BaseballPlayerV2>(), It.IsAny<PlayerEntity>())).Returns(Task.FromResult(new PlayerEntity()));
+            var mergeService = new Mock<IMergePlayerService>();
+            mergeService.Setup(o => o.MergePlayer(It.IsAny<BaseballPlayerV2>(), It.IsAny<PlayerEntity>())).Returns(Task.FromResult(new PlayerEntity()));
             var playerRepo = new Mock<IPlayerRepository>();
             playerRepo.Setup(o => o.GetPlayerById(It.IsAny<Guid>())).Returns(Task.FromResult(new PlayerEntity()));
             playerRepo.Setup(o => o.GetPlayerByBhqId(It.IsAny<int>(), It.IsAny<PlayerType>())).Returns(Task.FromResult(new PlayerEntity()));

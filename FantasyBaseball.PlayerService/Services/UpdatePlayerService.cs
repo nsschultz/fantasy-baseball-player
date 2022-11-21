@@ -8,14 +8,14 @@ namespace FantasyBaseball.PlayerService.Services
     /// <summary>Service for updaing a player.</summary>
     public class UpdatePlayerService : IUpdatePlayerService
     {
-        private readonly IPlayerEntityMergerService _entityMerger;
+        private readonly IMergePlayerService _mergeService;
         private readonly IPlayerRepository _playerRepo;
 
         /// <summary>Creates a new instance of the service.</summary>
         /// <param name="playerRepo">Repo for CRUD functionality regarding to players.</param>
-        /// <param name="entityMerger">Service for converting a BaseballPlayer to a PlayerEntity.</param>
-        public UpdatePlayerService(IPlayerRepository playerRepo, IPlayerEntityMergerService entityMerger) =>
-            (_playerRepo, _entityMerger) = (playerRepo, entityMerger);
+        /// <param name="mergeService">Service for converting a BaseballPlayer to a PlayerEntity.</param>
+        public UpdatePlayerService(IPlayerRepository playerRepo, IMergePlayerService mergeService) =>
+            (_playerRepo, _mergeService) = (playerRepo, mergeService);
 
         /// <summary>Updates the given player.</summary>
         /// <param name="player">The player to update.</param>
@@ -23,7 +23,7 @@ namespace FantasyBaseball.PlayerService.Services
         {
             var existingPlayer = await _playerRepo.GetPlayerById(player.Id);
             if (existingPlayer == null) throw new BadRequestException("This player does not exist");
-            var updatedPlayer = await _entityMerger.MergePlayerEntity(player, existingPlayer);
+            var updatedPlayer = await _mergeService.MergePlayer(player, existingPlayer);
             await _playerRepo.UpdatePlayer(updatedPlayer);
         }
     }
