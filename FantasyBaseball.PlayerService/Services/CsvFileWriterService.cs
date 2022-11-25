@@ -21,7 +21,7 @@ namespace FantasyBaseball.PlayerService.Services
         public CsvFileWriterService(IMapper mapper)
         {
             _mapper = mapper;
-            _configuration.RegisterClassMap<CsvBaseballPlayerMap>();
+            _configuration.RegisterClassMap<ExportedPlayerMap>();
         }
 
         /// <summary>Reads in data from the given CSV file.</summary>

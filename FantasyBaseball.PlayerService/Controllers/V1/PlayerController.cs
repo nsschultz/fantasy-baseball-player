@@ -20,20 +20,14 @@ namespace FantasyBaseball.PlayerService.Controllers.V1
         private readonly IMapper _mapper;
         private readonly IPlayerRepository _playerRepo;
         private readonly IUpdatePlayerService _updateService;
-        private readonly IUpsertPlayersService _upsertService;
 
         /// <summary>Creates a new instance of the controller.</summary>
         /// <param name="mapper">Instance of the auto mapper.</param>
         /// <param name="playerRepo">Repo for CRUD functionality regarding to players.</param>
         /// <param name="getService">Service for getting players.</param>
         /// <param name="updateService">Service for updating a player.</param>
-        /// <param name="upsertService">Service for upserting players.</param>
-        public PlayerController(IMapper mapper,
-                                IPlayerRepository playerRepo,
-                                IGetPlayersService getService,
-                                IUpdatePlayerService updateService,
-                                IUpsertPlayersService upsertService) =>
-            (_mapper, _playerRepo, _getService, _updateService, _upsertService) = (mapper, playerRepo, getService, updateService, upsertService);
+        public PlayerController(IMapper mapper, IPlayerRepository playerRepo, IGetPlayersService getService, IUpdatePlayerService updateService) =>
+            (_mapper, _playerRepo, _getService, _updateService) = (mapper, playerRepo, getService, updateService);
 
         /// <summary>Removes all of the players from the source.</summary>
         [HttpDelete] public async Task DeleteAllPlayers() => await _playerRepo.DeleteAllPlayers();
@@ -44,6 +38,11 @@ namespace FantasyBaseball.PlayerService.Controllers.V1
         public async Task<List<BaseballPlayerV1>> GetPlayers() =>
             (await _getService.GetPlayers()).Select(p => _mapper.Map<BaseballPlayerV1>(p)).ToList();
 
+        /// <summary>Deprecated.</summary>
+        [HttpPost]
+        [HttpPost("api/v1/action/merge")]
+        public void MergePlayers() => throw new BadRequestException("This method is deprecated. "
+            + "Use api/v2/action/upload/projections/batter or api/v2/action/upload/projections/pitcher instead.");
 
         /// <summary>Gets all of the players from the source.</summary>
         /// <param name="id">The id of the player to change.</param>
@@ -56,16 +55,6 @@ namespace FantasyBaseball.PlayerService.Controllers.V1
             if (id != player.Id) throw new BadRequestException("The ids must match");
             var convertedPlayer = _mapper.Map<BaseballPlayerV2>(player);
             await _updateService.UpdatePlayer(convertedPlayer);
-        }
-
-        /// <summary>Upserts all of the players into the source.</summary>
-        /// <param name="players">All of the players to upsert into the source.</param>
-        [HttpPost]
-        public async Task UpsertPlayers([FromBody] List<BaseballPlayerV1> players)
-        {
-            if (players == null) throw new BadRequestException("Players not set");
-            var convertedPlayers = players.Select(p => _mapper.Map<BaseballPlayerV2>(p)).ToList();
-            await _upsertService.UpsertPlayers(convertedPlayers);
         }
     }
 }

@@ -33,7 +33,6 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
             new BaseballPosition { Code = "RP"  , FullName = "Relief Pitcher"   , PlayerType = PlayerType.P, SortOrder = 101          },
             new BaseballPosition { Code = "P"   , FullName = "Pitcher"          , PlayerType = PlayerType.P, SortOrder = 102          }
         };
-
         private IMapper _mapper;
 
         public CsvFileWriterServiceTest() => _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new CsvBaseballPlayerProfile())).CreateMapper();

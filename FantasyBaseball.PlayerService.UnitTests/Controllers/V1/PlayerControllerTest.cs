@@ -22,7 +22,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V1.UnitTests
         public async void DeleteAllPlayersTest()
         {
             var playerRepo = new Mock<IPlayerRepository>();
-            await new PlayerController(null, playerRepo.Object, null, null, null).DeleteAllPlayers();
+            await new PlayerController(null, playerRepo.Object, null, null).DeleteAllPlayers();
             playerRepo.VerifyAll();
         }
 
@@ -31,8 +31,10 @@ namespace FantasyBaseball.PlayerService.Controllers.V1.UnitTests
         {
             var getService = new Mock<IGetPlayersService>();
             getService.Setup(o => o.GetPlayers()).ReturnsAsync(new List<BaseballPlayerV2> { new BaseballPlayerV2() });
-            Assert.NotEmpty((await new PlayerController(_mapper, null, getService.Object, null, null).GetPlayers()));
+            Assert.NotEmpty((await new PlayerController(_mapper, null, getService.Object, null).GetPlayers()));
         }
+
+        [Fact] public void MergePlayersTest() => Assert.Throws<BadRequestException>(() => new PlayerController(null, null, null, null).MergePlayers());
 
         [Fact]
         public async void UpdatePlayersTest()
@@ -40,36 +42,21 @@ namespace FantasyBaseball.PlayerService.Controllers.V1.UnitTests
             var id = Guid.NewGuid();
             var updateService = new Mock<IUpdatePlayerService>();
             updateService.Setup(o => o.UpdatePlayer(It.Is<BaseballPlayerV2>(p => p.Id == id))).Returns(Task.FromResult(0));
-            await new PlayerController(_mapper, null, null, updateService.Object, null).UpdatePlayer(id, new BaseballPlayerV1 { Id = id });
+            await new PlayerController(_mapper, null, null, updateService.Object).UpdatePlayer(id, new BaseballPlayerV1 { Id = id });
             updateService.VerifyAll();
         }
 
         [Fact]
         public void UpdatePlayersTestDifferentPlayerIds() =>
             Assert.ThrowsAsync<BadRequestException>(() =>
-                new PlayerController(null, null, null, null, null).UpdatePlayer(Guid.NewGuid(), new BaseballPlayerV1 { Id = Guid.NewGuid() }));
+                new PlayerController(null, null, null, null).UpdatePlayer(Guid.NewGuid(), new BaseballPlayerV1 { Id = Guid.NewGuid() }));
 
         [Fact]
         public void UpdatePlayersTestEmptyPlayerId() =>
-            Assert.ThrowsAsync<BadRequestException>(() =>
-                new PlayerController(null, null, null, null, null).UpdatePlayer(Guid.Empty, new BaseballPlayerV1()));
+            Assert.ThrowsAsync<BadRequestException>(() => new PlayerController(null, null, null, null).UpdatePlayer(Guid.Empty, new BaseballPlayerV1()));
 
         [Fact]
         public void UpdatePlayersTestNullPlayer() =>
-            Assert.ThrowsAsync<BadRequestException>(() => new PlayerController(null, null, null, null, null).UpdatePlayer(Guid.NewGuid(), null));
-
-        [Fact]
-        public async void UpsertPlayersTest()
-        {
-            var upsertService = new Mock<IUpsertPlayersService>();
-            upsertService.Setup(o => o.UpsertPlayers(It.Is<List<BaseballPlayerV2>>(l => l.Count == 3))).Returns(Task.FromResult(0));
-            var input = new List<BaseballPlayerV1> { new BaseballPlayerV1(), null, new BaseballPlayerV1() };
-            await new PlayerController(_mapper, null, null, null, upsertService.Object).UpsertPlayers(input);
-            upsertService.VerifyAll();
-        }
-
-        [Fact]
-        public void UpsertPlayersTestNullPlayerCollection() =>
-            Assert.ThrowsAsync<BadRequestException>(() => new PlayerController(null, null, null, null, null).UpsertPlayers(null));
+            Assert.ThrowsAsync<BadRequestException>(() => new PlayerController(null, null, null, null).UpdatePlayer(Guid.NewGuid(), null));
     }
 }

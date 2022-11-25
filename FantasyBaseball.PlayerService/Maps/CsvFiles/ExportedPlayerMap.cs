@@ -5,10 +5,10 @@ using FantasyBaseball.PlayerService.Models;
 namespace FantasyBaseball.PlayerService.Maps.CsvFiles
 {
     /// <summary>Mapper for existing/outgoing file.</summary>
-    public class CsvBaseballPlayerMap : ClassMap<CsvBaseballPlayer>
+    public class ExportedPlayerMap : ClassMap<CsvBaseballPlayer>
     {
         /// <summary>Creates a new instance of the mapper.</summary>
-        public CsvBaseballPlayerMap()
+        public ExportedPlayerMap()
         {
             Map(m => m.BhqId).Index(0).Name("..PLAYER ID");
             Map(m => m.FirstName).Index(1).Name("..FIRST NAME");

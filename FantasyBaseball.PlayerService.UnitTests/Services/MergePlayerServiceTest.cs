@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using FantasyBaseball.PlayerDatabaseService.Maps;
 using FantasyBaseball.PlayerService.Database.Entities;
+using FantasyBaseball.PlayerService.Maps;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.PlayerService.Services.Mergers;
 using Moq;
 using Xunit;
 
@@ -14,6 +15,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     public class MergePlayerServiceTest
     {
         private static readonly Dictionary<int, string> EXPECTED_TEAMS = new Dictionary<int, string> { { 10, "MIL" }, { 100, "TB" }, { 123, "" } };
+        private static readonly IPlayerMerger MERGER = new FullPlayerMerger();
         private static readonly List<BaseballPosition> POSITIONS = new List<BaseballPosition>
         {
             new BaseballPosition { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
@@ -74,7 +76,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         public async Task MergePlayerEntityNullTest()
         {
             var existingPlayer = new PlayerEntity();
-            Assert.Equal(existingPlayer, await new MergePlayerService(null, null, null).MergePlayer(null, existingPlayer));
+            Assert.Equal(existingPlayer, await BuildPlayerEntityMergerService().MergePlayer(MERGER, null, existingPlayer));
         }
 
         [Theory]
@@ -84,8 +86,8 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         public async Task MergePlayerEntityMatchMissingEntriesTest(int value, PlayerType type)
         {
             var player = BuildPlayer(value, type);
-            var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(BuildPlayer(value == 10 ? 100 : 10, PlayerType.U), null);
-            ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(player, otherEntity));
+            var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(MERGER, BuildPlayer(value == 10 ? 100 : 10, PlayerType.U), null);
+            ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, otherEntity));
         }
 
         [Theory]
@@ -95,8 +97,8 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         public async Task MergePlayerEntityMatchSameEntriesTest(int value, PlayerType type)
         {
             var player = BuildPlayer(value, type);
-            var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(BuildPlayer(value, type), null);
-            ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(player, otherEntity));
+            var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(MERGER, BuildPlayer(value, type), null);
+            ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, otherEntity));
         }
 
         [Theory]
@@ -106,7 +108,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         public async Task MergePlayerEntityNoMatchTest(int value, PlayerType type)
         {
             var player = BuildPlayer(value, type);
-            ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(player, null));
+            ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, null));
         }
 
         [Theory]
@@ -116,8 +118,8 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         public async Task MergePlayerEntityStatsMismatchTest(int value, PlayerType type)
         {
             var player = BuildPlayer(value, type);
-            var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(BuildPlayer(value, type, true), null);
-            ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(player, null));
+            var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(MERGER, BuildPlayer(value, type, true), null);
+            ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, null));
         }
 
         private static BattingStats BuildBattingStats(StatsType statsType) =>
@@ -143,9 +145,9 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         {
             var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
             var positionService = new Mock<IGetPositionService>();
-            positionService.Setup(o => o.GetPositions()).Returns(Task.FromResult(POSITIONS));
+            positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
             var teamService = new Mock<IGetTeamsService>();
-            teamService.Setup(o => o.GetTeams()).Returns(Task.FromResult(TEAMS));
+            teamService.Setup(o => o.GetTeams()).ReturnsAsync(TEAMS);
             return new MergePlayerService(mapper, positionService.Object, teamService.Object);
         }
 

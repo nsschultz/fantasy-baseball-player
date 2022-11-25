@@ -5,6 +5,7 @@ using AutoMapper;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.PlayerService.Services.Mergers;
 
 namespace FantasyBaseball.PlayerService.Services
 {
@@ -24,15 +25,15 @@ namespace FantasyBaseball.PlayerService.Services
             (_mapper, _positionsService, _teamsService) = (mapper, positionsService, teamsService);
 
         /// <summary>Merges a BaseballPlayer into a PlayerEntity.</summary>
+        /// <param name="merger">Function for merging</param>
         /// <param name="incoming">The incoming player values.</param>
         /// <param name="existing">The existing player values.</param>
         /// <returns>An object that can be saved to the database.</returns>
-        public async Task<PlayerEntity> MergePlayer(BaseballPlayerV2 incoming, PlayerEntity existing)
+        public async Task<PlayerEntity> MergePlayer(IPlayerMerger merger, BaseballPlayerV2 incoming, PlayerEntity existing)
         {
-            if (incoming == null) return existing;
             var positions = await _positionsService.GetPositions();
             var teams = await _teamsService.GetTeams();
-            var entity = _mapper.Map(incoming, existing);
+            var entity = merger.MergePlayer(_mapper, incoming, existing);
             ValidateStats(entity);
             ValidatePositions(positions, entity);
             ValidateTeam(teams, entity);

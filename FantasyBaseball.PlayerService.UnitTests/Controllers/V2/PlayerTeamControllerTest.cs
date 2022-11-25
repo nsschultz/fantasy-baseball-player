@@ -18,7 +18,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
             var mapper = new Mock<IMapper>();
             mapper.Setup(o => o.Map<BaseballTeam>(It.IsAny<TeamEntity>())).Returns(new BaseballTeam());
             var getTeamsService = new Mock<IGetTeamsService>();
-            getTeamsService.Setup(o => o.GetTeams()).Returns(Task.FromResult(teams));
+            getTeamsService.Setup(o => o.GetTeams()).ReturnsAsync(teams);
             Assert.Equal(teams.Count, (await new PlayerTeamController(mapper.Object, getTeamsService.Object).GetTeams()).Count);
         }
     }

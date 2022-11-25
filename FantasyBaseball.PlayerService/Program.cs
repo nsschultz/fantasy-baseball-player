@@ -70,14 +70,15 @@ builder.Services
     .AddScoped<IPlayerRepository, PlayerRepository>()
     .AddScoped<ITeamRepository, TeamRepository>()
     // Services
+    .AddSingleton<ICsvFileReaderService, CsvFileReaderService>()
     .AddSingleton<ICsvFileWriterService, CsvFileWriterService>()
     .AddSingleton<IGetPlayerEnumMapService, GetPlayerEnumMapService>()
     .AddScoped<IGetPlayersService, GetPlayersService>()
     .AddSingleton<IGetPositionService, GetPositionService>()
     .AddScoped<IGetTeamsService, GetTeamsService>()
     .AddScoped<IMergePlayerService, MergePlayerService>()
-    .AddScoped<IUpdatePlayerService, UpdatePlayerService>()
-    .AddScoped<IUpsertPlayersService, UpsertPlayersService>();
+    .AddScoped<IMergeProjectionService, MergeProjectionService>()
+    .AddScoped<IUpdatePlayerService, UpdatePlayerService>();
 // Setup Swagger
 builder.Services.AddSwaggerGen(o =>
 {

@@ -54,7 +54,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
             var serviceProvider = services.BuildServiceProvider();
             var memoryCache = serviceProvider.GetService<IAppCache>();
             var teamRepo = new Mock<ITeamRepository>();
-            teamRepo.Setup(o => o.GetAllTeams()).Returns(Task.FromResult(TEAMS));
+            teamRepo.Setup(o => o.GetAllTeams()).ReturnsAsync(TEAMS);
             var service = new GetTeamsService(memoryCache, teamRepo.Object);
             Assert.Equal(31, (await service.GetTeams()).Count);
             Assert.Equal(31, (await service.GetTeams()).Count);

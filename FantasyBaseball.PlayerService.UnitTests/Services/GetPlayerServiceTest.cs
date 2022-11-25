@@ -74,9 +74,9 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         {
             var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile())).CreateMapper();
             var positionService = new Mock<IGetPositionService>();
-            positionService.Setup(o => o.GetPositions()).Returns(Task.FromResult(POSITIONS));
+            positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
             var playerRepo = new Mock<IPlayerRepository>();
-            playerRepo.Setup(o => o.GetPlayers(It.IsAny<PlayerType?>())).Returns(Task.FromResult(PLAYERS));
+            playerRepo.Setup(o => o.GetPlayers(It.IsAny<PlayerType?>())).ReturnsAsync(PLAYERS);
             var players = await new GetPlayersService(mapper, playerRepo.Object, positionService.Object).GetPlayers();
             Assert.Equal(3, players.Count);
             players.ForEach(player =>

@@ -4,7 +4,7 @@ using AutoMapper;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Models;
 
-namespace FantasyBaseball.PlayerDatabaseService.Maps
+namespace FantasyBaseball.PlayerService.Maps
 {
     /// <summary>A new profile for the PlayerEntity objects.</summary>
     public class PlayerEntityProfile : Profile

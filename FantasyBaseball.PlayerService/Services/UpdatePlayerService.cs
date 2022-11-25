@@ -2,12 +2,14 @@ using System.Threading.Tasks;
 using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.Exceptions;
 using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.PlayerService.Services.Mergers;
 
 namespace FantasyBaseball.PlayerService.Services
 {
     /// <summary>Service for updaing a player.</summary>
     public class UpdatePlayerService : IUpdatePlayerService
     {
+        private static readonly IPlayerMerger Merger = new FullPlayerMerger();
         private readonly IMergePlayerService _mergeService;
         private readonly IPlayerRepository _playerRepo;
 
@@ -23,7 +25,7 @@ namespace FantasyBaseball.PlayerService.Services
         {
             var existingPlayer = await _playerRepo.GetPlayerById(player.Id);
             if (existingPlayer == null) throw new BadRequestException("This player does not exist");
-            var updatedPlayer = await _mergeService.MergePlayer(player, existingPlayer);
+            var updatedPlayer = await _mergeService.MergePlayer(Merger, player, existingPlayer);
             await _playerRepo.UpdatePlayer(updatedPlayer);
         }
     }

@@ -17,18 +17,13 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
         private readonly IGetPlayersService _getService;
         private readonly IPlayerRepository _playerRepo;
         private readonly IUpdatePlayerService _updateService;
-        private readonly IUpsertPlayersService _upsertService;
 
         /// <summary>Creates a new instance of the controller.</summary>
         /// <param name="playerRepo">Repo for CRUD functionality regarding to players.</param>
         /// <param name="getService">Service for getting players.</param>
         /// <param name="updateService">Service for updating a player.</param>
-        /// <param name="upsertService">Service for upserting players.</param>
-        public PlayerController(IPlayerRepository playerRepo,
-                                IGetPlayersService getService,
-                                IUpdatePlayerService updateService,
-                                IUpsertPlayersService upsertService) =>
-            (_playerRepo, _getService, _updateService, _upsertService) = (playerRepo, getService, updateService, upsertService);
+        public PlayerController(IPlayerRepository playerRepo, IGetPlayersService getService, IUpdatePlayerService updateService) =>
+            (_playerRepo, _getService, _updateService) = (playerRepo, getService, updateService);
 
         /// <summary>Removes all of the players from the source.</summary>
         [HttpDelete] public async Task DeleteAllPlayers() => await _playerRepo.DeleteAllPlayers();
@@ -48,15 +43,6 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
             if (id == default) throw new BadRequestException("Invalid player id used");
             if (id != player.Id) throw new BadRequestException("The ids must match");
             await _updateService.UpdatePlayer(player);
-        }
-
-        /// <summary>Upserts all of the players into the source.</summary>
-        /// <param name="players">All of the players to upsert into the source.</param>
-        [HttpPost]
-        public async Task UpsertPlayers([FromBody] List<BaseballPlayerV2> players)
-        {
-            if (players == null) throw new BadRequestException("Players not set");
-            await _upsertService.UpsertPlayers(players);
         }
     }
 }

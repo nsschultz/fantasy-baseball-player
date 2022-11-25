@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using FantasyBaseball.PlayerService.Database.Entities;
+using FantasyBaseball.PlayerService.Maps;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Models.Enums;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Maps.UnitTests
+namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
 {
-    public class PlayerEntityProfileTest
+    public class BhqPlayerMergerTest
     {
         private static readonly List<BaseballPosition> POSITIONS = new List<BaseballPosition>
         {
@@ -31,20 +32,40 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
             new BaseballPosition { Code = "RP"  , FullName = "Relief Pitcher"   , PlayerType = PlayerType.P, SortOrder = 101          },
             new BaseballPosition { Code = "P"   , FullName = "Pitcher"          , PlayerType = PlayerType.P, SortOrder = 102          }
         };
-        private IMapper _mapper;
 
-        public PlayerEntityProfileTest() => _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
-
-        [Fact] public void ConvertToPlayerEntityNullTest() => Assert.Null(_mapper.Map<PlayerEntity>((BaseballPlayerV2)null));
-
-        [Theory]
-        [InlineData(10, PlayerType.B)]
-        [InlineData(100, PlayerType.P)]
-        [InlineData(123, PlayerType.U)]
-        public void ConvertToPlayerEntityValidTest(int value, PlayerType type)
+        [Fact]
+        public void MergePlayerNoExistingTest()
         {
-            var player = BuildPlayer(value, type);
-            ValidatePlayer(value, player, _mapper.Map<PlayerEntity>(player));
+            var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+            var player = BuildPlayer();
+            ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, player, null));
+        }
+
+        [Fact]
+        public void MergePlayerNoIncomingTest()
+        {
+            var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+            var player = BuildPlayer();
+            var entity = new BhqPlayerMerger().MergePlayer(mapper, player, null);
+            player.BattingStats.Clear();
+            player.PitchingStats.Clear();
+            ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, new BaseballPlayerV2(), entity));
+        }
+
+        [Fact]
+        public void MergePlayerMatchTest()
+        {
+            var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+            var player = BuildPlayer();
+            var entity = new BhqPlayerMerger().MergePlayer(mapper, player, null);
+            entity.BhqId = 1231243;
+            entity.Age = 34563453;
+            entity.Team = "xyasasdfasdf";
+            entity.Reliability = 6745674567465;
+            entity.MayberryMethod = 53451;
+            entity.BattingStats.Clear();
+            entity.PitchingStats.Clear();
+            ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, player, entity));
         }
 
         private static BattingStats BuildBattingStats(StatsType statsType) =>
@@ -86,39 +107,27 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
                 GroundBallRate = 0.31
             };
 
-        private static BaseballPlayerV2 BuildPlayer(int value, PlayerType type, bool bothStats = false) =>
+        private static BaseballPlayerV2 BuildPlayer() =>
             new BaseballPlayerV2
             {
-                BhqId = value,
-                FirstName = $"First-{value}",
-                LastName = $"Last-{value}",
-                Age = value,
-                Type = type,
-                Positions = type == PlayerType.B
-                    ? BuildPositionList(new string[] { "XX", "OF", "1B" })
-                    : type == PlayerType.P
-                        ? BuildPositionList(new string[] { "SP", "XX", "RP" })
-                        : BuildPositionList(new string[] { "XX" }),
-                Team = new BaseballTeam { Code = type == PlayerType.B ? "MIL" : type == PlayerType.P ? "TB" : "XX" },
-                Status = value == 10 ? PlayerStatus.XX : PlayerStatus.DL,
-                DraftRank = value + 1,
-                AverageDraftPick = value + 2,
-                HighestPick = value + 3,
-                DraftedPercentage = value + 4,
-                MayberryMethod = value + 5,
-                Reliability = value + 6,
-                League1 = value == 10 ? LeagueStatus.R : LeagueStatus.A,
-                League2 = value != 10 ? LeagueStatus.X : LeagueStatus.A,
-                BattingStats = !bothStats && PlayerType.U == type ? new List<BattingStats>() : new List<BattingStats>
-                {
-                    bothStats || value == 10 ? BuildBattingStats(StatsType.YTD) : new BattingStats { StatsType = StatsType.YTD },
-                    bothStats || value != 10 ? BuildBattingStats(StatsType.PROJ) : new BattingStats { StatsType = StatsType.PROJ }
-                },
-                PitchingStats = !bothStats && PlayerType.U == type ? new List<PitchingStats>() : new List<PitchingStats>
-                {
-                    bothStats || value == 10 ? BuildPitchingStats(StatsType.YTD) : new PitchingStats { StatsType = StatsType.YTD },
-                    bothStats || value != 10 ? BuildPitchingStats(StatsType.PROJ) : new PitchingStats { StatsType = StatsType.PROJ }
-                }
+                BhqId = 123,
+                FirstName = "First",
+                LastName = "Last",
+                Age = 36,
+                Type = PlayerType.U,
+                Positions = BuildPositionList(new string[] { "OF", "1B" }),
+                Team = new BaseballTeam { Code = "MIL" },
+                Status = PlayerStatus.XX,
+                DraftRank = 1,
+                AverageDraftPick = 2,
+                HighestPick = 3,
+                DraftedPercentage = 4,
+                MayberryMethod = 5,
+                Reliability = 6,
+                League1 = LeagueStatus.R,
+                League2 = LeagueStatus.X,
+                BattingStats = new List<BattingStats> { BuildBattingStats(StatsType.YTD), BuildBattingStats(StatsType.PROJ) },
+                PitchingStats = new List<PitchingStats> { BuildPitchingStats(StatsType.YTD), BuildPitchingStats(StatsType.PROJ) }
             };
 
         private static List<BaseballPosition> BuildPositionList(string[] positions) =>
@@ -133,7 +142,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
                 .OrderBy(p => p.SortOrder)
                 .Select(p => p.Code));
 
-        private static void ValidatePlayer(int value, BaseballPlayerV2 expected, PlayerEntity actual)
+        private static void ValidatePlayer(BaseballPlayerV2 expected, PlayerEntity actual)
         {
             Assert.Equal(expected.BhqId, actual.BhqId);
             Assert.Equal(expected.FirstName, actual.FirstName);
@@ -151,17 +160,17 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
             Assert.Equal(expected.Reliability, actual.Reliability);
             Assert.Equal(expected.League1, actual.LeagueStatuses.First(l => l.LeagueId == 1).LeagueStatus);
             Assert.Equal(expected.League2, actual.LeagueStatuses.First(l => l.LeagueId == 2).LeagueStatus);
-            if (expected.Type != PlayerType.U)
+            Assert.Equal(expected.BattingStats.Count, actual.BattingStats.Count);
+            if (expected.BattingStats.Any())
             {
                 ValidatePlayerBattingStats(expected.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD), actual.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD));
                 ValidatePlayerBattingStats(expected.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ), actual.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ));
+            }
+            Assert.Equal(expected.PitchingStats.Count, actual.PitchingStats.Count);
+            if (expected.PitchingStats.Any())
+            {
                 ValidatePlayerPitchingStats(expected.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD), actual.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD));
                 ValidatePlayerPitchingStats(expected.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ), actual.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ));
-            }
-            else
-            {
-                Assert.Empty(actual.BattingStats);
-                Assert.Empty(actual.PitchingStats);
             }
         }
 
