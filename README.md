@@ -3,6 +3,7 @@
 - This is the source of truth for the player data.
 - Exposes the CRUD functionality needed to maintain the player data.
 - Exposes an endpoint to retrieve the player data as a CSV.
+- Exposes endpoints to allow the user to merge in new projection data.
 
 ---
 
