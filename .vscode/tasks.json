@@ -47,11 +47,7 @@
       "label": "run",
       "command": "dotnet",
       "type": "process",
-      "args": [
-        "run",
-        "--project",
-        "${workspaceFolder}/FantasyBaseball.PlayerService/FantasyBaseball.PlayerService.csproj"
-      ],
+      "args": ["run", "--project", "${workspaceFolder}/FantasyBaseball.PlayerService/FantasyBaseball.PlayerService.csproj"],
       "problemMatcher": "$msCompile"
     },
     {

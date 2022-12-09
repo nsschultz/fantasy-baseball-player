@@ -30,28 +30,30 @@ namespace FantasyBaseball.PlayerService.Maps
         {
             ReplaceBattingStats(player.BattingStats, StatsType.YTD);
             ReplaceBattingStats(player.BattingStats, StatsType.PROJ);
-            player.BattingStats.Add(new BattingStatsBuilder()
+            ReplaceBattingStats(player.BattingStats, StatsType.CMBD, new BattingStatsBuilder()
                 .AddStats(player.BattingStats.FirstOrDefault(b => b.StatsType == StatsType.YTD))
                 .AddStats(player.BattingStats.FirstOrDefault(b => b.StatsType == StatsType.PROJ))
                 .SetStatsType(StatsType.CMBD)
                 .Build());
+            player.BattingStats = player.BattingStats.OrderBy(p => p.StatsType).ToList();
             ReplacePitchingStats(player.PitchingStats, StatsType.YTD);
             ReplacePitchingStats(player.PitchingStats, StatsType.PROJ);
-            player.PitchingStats.Add(new PitchingStatsBuilder()
+            ReplacePitchingStats(player.PitchingStats, StatsType.CMBD, new PitchingStatsBuilder()
                 .AddStats(player.PitchingStats.FirstOrDefault(p => p.StatsType == StatsType.YTD))
                 .AddStats(player.PitchingStats.FirstOrDefault(p => p.StatsType == StatsType.PROJ))
                 .SetStatsType(StatsType.CMBD)
                 .Build());
+            player.PitchingStats = player.PitchingStats.OrderBy(p => p.StatsType).ToList();
         }
 
         private static LeagueStatus GetLeagueStatus(PlayerEntity entity, int leagueId) =>
             entity.LeagueStatuses.Where(s => s.LeagueId == leagueId).Select(s => s.LeagueStatus).FirstOrDefault();
 
-        private static void ReplaceBattingStats(List<BattingStats> stats, StatsType statsType) =>
-            ReplaceStats(stats, s => s.StatsType == statsType, s => new BattingStatsBuilder().AddStats(s).SetStatsType(statsType).Build());
+        private static void ReplaceBattingStats(List<BattingStats> stats, StatsType statsType, BattingStats value = null) =>
+            ReplaceStats(stats, s => s.StatsType == statsType, s => value ?? new BattingStatsBuilder().AddStats(s).SetStatsType(statsType).Build());
 
-        private static void ReplacePitchingStats(List<PitchingStats> stats, StatsType statsType) =>
-            ReplaceStats(stats, s => s.StatsType == statsType, s => new PitchingStatsBuilder().AddStats(s).SetStatsType(statsType).Build());
+        private static void ReplacePitchingStats(List<PitchingStats> stats, StatsType statsType, PitchingStats value = null) =>
+            ReplaceStats(stats, s => s.StatsType == statsType, s => value ?? new PitchingStatsBuilder().AddStats(s).SetStatsType(statsType).Build());
 
         private static void ReplaceStats<T>(List<T> stats, Predicate<T> statsFinder, Func<T, T> builder)
         {

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Database.Repositories;
@@ -43,7 +42,10 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
                 LastName = "Franco",
                 Type = PlayerType.B,
                 PlayerTeam = new TeamEntity { Code = "TB"},
-                BattingStats = new List<BattingStatsEntity> { new BattingStatsEntity { StatsType = StatsType.PROJ, AtBats = 3 } },
+                BattingStats = new List<BattingStatsEntity> {
+                    new BattingStatsEntity { StatsType = StatsType.PROJ, AtBats = 3 },
+                    new BattingStatsEntity { StatsType = StatsType.CMBD, AtBats = 13 }
+                },
                 LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 1, LeagueStatus = LeagueStatus.R } }
             }
         };
@@ -82,7 +84,9 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
             players.ForEach(player =>
             {
                 Assert.Equal(player.BhqId < 3 ? "MIL" : "TB", player.Team.Code);
-                Assert.Equal(player.BhqId, player.Type == PlayerType.B ? player.BattingStats.First().AtBats : player.PitchingStats.First().InningsPitched);
+                Assert.Equal(player.BhqId, player.Type == PlayerType.B
+                    ? player.BattingStats.First(p => p.StatsType == StatsType.CMBD).AtBats
+                    : player.PitchingStats.First(p => p.StatsType == StatsType.CMBD).InningsPitched);
                 Assert.Equal(player.BhqId % 2 == 0 ? LeagueStatus.A : LeagueStatus.R, player.League1);
                 Assert.Equal(player.BhqId % 2 == 0 ? LeagueStatus.R : LeagueStatus.A, player.League2);
             });
