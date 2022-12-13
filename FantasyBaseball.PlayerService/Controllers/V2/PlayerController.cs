@@ -30,8 +30,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
 
     /// <summary>Gets all of the players from the source.</summary>
     /// <returns>All of the players from the source.</returns>
-    [HttpGet]
-    public async Task<List<BaseballPlayerV2>> GetPlayers() => await _getService.GetPlayers();
+    [HttpGet] public async Task<List<BaseballPlayerV2>> GetPlayers() => await _getService.GetPlayers();
 
     /// <summary>Gets all of the players from the source.</summary>
     /// <param name="id">The id of the player to change.</param>

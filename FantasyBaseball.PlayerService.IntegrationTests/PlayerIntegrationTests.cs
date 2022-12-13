@@ -18,10 +18,10 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
     [InlineData("/api/v1/player/enum-map?enumType=PlayerStatus", 4)]
     [InlineData("/api/v1/player/enum-map?enumType=PlayerType", 3)]
     [InlineData("/api/v1/player/enum-map?enumType=StatsType", 4)]
-    [InlineData("/api/v2/player/enum-map?enumType=LeagueStatus", 4)]
-    [InlineData("/api/v2/player/enum-map?enumType=PlayerStatus", 4)]
-    [InlineData("/api/v2/player/enum-map?enumType=PlayerType", 3)]
-    [InlineData("/api/v2/player/enum-map?enumType=StatsType", 4)]
+    [InlineData("/api/v2/enum-map?enumType=LeagueStatus", 4)]
+    [InlineData("/api/v2/enum-map?enumType=PlayerStatus", 4)]
+    [InlineData("/api/v2/enum-map?enumType=PlayerType", 3)]
+    [InlineData("/api/v2/enum-map?enumType=StatsType", 4)]
     public async void GetEnumTest(string url, int count)
     {
       var repsonse = await _fixture.Client.GetAsync(url);
@@ -49,14 +49,14 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
     [InlineData("/api/health")]
     [InlineData("/api/v1/action/export")]
     [InlineData("/api/v2/action/export")]
-    [InlineData("/api/v2/player/swagger/index.html")]
+    [InlineData("/api/v2/swagger/index.html")]
     public async void GetSimpleTests(string url)
     {
       var httpResponse = await _fixture.Client.GetAsync(url);
       Assert.Equal(HttpStatusCode.OK, httpResponse.StatusCode);
     }
 
-    [Fact] public async void GetTeams2Test() => await GetCountTest<BaseballTeam>("/api/v2/player/team", 31);
+    [Fact] public async void GetTeams2Test() => await GetCountTest<BaseballTeam>("/api/v2/team", 31);
 
     private async Task<List<T>> GetCountTest<T>(string url, int count)
     {

@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 var BaseballSpecificOrigins = "_BaseballSpecificOrigins";
-var SwaggerBasePath = "api/v2/player";
+var SwaggerBasePath = "api/v2";
 var SwaggerTitle = "FantasyBaseball.PlayerService";
 var SwaggerVersion = "v2";
 
