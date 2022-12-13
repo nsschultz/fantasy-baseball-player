@@ -70,7 +70,6 @@ namespace FantasyBaseball.PlayerService.Services
       var teamCode = string.IsNullOrWhiteSpace(entity.Team) ? string.Empty : entity.Team.Trim().ToUpper();
       var team = teams.FirstOrDefault(t => t.Code == teamCode || (!string.IsNullOrWhiteSpace(t.AlternativeCode) && t.AlternativeCode == teamCode));
       team = team ?? teams.FirstOrDefault(t => t.Code == string.Empty);
-      entity.PlayerTeam = null;
       entity.Team = team.Code;
     }
   }
