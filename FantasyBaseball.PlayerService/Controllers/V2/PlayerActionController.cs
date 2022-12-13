@@ -39,12 +39,12 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
 
     /// <summary>Overwrites the underlying batter.csv file.</summary>
     [HttpPost("api/v1/projection/batters/upload")]
-    [HttpPost("api/v2/action/upload/projections/batter")]
+    [HttpPost("api/v2/action/upload/projection/batters")]
     public async Task<int> UploadBatterFile() => await UploadFile(PlayerType.B);
 
     /// <summary>Overwrites the underlying pitcher.csv file.</summary>
     [HttpPost("api/v1/projection/pitchers/upload")]
-    [HttpPost("api/v2/action/upload/projections/pitcher")]
+    [HttpPost("api/v2/action/upload/projection/pitchers")]
     public async Task<int> UploadPitcherFile() => await UploadFile(PlayerType.P);
 
     private async Task<int> UploadFile(PlayerType type)

@@ -147,7 +147,7 @@ namespace FantasyBaseball.PlayerService.Database
     private static void BuildPlayerPositionModel(EntityTypeBuilder<PlayerPositionEntity> builder)
     {
       builder.HasKey(pp => new { pp.PlayerId, pp.PositionCode });
-      builder.Property(pp => pp.PositionCode).HasMaxLength(3);
+      builder.Property(pp => pp.PositionCode).HasMaxLength(4);
       builder.HasOne(pp => pp.Player)
         .WithMany(p => p.Positions)
         .HasForeignKey(pp => pp.PlayerId)
