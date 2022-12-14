@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using FantasyBaseball.PlayerService.Database;
 using FantasyBaseball.PlayerService.Database.Repositories;
+using FantasyBaseball.PlayerService.Exceptions;
 using FantasyBaseball.PlayerService.Services;
 using FantasyBaseball.PlayerService.Services.HealthChecks;
 using Microsoft.AspNetCore.Builder;
@@ -92,7 +93,7 @@ builder.Services.AddSwaggerGen(o =>
     .ForEach(f => o.IncludeXmlComments(f));
 });
 // Setup Controllers
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.Filters.Add<ExceptionFilter>());
 
 // Build the App
 var app = builder.Build();
