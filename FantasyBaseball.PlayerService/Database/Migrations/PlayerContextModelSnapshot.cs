@@ -212,8 +212,8 @@ namespace FantasyBaseball.PlayerService.Database.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("PositionCode")
-                        .HasMaxLength(3)
-                        .HasColumnType("character varying(3)");
+                        .HasMaxLength(4)
+                        .HasColumnType("character varying(4)");
 
                     b.HasKey("PlayerId", "PositionCode");
 

@@ -4,16 +4,16 @@ using Xunit;
 
 namespace FantasyBaseball.PlayerService.Database.Entities.UnitTests
 {
-    public class PlayerLeagueStatusEntityTest
+  public class PlayerLeagueStatusEntityTest
+  {
+    [Fact]
+    public void DefaultsSetTest()
     {
-        [Fact]
-        public void DefaultsSetTest()
-        {
-            var obj = new PlayerLeagueStatusEntity();
-            Assert.Equal((Guid)default, obj.PlayerId);
-            Assert.Equal(0, obj.LeagueId);
-            Assert.Equal(LeagueStatus.A, obj.LeagueStatus);
-            Assert.Null(obj.Player);
-        }
+      var obj = new PlayerLeagueStatusEntity();
+      Assert.Equal((Guid)default, obj.PlayerId);
+      Assert.Equal(0, obj.LeagueId);
+      Assert.Equal(LeagueStatus.A, obj.LeagueStatus);
+      Assert.Null(obj.Player);
     }
+  }
 }
