@@ -35,7 +35,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
 
     public PlayerEntityProfileTest() => _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
 
-    [Fact] public void ConvertToPlayerEntityNullTest() => Assert.Null(_mapper.Map<PlayerEntity>((BaseballPlayerV2)null));
+    [Fact] public void ConvertToPlayerEntityNullTest() => Assert.Null(_mapper.Map<PlayerEntity>((BaseballPlayer)null));
 
     [Theory]
     [InlineData(10, PlayerType.B)]
@@ -86,8 +86,8 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
         GroundBallRate = 0.31
       };
 
-    private static BaseballPlayerV2 BuildPlayer(int value, PlayerType type, bool bothStats = false) =>
-      new BaseballPlayerV2
+    private static BaseballPlayer BuildPlayer(int value, PlayerType type, bool bothStats = false) =>
+      new BaseballPlayer
       {
         BhqId = value,
         FirstName = $"First-{value}",
@@ -132,7 +132,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
         .OrderBy(p => p.SortOrder)
         .Select(p => p.Code));
 
-    private static void ValidatePlayer(int value, BaseballPlayerV2 expected, PlayerEntity actual)
+    private static void ValidatePlayer(int value, BaseballPlayer expected, PlayerEntity actual)
     {
       Assert.Equal(expected.BhqId, actual.BhqId);
       Assert.Equal(expected.FirstName, actual.FirstName);

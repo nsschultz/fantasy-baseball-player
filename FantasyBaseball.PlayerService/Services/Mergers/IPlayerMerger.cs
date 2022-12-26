@@ -12,6 +12,6 @@ namespace FantasyBaseball.PlayerService.Services.Mergers
     /// <param name="incoming">The incoming player values.</param>
     /// <param name="existing">The existing player values.</param>
     /// <returns>An object that can be saved to the database.</returns>
-    PlayerEntity MergePlayer(IMapper mapper, BaseballPlayerV2 incoming, PlayerEntity existing);
+    PlayerEntity MergePlayer(IMapper mapper, BaseballPlayer incoming, PlayerEntity existing);
   }
 }

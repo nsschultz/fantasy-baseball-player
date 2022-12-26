@@ -21,9 +21,9 @@ namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
     {
       var fileContent = Encoding.ASCII.GetBytes("file-content");
       var getService = new Mock<IGetPlayersService>();
-      getService.Setup(o => o.GetPlayers()).ReturnsAsync(new List<BaseballPlayerV2> { new BaseballPlayerV2() });
+      getService.Setup(o => o.GetPlayers()).ReturnsAsync(new List<BaseballPlayer> { new BaseballPlayer() });
       var writer = new Mock<ICsvFileWriterService>();
-      writer.Setup(o => o.WriteCsvData(It.Is<List<BaseballPlayerV2>>(p => p.Count == 1))).Returns(fileContent);
+      writer.Setup(o => o.WriteCsvData(It.Is<List<BaseballPlayer>>(p => p.Count == 1))).Returns(fileContent);
       var controller = new PlayerActionController(getService.Object, writer.Object, null);
       var headerDictionary = new HeaderDictionary();
       var response = new Mock<HttpResponse>();

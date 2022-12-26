@@ -27,7 +27,6 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
 
     /// <summary>Export the players as a CSV file.</summary>
     /// <returns>A CSV file containing the players.</returns>
-    [HttpGet("api/v1/action/export")]
     [HttpGet("api/v2/action/export")]
     public async Task<IActionResult> ExportPlayers()
     {
@@ -38,12 +37,10 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
     }
 
     /// <summary>Overwrites the underlying batter.csv file.</summary>
-    [HttpPost("api/v1/projection/batters/upload")]
     [HttpPost("api/v2/action/upload/projection/batters")]
     public async Task<int> UploadBatterFile() => await UploadFile(PlayerType.B);
 
     /// <summary>Overwrites the underlying pitcher.csv file.</summary>
-    [HttpPost("api/v1/projection/pitchers/upload")]
     [HttpPost("api/v2/action/upload/projection/pitchers")]
     public async Task<int> UploadPitcherFile() => await UploadFile(PlayerType.P);
 

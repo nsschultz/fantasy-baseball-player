@@ -8,6 +8,6 @@ namespace FantasyBaseball.PlayerService.Services
   {
     /// <summary>Updates the given player.</summary>
     /// <param name="player">The player to update.</param>
-    Task UpdatePlayer(BaseballPlayerV2 player);
+    Task UpdatePlayer(BaseballPlayer player);
   }
 }

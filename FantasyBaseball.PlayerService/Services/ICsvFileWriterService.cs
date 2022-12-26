@@ -9,6 +9,6 @@ namespace FantasyBaseball.PlayerService.Services
     /// <summary>Reads in data from the given CSV file.</summary>
     /// <param name="players">All of the players to to write to the CSV.</param>
     /// <returns>A byte array of the file content.</returns>
-    byte[] WriteCsvData(List<BaseballPlayerV2> players);
+    byte[] WriteCsvData(List<BaseballPlayer> players);
   }
 }

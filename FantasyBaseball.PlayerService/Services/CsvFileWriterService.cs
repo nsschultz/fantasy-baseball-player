@@ -27,9 +27,9 @@ namespace FantasyBaseball.PlayerService.Services
     /// <summary>Reads in data from the given CSV file.</summary>
     /// <param name="players">All of the players to to write to the CSV.</param>
     /// <returns>A byte array of the file content.</returns>
-    public byte[] WriteCsvData(List<BaseballPlayerV2> players)
+    public byte[] WriteCsvData(List<BaseballPlayer> players)
     {
-      players = players ?? new List<BaseballPlayerV2>();
+      players = players ?? new List<BaseballPlayer>();
       var csvPlayers = players.Select(p => _mapper.Map<CsvBaseballPlayer>(p));
       using var stream = new MemoryStream();
       using var writer = new StreamWriter(stream);

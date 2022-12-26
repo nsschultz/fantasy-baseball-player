@@ -24,11 +24,11 @@ namespace FantasyBaseball.PlayerService.Services
 
     /// <summary>Gets the players from the underlying source.</summary>
     /// <returns>A list of the players.</returns>
-    public async Task<List<BaseballPlayerV2>> GetPlayers()
+    public async Task<List<BaseballPlayer>> GetPlayers()
     {
       var positions = await _positionsService.GetPositions();
       var players = await _playerRepo.GetPlayers();
-      var baseballPlayers = players.Select(player => _mapper.Map<PlayerEntity, BaseballPlayerV2>(player, opt =>
+      var baseballPlayers = players.Select(player => _mapper.Map<PlayerEntity, BaseballPlayer>(player, opt =>
         opt.AfterMap((src, dest) => dest.Positions = BuildBaseballPositions(src, positions))));
       return SortPlayers(baseballPlayers.ToList());
     }
@@ -36,7 +36,7 @@ namespace FantasyBaseball.PlayerService.Services
     private static List<BaseballPosition> BuildBaseballPositions(PlayerEntity player, List<BaseballPosition> positions) =>
       player.Positions.SelectMany(p => positions.Where(pp => pp.Code == p.PositionCode)).OrderBy(p => p.SortOrder).ToList();
 
-    private static List<BaseballPlayerV2> SortPlayers(List<BaseballPlayerV2> players) =>
+    private static List<BaseballPlayer> SortPlayers(List<BaseballPlayer> players) =>
       players
         .OrderBy(p => p.Type)
         .ThenBy(p => p.LastName.ToUpper())

@@ -20,7 +20,7 @@ namespace FantasyBaseball.PlayerService.Services
 
     /// <summary>Updates the given player.</summary>
     /// <param name="player">The player to update.</param>
-    public async Task UpdatePlayer(BaseballPlayerV2 player)
+    public async Task UpdatePlayer(BaseballPlayer player)
     {
       var existingPlayer = await _playerRepo.GetPlayerById(player.Id);
       if (existingPlayer == null) throw new BadRequestException("This player does not exist");

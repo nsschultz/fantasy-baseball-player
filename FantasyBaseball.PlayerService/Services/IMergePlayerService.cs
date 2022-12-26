@@ -13,6 +13,6 @@ namespace FantasyBaseball.PlayerService.Services
     /// <param name="incoming">The incoming player values.</param>
     /// <param name="existing">The existing player values.</param>
     /// <returns>An object that can be saved to the database.</returns>
-    Task<PlayerEntity> MergePlayer(IPlayerMerger merger, BaseballPlayerV2 incoming, PlayerEntity existing);
+    Task<PlayerEntity> MergePlayer(IPlayerMerger merger, BaseballPlayer incoming, PlayerEntity existing);
   }
 }
