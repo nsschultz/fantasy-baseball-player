@@ -5,7 +5,7 @@ using FantasyBaseball.PlayerService.Models.Enums;
 namespace FantasyBaseball.PlayerService.Models
 {
   /// <summary>A marker object for breaking up the mappers.</summary>
-  public class CsvBaseballPlayer : BaseballPlayerV2
+  public class CsvBaseballPlayer : BaseballPlayer
   {
     /// <summary>Pitching Stats (Projected) for a given player.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]

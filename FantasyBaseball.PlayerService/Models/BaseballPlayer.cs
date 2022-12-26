@@ -5,7 +5,7 @@ using FantasyBaseball.PlayerService.Models.Enums;
 namespace FantasyBaseball.PlayerService.Models
 {
   /// <summary>All of the information that makes up a baseball player.</summary>
-  public abstract class BaseballPlayer
+  public class BaseballPlayer
   {
     /// <summary>Max value for draft pick attributes.</summary>
     private const int MaxDraftPick = 9999;
@@ -60,5 +60,11 @@ namespace FantasyBaseball.PlayerService.Models
 
     /// <summary>Pitching Stats (Year to Date, Projected and Combined) for a given player.</summary>
     public List<PitchingStats> PitchingStats { get; set; } = new List<PitchingStats>();
+
+    /// <summary>The player's team.</summary>
+    public BaseballTeam Team { get; set; }
+
+    /// <summary>The position(s) this player plays.</summary>
+    public List<BaseballPosition> Positions { get; set; } = new List<BaseballPosition>();
   }
 }

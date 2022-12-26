@@ -9,6 +9,6 @@ namespace FantasyBaseball.PlayerService.Services
   {
     /// <summary>Gets the players from the underlying source.</summary>
     /// <returns>A list of the players.</returns>
-    Task<List<BaseballPlayerV2>> GetPlayers();
+    Task<List<BaseballPlayer>> GetPlayers();
   }
 }

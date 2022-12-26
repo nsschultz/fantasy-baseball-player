@@ -9,7 +9,7 @@ namespace FantasyBaseball.PlayerService.Maps
     /// <summary>Create a new instance of the profile.</summary>
     public CsvBaseballPlayerProfile()
     {
-      CreateMap<BaseballPlayerV2, CsvBaseballPlayer>()
+      CreateMap<BaseballPlayer, CsvBaseballPlayer>()
         .ForMember(dest => dest.CombinedBattingStats, opt => opt.Ignore())
         .ForMember(dest => dest.CombinedPitchingStats, opt => opt.Ignore())
         .ForMember(dest => dest.ProjectedBattingStats, opt => opt.Ignore())

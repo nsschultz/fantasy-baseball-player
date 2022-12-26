@@ -14,10 +14,6 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
     public PlayerIntegrationTests(HttpClientFixture fixture) => _fixture = fixture;
 
     [Theory]
-    [InlineData("/api/v1/player/enum-map?enumType=LeagueStatus", 4)]
-    [InlineData("/api/v1/player/enum-map?enumType=PlayerStatus", 4)]
-    [InlineData("/api/v1/player/enum-map?enumType=PlayerType", 3)]
-    [InlineData("/api/v1/player/enum-map?enumType=StatsType", 4)]
     [InlineData("/api/v2/enum-map?enumType=LeagueStatus", 4)]
     [InlineData("/api/v2/enum-map?enumType=PlayerStatus", 4)]
     [InlineData("/api/v2/enum-map?enumType=PlayerType", 3)]
@@ -32,22 +28,14 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
     }
 
     [Fact]
-    public async void GetPlayersV1Test()
-    {
-      var players = await GetCountTest<BaseballPlayerV1>("/api/v1/player", 92);
-      ValidatePlayerStats(players);
-    }
-
-    [Fact]
     public async void GetPlayersV2Test()
     {
-      var players = await GetCountTest<BaseballPlayerV2>("/api/v2/player", 92);
+      var players = await GetCountTest<BaseballPlayer>("/api/v2/player", 92);
       ValidatePlayerStats(players);
     }
 
     [Theory]
     [InlineData("/api/health")]
-    [InlineData("/api/v1/action/export")]
     [InlineData("/api/v2/action/export")]
     [InlineData("/api/v2/swagger/index.html")]
     public async void GetSimpleTests(string url)

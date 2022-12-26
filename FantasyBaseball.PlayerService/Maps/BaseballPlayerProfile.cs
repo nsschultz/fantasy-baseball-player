@@ -17,7 +17,7 @@ namespace FantasyBaseball.PlayerService.Maps
     {
       CreateMap<BattingStatsEntity, BattingStats>();
       CreateMap<PitchingStatsEntity, PitchingStats>();
-      CreateMap<PlayerEntity, BaseballPlayerV2>()
+      CreateMap<PlayerEntity, BaseballPlayer>()
         .ForMember(dest => dest.League1, opt => opt.MapFrom(src => GetLeagueStatus(src, 1)))
         .ForMember(dest => dest.League2, opt => opt.MapFrom(src => GetLeagueStatus(src, 2)))
         .ForMember(dest => dest.Positions, opt => opt.Ignore())
@@ -26,7 +26,7 @@ namespace FantasyBaseball.PlayerService.Maps
       CreateMap<TeamEntity, BaseballTeam>();
     }
 
-    private static void BuildStats(BaseballPlayerV2 player)
+    private static void BuildStats(BaseballPlayer player)
     {
       ReplaceBattingStats(player.BattingStats, StatsType.YTD);
       ReplaceBattingStats(player.BattingStats, StatsType.PROJ);

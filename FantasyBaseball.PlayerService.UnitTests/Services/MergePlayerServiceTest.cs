@@ -171,8 +171,8 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         GroundBallRate = 0.31
       };
 
-    private static BaseballPlayerV2 BuildPlayer(int value, PlayerType type, bool bothStats = false) =>
-      new BaseballPlayerV2
+    private static BaseballPlayer BuildPlayer(int value, PlayerType type, bool bothStats = false) =>
+      new BaseballPlayer
       {
         BhqId = value,
         FirstName = $"First-{value}",
@@ -216,7 +216,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         .OrderBy(p => p.SortOrder)
         .Select(p => p.Code));
 
-    private static void ValidatePlayer(int value, BaseballPlayerV2 expected, PlayerEntity actual)
+    private static void ValidatePlayer(int value, BaseballPlayer expected, PlayerEntity actual)
     {
       Assert.Equal(expected.BhqId, actual.BhqId);
       Assert.Equal(expected.FirstName, actual.FirstName);

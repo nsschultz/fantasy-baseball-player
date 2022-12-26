@@ -49,7 +49,7 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
       var entity = new BhqPlayerMerger().MergePlayer(mapper, player, null);
       player.BattingStats.Clear();
       player.PitchingStats.Clear();
-      ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, new BaseballPlayerV2(), entity));
+      ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, new BaseballPlayer(), entity));
     }
 
     [Fact]
@@ -107,8 +107,8 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
         GroundBallRate = 0.31
       };
 
-    private static BaseballPlayerV2 BuildPlayer() =>
-      new BaseballPlayerV2
+    private static BaseballPlayer BuildPlayer() =>
+      new BaseballPlayer
       {
         BhqId = 123,
         FirstName = "First",
@@ -142,7 +142,7 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
         .OrderBy(p => p.SortOrder)
         .Select(p => p.Code));
 
-    private static void ValidatePlayer(BaseballPlayerV2 expected, PlayerEntity actual)
+    private static void ValidatePlayer(BaseballPlayer expected, PlayerEntity actual)
     {
       Assert.Equal(expected.BhqId, actual.BhqId);
       Assert.Equal(expected.FirstName, actual.FirstName);

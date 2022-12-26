@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace FantasyBaseball.PlayerService.Controllers.V2
 {
   /// <summary>Endpoint for retrieving enum data relevant to players.</summary>
-  [Route("api/v1/player/enum-map")]
   [Route("api/v2/enum-map")]
   [ApiController]
   public class PlayerEnumController : ControllerBase

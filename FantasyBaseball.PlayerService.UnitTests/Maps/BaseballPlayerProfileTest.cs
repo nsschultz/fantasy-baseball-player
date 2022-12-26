@@ -15,7 +15,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
 
     public BaseballPlayerProfileTest() => _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile())).CreateMapper();
 
-    [Fact] public void ConvertBaseballPlayerNullTest() => Assert.Null(_mapper.Map<BaseballPlayerV2>((PlayerEntity)null));
+    [Fact] public void ConvertBaseballPlayerNullTest() => Assert.Null(_mapper.Map<BaseballPlayer>((PlayerEntity)null));
 
     [Theory]
     [InlineData(10, PlayerType.B)]
@@ -23,7 +23,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
     public void ConvertBaseballPlayerValidTest(int value, PlayerType type)
     {
       var player = BuildPlayer(value, type);
-      ValidatePlayer(value, player, _mapper.Map<BaseballPlayerV2>(player));
+      ValidatePlayer(value, player, _mapper.Map<BaseballPlayer>(player));
     }
 
     private static PlayerEntity BuildPlayer(int value, PlayerType type) =>
@@ -103,7 +103,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
     private static List<PlayerPositionEntity> BuildPositionList(string[] positions) =>
       positions.Select(p => new PlayerPositionEntity { PositionCode = p }).ToList();
 
-    private static void ValidatePlayer(int value, PlayerEntity expected, BaseballPlayerV2 actual)
+    private static void ValidatePlayer(int value, PlayerEntity expected, BaseballPlayer actual)
     {
       Assert.Equal(expected.Id, actual.Id);
       Assert.Equal(expected.BhqId, actual.BhqId);

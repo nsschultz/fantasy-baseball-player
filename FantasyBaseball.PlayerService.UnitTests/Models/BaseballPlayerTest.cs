@@ -4,12 +4,12 @@ using Xunit;
 
 namespace FantasyBaseball.PlayerService.Models.UnitTests
 {
-  public class BaseballPlayerV2Test
+  public class BaseballPlayerTest
   {
     [Fact]
     public void DefaultsSetTest()
     {
-      var obj = new BaseballPlayerV2();
+      var obj = new BaseballPlayer();
       Assert.Equal(Guid.Empty, obj.Id);
       Assert.Equal(0, obj.BhqId);
       Assert.Null(obj.FirstName);
