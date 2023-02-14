@@ -3,7 +3,7 @@ using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Services
 {
-  /// <summary>Service for updaing a player.</summary>
+  /// <summary>Service for updating a player.</summary>
   public interface IUpdatePlayerService
   {
     /// <summary>Updates the given player.</summary>

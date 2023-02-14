@@ -19,6 +19,22 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
     public PlayerRepositoryTest() => _context = CreateContext().Result;
 
     [Fact]
+    public async void AddPlayerTesExistingIdException()
+    {
+      var player = _context.Players.Find(PlayerMatchingId);
+      await Assert.ThrowsAsync<ArgumentException>(async () => await new PlayerRepository(_context).AddPlayer(player));
+      Assert.Equal(3, _context.Players.Count());
+    }
+
+    [Fact]
+    public async void AddPlayerTestValid()
+    {
+      var player = new PlayerEntity { BhqId = 100, Type = PlayerType.B, Team = "TB" };
+      await new PlayerRepository(_context).AddPlayer(player);
+      Assert.Equal(4, _context.Players.Count());
+    }
+
+    [Fact]
     public async void DeleteAllPlayersTestValid()
     {
       await new PlayerRepository(_context).DeleteAllPlayers();
@@ -27,6 +43,22 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
       Assert.Equal(0, _context.BattingStats.Count());
       Assert.Equal(0, _context.PitchingStats.Count());
       Assert.Equal(31, _context.Teams.Count());
+    }
+
+    [Fact]
+    public async void DeletePlayerTestMissingIdException()
+    {
+      var player = new PlayerEntity { Id = PlayerMissingId, BhqId = 1, Type = PlayerType.B, Team = "TB" };
+      await Assert.ThrowsAsync<InvalidOperationException>(async () => await new PlayerRepository(_context).DeletePlayer(player));
+      Assert.Equal(3, _context.Players.Count());
+    }
+
+    [Fact]
+    public async void DeletePlayerTestValid()
+    {
+      var player = _context.Players.Find(PlayerMatchingId);
+      await new PlayerRepository(_context).DeletePlayer(player);
+      Assert.Equal(2, _context.Players.Count());
     }
 
     [Fact] public async void GetPlayerByBhqIdNull() => Assert.Null(await new PlayerRepository(_context).GetPlayerByBhqId(2, PlayerType.B));

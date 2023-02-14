@@ -20,7 +20,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
     public async Task GetFile()
     {
       var fileContent = Encoding.ASCII.GetBytes("file-content");
-      var getService = new Mock<IGetPlayersService>();
+      var getService = new Mock<IGetPlayerService>();
       getService.Setup(o => o.GetPlayers()).ReturnsAsync(new List<BaseballPlayer> { new BaseballPlayer() });
       var writer = new Mock<ICsvFileWriterService>();
       writer.Setup(o => o.WriteCsvData(It.Is<List<BaseballPlayer>>(p => p.Count == 1))).Returns(fileContent);

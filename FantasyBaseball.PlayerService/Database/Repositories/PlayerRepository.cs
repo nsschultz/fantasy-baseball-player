@@ -17,6 +17,23 @@ namespace FantasyBaseball.PlayerService.Database.Repositories
     /// <param name="context">The player context.</param>
     public PlayerRepository(IPlayerContext context) => _context = context;
 
+    /// <summary>Adds the given player to the database.</summary>
+    /// <param name="player">The player data.</param>
+    public async Task AddPlayer(PlayerEntity player)
+    {
+      try
+      {
+        await _context.BeginTransaction();
+        await _context.Players.AddAsync(player);
+        await _context.Commit();
+      }
+      catch (Exception)
+      {
+        await _context.Rollback();
+        throw;
+      }
+    }
+
     /// <summary>Removes all of the players from the database.</summary>
     public async Task DeleteAllPlayers()
     {
@@ -24,6 +41,23 @@ namespace FantasyBaseball.PlayerService.Database.Repositories
       {
         await _context.BeginTransaction();
         _context.Players.RemoveRange(_context.Players);
+        await _context.Commit();
+      }
+      catch (Exception)
+      {
+        await _context.Rollback();
+        throw;
+      }
+    }
+
+    /// <summary>Deletes the given player from the database.</summary>
+    /// <param name="player">The player data.</param>
+    public async Task DeletePlayer(PlayerEntity player)
+    {
+      try
+      {
+        await _context.BeginTransaction();
+        _context.Players.Remove(player);
         await _context.Commit();
       }
       catch (Exception)

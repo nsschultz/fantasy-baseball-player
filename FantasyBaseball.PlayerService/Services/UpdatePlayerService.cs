@@ -6,7 +6,7 @@ using FantasyBaseball.PlayerService.Services.Mergers;
 
 namespace FantasyBaseball.PlayerService.Services
 {
-  /// <summary>Service for updaing a player.</summary>
+  /// <summary>Service for updating a player.</summary>
   public class UpdatePlayerService : IUpdatePlayerService
   {
     private static readonly IPlayerMerger Merger = new FullPlayerMerger();
@@ -24,6 +24,7 @@ namespace FantasyBaseball.PlayerService.Services
     {
       var existingPlayer = await _playerRepo.GetPlayerById(player.Id);
       if (existingPlayer == null) throw new BadRequestException("This player does not exist");
+      if (existingPlayer.Type != player.Type) throw new BadRequestException("The player type cannot be changed");
       var updatedPlayer = await _mergeService.MergePlayer(Merger, player, existingPlayer);
       await _playerRepo.UpdatePlayer(updatedPlayer);
     }

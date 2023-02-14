@@ -9,8 +9,16 @@ namespace FantasyBaseball.PlayerService.Database.Repositories
   /// <summary>Repo for CRUD functionality regarding to players.</summary>
   public interface IPlayerRepository
   {
+    /// <summary>Adds the given player to the database.</summary>
+    /// <param name="player">The player data.</param>
+    Task AddPlayer(PlayerEntity player);
+
     /// <summary>Removes all of the players from the database.</summary>
     Task DeleteAllPlayers();
+
+    /// <summary>Deletes the given player from the database.</summary>
+    /// <param name="player">The player data.</param>
+    Task DeletePlayer(PlayerEntity player);
 
     /// <summary>Finds a player matching the given values (which must be a uniqure combo in the db) or null if there is no match.</summary>
     /// <param name="bhqId">The id from the external system.</param>

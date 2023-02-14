@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Database.Repositories;
+using FantasyBaseball.PlayerService.Exceptions;
 using FantasyBaseball.PlayerService.Maps;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Models.Enums;
@@ -72,6 +74,33 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     };
 
     [Fact]
+    public async void GetPlayerTestMissingIdException()
+    {
+      var positionService = new Mock<IGetPositionService>();
+      positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
+      var playerRepo = new Mock<IPlayerRepository>();
+      playerRepo.Setup(o => o.GetPlayerById(It.IsAny<Guid>())).ReturnsAsync((PlayerEntity)null);
+      await Assert.ThrowsAsync<BadRequestException>(async () =>
+        await new GetPlayerService(null, playerRepo.Object, positionService.Object).GetPlayer(Guid.NewGuid()));
+    }
+
+    [Fact]
+    public async void GetPlayerTestValid()
+    {
+      var id = Guid.NewGuid();
+      var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile())).CreateMapper();
+      var positionService = new Mock<IGetPositionService>();
+      positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
+      var playerRepo = new Mock<IPlayerRepository>();
+      playerRepo.Setup(o => o.GetPlayerById(It.Is<Guid>((i) => i == id))).ReturnsAsync(PLAYERS[0]);
+      var player = await new GetPlayerService(mapper, playerRepo.Object, positionService.Object).GetPlayer(id);
+      Assert.Equal("MIL", player.Team.Code);
+      Assert.Equal(player.BhqId, player.BattingStats.First(p => p.StatsType == StatsType.CMBD).AtBats);
+      Assert.Equal(LeagueStatus.R, player.League1);
+      Assert.Equal(LeagueStatus.A, player.League2);
+    }
+
+    [Fact]
     public async void GetPlayersTest()
     {
       var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile())).CreateMapper();
@@ -79,7 +108,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
       positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
       var playerRepo = new Mock<IPlayerRepository>();
       playerRepo.Setup(o => o.GetPlayers(It.IsAny<PlayerType?>())).ReturnsAsync(PLAYERS);
-      var players = await new GetPlayersService(mapper, playerRepo.Object, positionService.Object).GetPlayers();
+      var players = await new GetPlayerService(mapper, playerRepo.Object, positionService.Object).GetPlayers();
       Assert.Equal(3, players.Count);
       players.ForEach(player =>
       {
