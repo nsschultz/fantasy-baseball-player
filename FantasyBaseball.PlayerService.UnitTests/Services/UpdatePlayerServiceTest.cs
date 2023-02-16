@@ -14,6 +14,17 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
   public class UpdatePlayerServiceTest
   {
     [Fact]
+    public async void UpdatePlayerTestChangedTypeException()
+    {
+      var id = Guid.NewGuid();
+      var entity = new PlayerEntity { Id = id, BhqId = 1, Type = PlayerType.B, Team = "MIL" };
+      var player = new BaseballPlayer { Id = id, BhqId = 1, Type = PlayerType.P, Team = new BaseballTeam { Code = "MIL" } };
+      var playerRepo = new Mock<IPlayerRepository>();
+      playerRepo.Setup(o => o.GetPlayerById(It.Is<Guid>(i => i == id))).ReturnsAsync(entity);
+      await Assert.ThrowsAsync<BadRequestException>(async () => await new UpdatePlayerService(playerRepo.Object, null).UpdatePlayer(player));
+    }
+
+    [Fact]
     public async void UpdatePlayerTestMissingIdException()
     {
       var playerRepo = new Mock<IPlayerRepository>();

@@ -71,10 +71,12 @@ builder.Services
   .AddScoped<IPlayerRepository, PlayerRepository>()
   .AddScoped<ITeamRepository, TeamRepository>()
   // Services
+  .AddScoped<IAddPlayerService, AddPlayerService>()
   .AddSingleton<ICsvFileReaderService, CsvFileReaderService>()
   .AddSingleton<ICsvFileWriterService, CsvFileWriterService>()
+  .AddScoped<IDeletePlayerService, DeletePlayerService>()
   .AddSingleton<IGetPlayerEnumMapService, GetPlayerEnumMapService>()
-  .AddScoped<IGetPlayersService, GetPlayersService>()
+  .AddScoped<IGetPlayerService, GetPlayerService>()
   .AddSingleton<IGetPositionService, GetPositionService>()
   .AddScoped<IGetTeamsService, GetTeamsService>()
   .AddScoped<IMergePlayerService, MergePlayerService>()

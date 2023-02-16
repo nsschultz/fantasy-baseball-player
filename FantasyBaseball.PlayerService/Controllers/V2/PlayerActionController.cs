@@ -14,7 +14,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
   public class PlayerActionController : ControllerBase
   {
     private readonly ICsvFileWriterService _writerService;
-    private readonly IGetPlayersService _getService;
+    private readonly IGetPlayerService _getService;
     private readonly IMergeProjectionService _mergeService;
 
 
@@ -22,7 +22,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
     /// <param name="getService">Service for getting players.</param>
     /// <param name="mergeService">Service for merging the CSV file into the existing data store.</param>
     /// <param name="writerService">The service for writting the CSV file.</param>
-    public PlayerActionController(IGetPlayersService getService, ICsvFileWriterService writerService, IMergeProjectionService mergeService) =>
+    public PlayerActionController(IGetPlayerService getService, ICsvFileWriterService writerService, IMergeProjectionService mergeService) =>
       (_getService, _mergeService, _writerService) = (getService, mergeService, writerService);
 
     /// <summary>Export the players as a CSV file.</summary>
