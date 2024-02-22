@@ -27,12 +27,12 @@ pipeline {
 			agent { label 'manager' }
 			steps { script { sh """
 				#!/bin/bash
-				sed -i "s/{{version}}/${VERSION_NUMBER}/g" ./_deploy/player-deployment.yaml
-				kubectl apply -f ./_deploy/player-database-deployment.yaml
-				kubectl apply -f ./_deploy/player-database-service.yaml
-				kubectl apply -f ./_deploy/player-deployment.yaml
-				kubectl apply -f ./_deploy/player-service.yaml
-				kubectl apply -f ./_deploy/player-ingress.yaml
+				sed -i "s/{{version}}/${VERSION_NUMBER}/g" ./.deploy/player-deployment.yaml
+				kubectl apply -f ./.deploy/player-database-deployment.yaml
+				kubectl apply -f ./.deploy/player-database-service.yaml
+				kubectl apply -f ./.deploy/player-deployment.yaml
+				kubectl apply -f ./.deploy/player-service.yaml
+				kubectl apply -f ./.deploy/player-ingress.yaml
 			""" } }
 		}
 	}
