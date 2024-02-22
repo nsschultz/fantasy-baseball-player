@@ -1,10 +1,14 @@
 # compiled code
+
 **/bin
 **/obj
 out/
+
 # files not needed for build
-_deploy/
-_dev/
+
+.deploy/
+.devcontainer/
+.docker-compose/
 .git/
 .vscode/
 .dockerignore
@@ -14,7 +18,9 @@ Jenkinsfile
 LICENSE
 README.md
 version.txt
+
 # scanning data
+
 .sonarqube/
 coverage-hits/
 coverage-results/

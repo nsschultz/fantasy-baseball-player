@@ -15,11 +15,11 @@ services:
       - PLAYER_DATABASE_USER=postgres
       - POSITION_SERVICE_HOST=mountebank:5555
       - POSITION_SERVICE_VERSION=v1
-      - VERSION=${app_version}
+      - VERSION=${VERSION_NUMBER}
     ports:
       - "8080:8080"
     volumes:
-      - ../:/app/
+      - ../:/app:cached
   database:
     build: database/
     restart: always

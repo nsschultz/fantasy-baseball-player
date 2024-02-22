@@ -24,15 +24,14 @@ version=$(cat version.txt) && docker build -t nschultz/fantasy-baseball-player:$
 
 ### Dev Containers
 
-- Command for starting/stopping dev containers:
-
-```
-export app_version=$(cat version.txt) && docker compose -f _dev/docker-compose-dev.yaml -p fantasy-baseball-player up --build -d
-export app_version=$(cat version.txt) && docker compose -f _dev/docker-compose-dev.yaml -p fantasy-baseball-player down
-```
-
-- Extensions are in the extensions.json file and should prompt to install on start
+- VS Code should auto-prompt to reopen the workspace in a contaienr, which will start the rest of the containers as well.
 - Tasks are setup in tasks.json.
+- Command for manually starting/stopping dev containers:
+
+```
+docker compose -f .docker-compose/docker-compose-dev.yaml -p fantasy-baseball-player up --build -d
+docker compose -f .docker-compose/docker-compose-dev.yaml -p fantasy-baseball-player down
+```
 
 ---
 
@@ -41,8 +40,8 @@ export app_version=$(cat version.txt) && docker compose -f _dev/docker-compose-d
 - Command for starting/stopping runtime containers:
 
 ```
-docker compose -f _dev/docker-compose-runtime.yaml -p fantasy-baseball-player up --build -d
-docker compose -f _dev/docker-compose-runtime.yaml -p fantasy-baseball-player down
+docker compose -f .docker-compose/docker-compose-runtime.yaml -p fantasy-baseball-player up --build -d
+docker compose -f .docker-compose/docker-compose-runtime.yaml -p fantasy-baseball-player down
 ```
 
 ---

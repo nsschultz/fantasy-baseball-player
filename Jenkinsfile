@@ -10,7 +10,7 @@ pipeline {
 		stage ('build and scan') {
 			steps { script { sh  """
 				#!/bin/bash
-				sh _dev/scripts/ci.sh
+				sh .docker-compose/scripts/ci.sh
 			""" } } 
 		}
 		stage('build and publish release') { 

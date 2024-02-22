@@ -3,6 +3,7 @@ using System;
 using FantasyBaseball.PlayerService.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FantasyBaseball.PlayerService.Database.Migrations
 {
     [DbContext(typeof(PlayerContext))]
-    partial class PlayerContextModelSnapshot : ModelSnapshot
+    [Migration("20240222173322_team-alt-codes")]
+    partial class teamaltcodes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
