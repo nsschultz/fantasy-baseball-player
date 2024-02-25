@@ -10,7 +10,6 @@ namespace FantasyBaseball.PlayerService.Models.Enums.UnitTests
     [InlineData(LeagueStatus.R, "Rostered")]
     [InlineData(LeagueStatus.X, "Unavailable")]
     [InlineData(LeagueStatus.S, "Scouted")]
-    [InlineData(null, "Available")]
     public void GetDescriptionTest(LeagueStatus type, string description) => Assert.Equal(description, GetDescription(type));
 
     [Theory]

@@ -23,8 +23,7 @@ namespace FantasyBaseball.PlayerService.Services
 
     /// <summary>Gets the positions from the underlying source.</summary>
     /// <returns>A list of the positions.</returns>
-    public async Task<List<BaseballPosition>> GetPositions() =>
-      await _cache.GetOrAddAsync<List<BaseballPosition>>("positions", () => RetrievePositions());
+    public async Task<List<BaseballPosition>> GetPositions() => await _cache.GetOrAddAsync("positions", () => RetrievePositions());
 
     private async Task<List<BaseballPosition>> RetrievePositions()
     {

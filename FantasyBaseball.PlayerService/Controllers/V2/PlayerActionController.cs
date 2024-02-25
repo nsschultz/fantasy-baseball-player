@@ -5,6 +5,7 @@ using FantasyBaseball.PlayerService.Exceptions;
 using FantasyBaseball.PlayerService.FileReaders;
 using FantasyBaseball.PlayerService.Models.Enums;
 using FantasyBaseball.PlayerService.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyBaseball.PlayerService.Controllers.V2
@@ -32,7 +33,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
     {
       var players = await _getService.GetPlayers();
       var fileContent = _writerService.WriteCsvData(players);
-      Response.Headers.Add("Content-Disposition", new ContentDisposition { FileName = "players.csv", Inline = false }.ToString());
+      Response.Headers.Append("Content-Disposition", new ContentDisposition { FileName = "players.csv", Inline = false }.ToString());
       return File(fileContent, "application/octet-stream", "players.csv");
     }
 

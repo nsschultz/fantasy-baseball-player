@@ -21,6 +21,6 @@ namespace FantasyBaseball.PlayerService.Database.Entities
     public string Nickname { get; set; }
 
     /// <summary>Collection of player's that belong to this team.</summary>
-    public List<PlayerEntity> Players { get; set; } = new List<PlayerEntity>();
+    public List<PlayerEntity> Players { get; set; } = [];
   }
 }

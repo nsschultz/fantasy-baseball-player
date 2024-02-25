@@ -10,40 +10,40 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
 {
   public class GetTeamsServiceTest
   {
-    private static readonly List<TeamEntity> TEAMS = new List<TeamEntity>
-    {
-      new TeamEntity { Code = ""   , LeagueId = ""  , City = "Free Agent"   , Nickname = "Free Agent"                            },
-      new TeamEntity { Code = "BAL", LeagueId = "AL", City = "Baltimore"    , Nickname = "Orioles"                               },
-      new TeamEntity { Code = "BOS", LeagueId = "AL", City = "Boston"       , Nickname = "Red Sox"                               },
-      new TeamEntity { Code = "NYY", LeagueId = "AL", City = "New York"     , Nickname = "Yankees"                               },
-      new TeamEntity { Code = "TB" , LeagueId = "AL", City = "Tampa Bay"    , Nickname = "Rays"       , AlternativeCode = "TAM"  },
-      new TeamEntity { Code = "TOR", LeagueId = "AL", City = "Toronto"      , Nickname = "Blue Jays"                             },
-      new TeamEntity { Code = "CWS", LeagueId = "AL", City = "Chicago"      , Nickname = "White Sox"  , AlternativeCode = "CHW"  },
-      new TeamEntity { Code = "CLE", LeagueId = "AL", City = "Cleveland"    , Nickname = "Indians"                               },
-      new TeamEntity { Code = "DET", LeagueId = "AL", City = "Detriot"      , Nickname = "Tigers"                                },
-      new TeamEntity { Code = "KC" , LeagueId = "AL", City = "Kansas City"  , Nickname = "Royals"                                },
-      new TeamEntity { Code = "MIN", LeagueId = "AL", City = "Minnesota"    , Nickname = "Twins"                                 },
-      new TeamEntity { Code = "HOU", LeagueId = "AL", City = "Houston"      , Nickname = "Astros"                                },
-      new TeamEntity { Code = "LAA", LeagueId = "AL", City = "Los Angeles"  , Nickname = "Angels"                                },
-      new TeamEntity { Code = "OAK", LeagueId = "AL", City = "Oakland"      , Nickname = "Athletics"                             },
-      new TeamEntity { Code = "SEA", LeagueId = "AL", City = "Seattle"      , Nickname = "Mariners"                              },
-      new TeamEntity { Code = "TEX", LeagueId = "AL", City = "Texas"        , Nickname = "Rangers"                               },
-      new TeamEntity { Code = "ATL", LeagueId = "NL", City = "Atlanta"      , Nickname = "Braves"                                },
-      new TeamEntity { Code = "MIA", LeagueId = "NL", City = "Miami"        , Nickname = "Marlins"                               },
-      new TeamEntity { Code = "NYM", LeagueId = "NL", City = "New York"     , Nickname = "Mets"                                  },
-      new TeamEntity { Code = "PHI", LeagueId = "NL", City = "Philadelphia" , Nickname = "Phillies"                              },
-      new TeamEntity { Code = "WAS", LeagueId = "NL", City = "Washington"   , Nickname = "Nationals"                             },
-      new TeamEntity { Code = "CHC", LeagueId = "NL", City = "Chicago"      , Nickname = "Cubs"                                  },
-      new TeamEntity { Code = "CIN", LeagueId = "NL", City = "Cincinnati"   , Nickname = "Reds"                                  },
-      new TeamEntity { Code = "MIL", LeagueId = "NL", City = "Milwaukee"    , Nickname = "Brewers"                               },
-      new TeamEntity { Code = "PIT", LeagueId = "NL", City = "Pittsburgh"   , Nickname = "Pirates"                               },
-      new TeamEntity { Code = "STL", LeagueId = "NL", City = "St. Louis"    , Nickname = "Cardinals"                             },
-      new TeamEntity { Code = "ARZ", LeagueId = "NL", City = "Arizona"      , Nickname = "Diamondbacks", AlternativeCode = "ARI" },
-      new TeamEntity { Code = "COL", LeagueId = "NL", City = "Colorado"     , Nickname = "Rockies"                               },
-      new TeamEntity { Code = "LAD", LeagueId = "NL", City = "Los Angeles"  , Nickname = "Dodgers"     , AlternativeCode = "LA"  },
-      new TeamEntity { Code = "SD" , LeagueId = "NL", City = "San Diego"    , Nickname = "Padres"                                },
-      new TeamEntity { Code = "SF" , LeagueId = "NL", City = "San Francisco", Nickname = "Giants"                                }
-    };
+    private static readonly List<TeamEntity> TEAMS =
+    [
+      new() { Code = ""   , LeagueId = ""  , City = "Free Agent"   , Nickname = "Free Agent"                            },
+      new() { Code = "BAL", LeagueId = "AL", City = "Baltimore"    , Nickname = "Orioles"                               },
+      new() { Code = "BOS", LeagueId = "AL", City = "Boston"       , Nickname = "Red Sox"                               },
+      new() { Code = "NYY", LeagueId = "AL", City = "New York"     , Nickname = "Yankees"                               },
+      new() { Code = "TB" , LeagueId = "AL", City = "Tampa Bay"    , Nickname = "Rays"       , AlternativeCode = "TAM"  },
+      new() { Code = "TOR", LeagueId = "AL", City = "Toronto"      , Nickname = "Blue Jays"                             },
+      new() { Code = "CWS", LeagueId = "AL", City = "Chicago"      , Nickname = "White Sox"  , AlternativeCode = "CHW"  },
+      new() { Code = "CLE", LeagueId = "AL", City = "Cleveland"    , Nickname = "Indians"                               },
+      new() { Code = "DET", LeagueId = "AL", City = "Detriot"      , Nickname = "Tigers"                                },
+      new() { Code = "KC" , LeagueId = "AL", City = "Kansas City"  , Nickname = "Royals"                                },
+      new() { Code = "MIN", LeagueId = "AL", City = "Minnesota"    , Nickname = "Twins"                                 },
+      new() { Code = "HOU", LeagueId = "AL", City = "Houston"      , Nickname = "Astros"                                },
+      new() { Code = "LAA", LeagueId = "AL", City = "Los Angeles"  , Nickname = "Angels"                                },
+      new() { Code = "OAK", LeagueId = "AL", City = "Oakland"      , Nickname = "Athletics"                             },
+      new() { Code = "SEA", LeagueId = "AL", City = "Seattle"      , Nickname = "Mariners"                              },
+      new() { Code = "TEX", LeagueId = "AL", City = "Texas"        , Nickname = "Rangers"                               },
+      new() { Code = "ATL", LeagueId = "NL", City = "Atlanta"      , Nickname = "Braves"                                },
+      new() { Code = "MIA", LeagueId = "NL", City = "Miami"        , Nickname = "Marlins"                               },
+      new() { Code = "NYM", LeagueId = "NL", City = "New York"     , Nickname = "Mets"                                  },
+      new() { Code = "PHI", LeagueId = "NL", City = "Philadelphia" , Nickname = "Phillies"                              },
+      new() { Code = "WAS", LeagueId = "NL", City = "Washington"   , Nickname = "Nationals"                             },
+      new() { Code = "CHC", LeagueId = "NL", City = "Chicago"      , Nickname = "Cubs"                                  },
+      new() { Code = "CIN", LeagueId = "NL", City = "Cincinnati"   , Nickname = "Reds"                                  },
+      new() { Code = "MIL", LeagueId = "NL", City = "Milwaukee"    , Nickname = "Brewers"                               },
+      new() { Code = "PIT", LeagueId = "NL", City = "Pittsburgh"   , Nickname = "Pirates"                               },
+      new() { Code = "STL", LeagueId = "NL", City = "St. Louis"    , Nickname = "Cardinals"                             },
+      new() { Code = "ARZ", LeagueId = "NL", City = "Arizona"      , Nickname = "Diamondbacks", AlternativeCode = "ARI" },
+      new() { Code = "COL", LeagueId = "NL", City = "Colorado"     , Nickname = "Rockies"                               },
+      new() { Code = "LAD", LeagueId = "NL", City = "Los Angeles"  , Nickname = "Dodgers"     , AlternativeCode = "LA"  },
+      new() { Code = "SD" , LeagueId = "NL", City = "San Diego"    , Nickname = "Padres"                                },
+      new() { Code = "SF" , LeagueId = "NL", City = "San Francisco", Nickname = "Giants"                                }
+    ];
 
     [Fact]
     public async void GetTeamsCacheTest()

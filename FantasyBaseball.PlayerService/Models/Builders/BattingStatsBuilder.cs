@@ -14,7 +14,7 @@ namespace FantasyBaseball.PlayerService.Models.Builders
     private static readonly double WeightPower = .8;
     private static readonly double WeightSpeed = .3;
     private static readonly int WeightWalkRate = 200;
-    private readonly List<BattingStats> statsList = new List<BattingStats>();
+    private readonly List<BattingStats> statsList = [];
     private StatsType statsType = StatsType.UNKN;
 
     /// <summary>Set the output <c>StatsType</c> for the <c>BattingStats</c> being creatd</summary>
@@ -72,7 +72,7 @@ namespace FantasyBaseball.PlayerService.Models.Builders
     private static double Divide(double dividend, double divisor) => divisor == 0 || dividend == 0 ? 0 : dividend / divisor;
 
     private BattingStats Sum() =>
-      new BattingStats
+      new()
       {
         StatsType = statsType,
         AtBats = statsList.Select(s => s.AtBats).Sum(),

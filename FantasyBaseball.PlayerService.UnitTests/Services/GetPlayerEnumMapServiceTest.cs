@@ -23,8 +23,8 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     [InlineData(null)]
     public void GetPlayerEnumMapTest(string enumType)
     {
-      var key = enumType == null ? null : enumType.ToUpper();
-      var expectedValue = key != null && VALUES.ContainsKey(key) ? VALUES[key] : new Dictionary<int, string>();
+      var key = enumType?.ToUpper();
+      var expectedValue = key != null && VALUES.TryGetValue(key, out Dictionary<int, string> value) ? value : [];
       Assert.Equal(expectedValue, new GetPlayerEnumMapService().GetPlayerEnumMap(enumType));
     }
   }

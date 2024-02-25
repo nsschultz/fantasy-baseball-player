@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FantasyBaseball.PlayerService.Database.Migrations
 {
     [DbContext(typeof(PlayerContext))]
-    [Migration("20221213065028_increase-pos-size")]
-    partial class increasepossize
+    [Migration("20240222173322_team-alt-codes")]
+    partial class TeamAltCodes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -395,6 +395,7 @@ namespace FantasyBaseball.PlayerService.Database.Migrations
                         new
                         {
                             Code = "WAS",
+                            AlternativeCode = "WSH",
                             City = "Washington",
                             LeagueId = "NL",
                             Nickname = "Nationals"
@@ -402,6 +403,7 @@ namespace FantasyBaseball.PlayerService.Database.Migrations
                         new
                         {
                             Code = "CHC",
+                            AlternativeCode = "CHI",
                             City = "Chicago",
                             LeagueId = "NL",
                             Nickname = "Cubs"

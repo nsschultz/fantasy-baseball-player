@@ -20,10 +20,9 @@ namespace FantasyBaseball.PlayerService.Services
     /// <returns>All of the data within the given file.</returns>
     public async Task<List<CsvBaseballPlayer>> ReadCsvData(ClassMap map, IFileReader fileReader)
     {
-      var configuration = new CsvConfiguration(CultureInfo.CurrentCulture);
-      configuration.RegisterClassMap(map);
       using var stream = await FixBhqFile(fileReader);
-      using var csv = new CsvReader(stream, configuration);
+      using var csv = new CsvReader(stream, CultureInfo.InvariantCulture);
+      csv.Context.RegisterClassMap(map);
       return csv.GetRecords<CsvBaseballPlayer>().ToList();
     }
 
@@ -46,7 +45,7 @@ namespace FantasyBaseball.PlayerService.Services
       var headerColumns = headerRows.Select(l => l.Split(",")).Select(l => l.ToList()).ToList();
       var headers = new List<string>();
       for (var i = 0; i < headerColumns[0].Count; i++) headers.Add($"{headerColumns[0][i]}{headerColumns[1][i]}".ToUpper());
-      return new List<string> { string.Join(",", headers) };
+      return [string.Join(",", headers)];
     }
   }
 }

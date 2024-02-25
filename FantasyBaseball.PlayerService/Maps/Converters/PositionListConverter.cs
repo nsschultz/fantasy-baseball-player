@@ -17,7 +17,7 @@ namespace FantasyBaseball.PlayerService.Maps.Converters
     /// <returns>The string representation of the object.</returns>
     public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData) =>
       string.IsNullOrEmpty(text)
-        ? new List<BaseballPosition>()
+        ? []
         : text.Split("-").Select(p => new BaseballPosition { Code = p.Trim().ToUpper() }).ToList();
 
     /// <summary>Converts the string to an object.</summary>
@@ -27,7 +27,7 @@ namespace FantasyBaseball.PlayerService.Maps.Converters
     /// <returns>The object created from the string.</returns>
     public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
     {
-      if (value == null || !(value is List<BaseballPosition>)) return "";
+      if (value == null || value is not List<BaseballPosition>) return "";
       var positions = (List<BaseballPosition>)value;
       if (positions.Count == 0) return "";
       return string.Join("-", positions.OrderBy(p => p.SortOrder).Select(p => p.Code));

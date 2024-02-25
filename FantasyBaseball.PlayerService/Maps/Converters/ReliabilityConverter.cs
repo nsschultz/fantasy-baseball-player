@@ -9,7 +9,7 @@ namespace FantasyBaseball.PlayerService.Maps.Converters
   /// <summary>Converts the Mayberry Method Code to a reliability percentage.</summary>
   public class ReliabilityConverter : DefaultTypeConverter
   {
-    private static Dictionary<char, double> ReliabilityDictionary = new Dictionary<char, double>
+    private static readonly Dictionary<char, double> ReliabilityDictionary = new()
     {
       { 'A', 1.0 }, { 'B', 0.8 }, { 'C', 0.6 }, { 'D', 0.4 }, { 'F', 0.2 }
     };
@@ -20,7 +20,7 @@ namespace FantasyBaseball.PlayerService.Maps.Converters
     /// <param name="memberMapData">The <see cref="MemberMapData"/> for the member being written.</param>
     /// <returns>The string representation of the object.</returns>
     public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData) =>
-      text != null && text.Length == 8 ? CalculateReliability(text.Substring(5)) : 0;
+      text != null && text.Length == 8 ? CalculateReliability(text[5..]) : 0;
 
     /// <summary>Converts the string to an object.</summary>
     /// <param name="value">The object to convert to a string.</param>
@@ -30,6 +30,6 @@ namespace FantasyBaseball.PlayerService.Maps.Converters
     public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData) => value?.ToString() ?? "0";
 
     private static double CalculateReliability(string mmCode) =>
-      mmCode.ToUpper().Select(c => ReliabilityDictionary.ContainsKey(c) ? ReliabilityDictionary[c] : 0).Sum() / 3;
+      mmCode.ToUpper().Select(c => ReliabilityDictionary.TryGetValue(c, out double value) ? value : 0).Sum() / 3;
   }
 }

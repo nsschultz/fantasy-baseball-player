@@ -28,7 +28,7 @@ namespace FantasyBaseball.PlayerService.FileReaders
 
     private async Task<IFormFile> GetFileFromRequest()
     {
-      var files = (await this.request.ReadFormAsync()).Files;
+      var files = (await request.ReadFormAsync()).Files;
       if (files.Count == 0) throw new BadRequestException("There are no files attached.");
       return files[0];
     }

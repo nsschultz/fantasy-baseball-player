@@ -4,7 +4,7 @@
 
 namespace FantasyBaseball.PlayerService.Database.Migrations
 {
-    public partial class increasepossize : Migration
+    public partial class IncreasePosSize : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

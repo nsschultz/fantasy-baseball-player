@@ -56,15 +56,15 @@ namespace FantasyBaseball.PlayerService.Models
     public LeagueStatus League2 { get; set; }
 
     /// <summary>Batting Stats (Year to Date, Projected and Combined) for a given player.</summary>
-    public List<BattingStats> BattingStats { get; set; } = new List<BattingStats>();
+    public List<BattingStats> BattingStats { get; set; } = [];
 
     /// <summary>Pitching Stats (Year to Date, Projected and Combined) for a given player.</summary>
-    public List<PitchingStats> PitchingStats { get; set; } = new List<PitchingStats>();
+    public List<PitchingStats> PitchingStats { get; set; } = [];
 
     /// <summary>The player's team.</summary>
     public BaseballTeam Team { get; set; }
 
     /// <summary>The position(s) this player plays.</summary>
-    public List<BaseballPosition> Positions { get; set; } = new List<BaseballPosition>();
+    public List<BaseballPosition> Positions { get; set; } = [];
   }
 }

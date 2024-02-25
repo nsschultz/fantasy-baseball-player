@@ -56,7 +56,7 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
       return values;
     }
 
-    private void ValidatePlayerStats<T>(List<T> players) where T : BaseballPlayer =>
+    private static void ValidatePlayerStats<T>(List<T> players) where T : BaseballPlayer =>
       players.ForEach(p =>
       {
         Assert.Equal(3, p.BattingStats.Count);

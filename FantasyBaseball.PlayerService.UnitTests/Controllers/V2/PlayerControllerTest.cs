@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.Exceptions;
@@ -23,13 +22,13 @@ namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
     }
 
     [Fact]
-    public void AddPlayerTestExistingPlayerId() =>
-      Assert.ThrowsAsync<BadRequestException>(() =>
+    public async void AddPlayerTestExistingPlayerId() =>
+      await Assert.ThrowsAsync<BadRequestException>(() =>
         new PlayerController(null, null, null, null, null).AddPlayer(new BaseballPlayer { Id = Guid.NewGuid() }));
 
     [Fact]
-    public void AddPlayerTestNullPlayer() =>
-      Assert.ThrowsAsync<BadRequestException>(() => new PlayerController(null, null, null, null, null).AddPlayer(null));
+    public async void AddPlayerTestNullPlayer() =>
+      await Assert.ThrowsAsync<BadRequestException>(() => new PlayerController(null, null, null, null, null).AddPlayer(null));
 
     [Fact]
     public async void DeleteAllPlayersTest()
@@ -63,8 +62,8 @@ namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
     public async void GetPlayersTest()
     {
       var getService = new Mock<IGetPlayerService>();
-      getService.Setup(o => o.GetPlayers()).ReturnsAsync(new List<BaseballPlayer> { new BaseballPlayer() });
-      Assert.NotEmpty((await new PlayerController(null, null, null, getService.Object, null).GetPlayers()));
+      getService.Setup(o => o.GetPlayers()).ReturnsAsync([new BaseballPlayer()]);
+      Assert.NotEmpty(await new PlayerController(null, null, null, getService.Object, null).GetPlayers());
     }
 
     [Fact]
@@ -78,16 +77,16 @@ namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
     }
 
     [Fact]
-    public void UpdatePlayerTestDifferentPlayerIds() =>
-      Assert.ThrowsAsync<BadRequestException>(() =>
+    public async void UpdatePlayerTestDifferentPlayerIds() =>
+      await Assert.ThrowsAsync<BadRequestException>(() =>
         new PlayerController(null, null, null, null, null).UpdatePlayer(Guid.NewGuid(), new BaseballPlayer { Id = Guid.NewGuid() }));
 
     [Fact]
-    public void UpdatePlayersTestEmptyPlayerId() =>
-      Assert.ThrowsAsync<BadRequestException>(() => new PlayerController(null, null, null, null, null).UpdatePlayer(Guid.Empty, new BaseballPlayer()));
+    public async void UpdatePlayersTestEmptyPlayerId() =>
+      await Assert.ThrowsAsync<BadRequestException>(() => new PlayerController(null, null, null, null, null).UpdatePlayer(Guid.Empty, new BaseballPlayer()));
 
     [Fact]
-    public void UpdatePlayerTestNullPlayer() =>
-      Assert.ThrowsAsync<BadRequestException>(() => new PlayerController(null, null, null, null, null).UpdatePlayer(Guid.NewGuid(), null));
+    public async void UpdatePlayerTestNullPlayer() =>
+      await Assert.ThrowsAsync<BadRequestException>(() => new PlayerController(null, null, null, null, null).UpdatePlayer(Guid.NewGuid(), null));
   }
 }

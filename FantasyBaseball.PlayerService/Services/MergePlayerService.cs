@@ -51,17 +51,13 @@ namespace FantasyBaseball.PlayerService.Services
       if (positions == null) return;
       var positionSet = positions.Select(p => p.Code).ToHashSet();
       entity.Positions = entity.Positions.Where(p => positionSet.Contains(p.PositionCode.Trim().ToUpper())).ToList();
-      if (!entity.Positions.Any()) entity.Positions.Add(FindDefaultPosition(positions, entity));
+      if (entity.Positions.Count == 0) entity.Positions.Add(FindDefaultPosition(positions, entity));
     }
 
     private static void ValidateStats(PlayerEntity entity)
     {
-      entity.BattingStats = entity.BattingStats != null
-        ? entity.BattingStats.Where(b => ExpectedStats.Contains(b.StatsType)).ToList()
-        : new List<BattingStatsEntity>();
-      entity.PitchingStats = entity.PitchingStats != null
-        ? entity.PitchingStats.Where(b => ExpectedStats.Contains(b.StatsType)).ToList()
-        : new List<PitchingStatsEntity>();
+      entity.BattingStats = entity.BattingStats != null ? entity.BattingStats.Where(b => ExpectedStats.Contains(b.StatsType)).ToList() : [];
+      entity.PitchingStats = entity.PitchingStats != null ? entity.PitchingStats.Where(b => ExpectedStats.Contains(b.StatsType)).ToList() : [];
     }
 
     private static void ValidateTeam(List<TeamEntity> teams, PlayerEntity entity)
@@ -69,7 +65,7 @@ namespace FantasyBaseball.PlayerService.Services
       if (teams == null) return;
       var teamCode = string.IsNullOrWhiteSpace(entity.Team) ? string.Empty : entity.Team.Trim().ToUpper();
       var team = teams.FirstOrDefault(t => t.Code == teamCode || (!string.IsNullOrWhiteSpace(t.AlternativeCode) && t.AlternativeCode == teamCode));
-      team = team ?? teams.FirstOrDefault(t => t.Code == string.Empty);
+      team ??= teams.FirstOrDefault(t => t.Code == string.Empty);
       entity.Team = team.Code;
     }
   }

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace FantasyBaseball.PlayerService.Models
 {
   /// <summary>Info for a given baseball team.</summary>

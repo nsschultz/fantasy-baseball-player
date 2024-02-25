@@ -21,11 +21,10 @@ namespace FantasyBaseball.PlayerService.Maps
     }
 
     private static List<PlayerLeagueStatusEntity> GetLeagueStatuses(BaseballPlayer player) =>
-      new List<PlayerLeagueStatusEntity>
-      {
-        new PlayerLeagueStatusEntity { PlayerId = player.Id, LeagueId = 1, LeagueStatus = player.League1 },
-        new PlayerLeagueStatusEntity { PlayerId = player.Id, LeagueId = 2, LeagueStatus = player.League2 }
-      };
+      [
+        new() { PlayerId = player.Id, LeagueId = 1, LeagueStatus = player.League1 },
+        new() { PlayerId = player.Id, LeagueId = 2, LeagueStatus = player.League2 }
+      ];
 
     private static List<PlayerPositionEntity> GetPositionEntities(BaseballPlayer player) =>
       player.Positions.Select(p => new PlayerPositionEntity { PlayerId = player.Id, PositionCode = p.Code }).ToList();

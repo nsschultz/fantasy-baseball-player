@@ -10,7 +10,6 @@ namespace FantasyBaseball.PlayerService.Models.Enums.UnitTests
     [InlineData(PlayerStatus.DL, "Disabled List")]
     [InlineData(PlayerStatus.NA, "Not Available")]
     [InlineData(PlayerStatus.NE, "New Entry")]
-    [InlineData(null, "")]
     public void GetDescriptionTest(PlayerStatus type, string description) => Assert.Equal(description, GetDescription(type));
 
     [Theory]

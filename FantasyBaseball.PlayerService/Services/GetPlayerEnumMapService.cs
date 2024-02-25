@@ -16,7 +16,7 @@ namespace FantasyBaseball.PlayerService.Services
         "PLAYERSTATUS" => EnumUtility.GetValuesAsDictionary<PlayerStatus>(),
         "PLAYERTYPE" => EnumUtility.GetValuesAsDictionary<PlayerType>(),
         "STATSTYPE" => EnumUtility.GetValuesAsDictionary<StatsType>(),
-        _ => new Dictionary<int, string>()
+        _ => []
       };
   }
 }

@@ -1,4 +1,3 @@
-using CsvHelper;
 using CsvHelper.Configuration;
 using FantasyBaseball.PlayerService.Maps.Converters;
 using FantasyBaseball.PlayerService.Models;
@@ -13,8 +12,8 @@ namespace FantasyBaseball.PlayerService.Maps.CsvMaps
     public BhqBattingStatsMap()
     {
       Map(m => m.BhqId).Name("PLAYERPLAYERID");
-      Map(m => m.Type).Name("PLAYERPLAYERID").ConvertUsing((IReaderRow value) => PlayerType.B);
-      Map(m => m.Status).Name("PLAYERPLAYERID").ConvertUsing((IReaderRow value) => PlayerStatus.NE);
+      Map(m => m.Type).Name("PLAYERPLAYERID").Constant(PlayerType.B);
+      Map(m => m.Status).Name("PLAYERPLAYERID").Constant(PlayerStatus.NE);
       Map(m => m.LastName).Name("PLAYERLASTNAME");
       Map(m => m.FirstName).Name("PLAYERFIRSTNAME");
       Map(m => m.Age).Name("PLAYERAGE");

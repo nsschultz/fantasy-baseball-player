@@ -22,6 +22,6 @@ namespace FantasyBaseball.PlayerService.Maps.Converters
     /// <param name="memberMapData">The <see cref="MemberMapData"/> for the member being created.</param>
     /// <returns>The object created from the string.</returns>
     public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData) =>
-        (value == null || !(value is BaseballTeam)) ? "" : ((BaseballTeam)value).Code;
+        (value == null || value is not BaseballTeam) ? "" : ((BaseballTeam)value).Code;
   }
 }
