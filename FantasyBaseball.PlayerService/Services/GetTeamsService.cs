@@ -19,6 +19,6 @@ namespace FantasyBaseball.PlayerService.Services
 
     /// <summary>Gets the teams from the underlying source.</summary>
     /// <returns>A list of the teams.</returns>
-    public async Task<List<TeamEntity>> GetTeams() => await _cache.GetOrAddAsync<List<TeamEntity>>("teams", () => _teamRepo.GetAllTeams());
+    public async Task<List<TeamEntity>> GetTeams() => await _cache.GetOrAddAsync("teams", () => _teamRepo.GetAllTeams());
   }
 }

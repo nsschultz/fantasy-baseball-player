@@ -9,7 +9,7 @@ namespace FantasyBaseball.PlayerService.Models.Builders.UnitTests
     [Fact] public void BuildEmptyList() => Compare(new BattingStats(), new BattingStatsBuilder().Build());
 
     [Fact]
-    public void BuildWithEmptyCollection() => Compare(new BattingStats(), new BattingStatsBuilder().AddStats(new BattingStats[] { }).Build());
+    public void BuildWithEmptyCollection() => Compare(new BattingStats(), new BattingStatsBuilder().AddStats([]).Build());
 
     [Fact]
     public void BuildWithNullCollection() => Compare(new BattingStats(), new BattingStatsBuilder().AddStats((List<BattingStats>)null).Build());
@@ -75,7 +75,7 @@ namespace FantasyBaseball.PlayerService.Models.Builders.UnitTests
         Speed = 75,
         BasePerformanceValue = 82.6818181818182
       };
-      Compare(expected, new BattingStatsBuilder().AddStats(stats1).AddStats(new BattingStats[] { stats2, null }).Build());
+      Compare(expected, new BattingStatsBuilder().AddStats(stats1).AddStats([stats2, null]).Build());
     }
 
     [Fact]
@@ -137,7 +137,7 @@ namespace FantasyBaseball.PlayerService.Models.Builders.UnitTests
         Speed = 75,
         BasePerformanceValue = 82.6818181818182
       };
-      Compare(expected, new BattingStatsBuilder().AddStats(new BattingStats[] { stats1, stats2 }).Build());
+      Compare(expected, new BattingStatsBuilder().AddStats([stats1, stats2]).Build());
     }
 
     [Fact]

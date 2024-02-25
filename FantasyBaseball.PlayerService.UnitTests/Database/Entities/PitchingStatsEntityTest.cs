@@ -1,4 +1,3 @@
-using System;
 using FantasyBaseball.PlayerService.Models.Enums;
 using Xunit;
 
@@ -10,7 +9,7 @@ namespace FantasyBaseball.PlayerService.Database.Entities.UnitTests
     public void DefaultsSetTest()
     {
       var obj = new PitchingStatsEntity();
-      Assert.Equal((Guid)default, obj.PlayerId);
+      Assert.Equal(default, obj.PlayerId);
       Assert.Equal(StatsType.UNKN, obj.StatsType);
       Assert.Equal(0, obj.Wins);
       Assert.Equal(0, obj.Losses);

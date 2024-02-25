@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.Database.Entities.UnitTests
@@ -10,7 +9,7 @@ namespace FantasyBaseball.PlayerService.Database.Entities.UnitTests
     {
       var obj = new PlayerPositionEntity();
       Assert.Null(obj.PositionCode);
-      Assert.Equal((Guid)default, obj.PlayerId);
+      Assert.Equal(default, obj.PlayerId);
       Assert.Null(obj.Player);
     }
   }

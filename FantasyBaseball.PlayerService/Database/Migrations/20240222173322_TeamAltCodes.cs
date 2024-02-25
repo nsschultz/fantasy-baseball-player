@@ -4,7 +4,7 @@
 
 namespace FantasyBaseball.PlayerService.Database.Migrations
 {
-    public partial class teamaltcodes : Migration
+    public partial class TeamAltCodes : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

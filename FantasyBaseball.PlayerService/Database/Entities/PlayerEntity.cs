@@ -50,18 +50,18 @@ namespace FantasyBaseball.PlayerService.Database.Entities
     public PlayerType Type { get; set; }
 
     /// <summary>Collection of Batting Stats for a given player.</summary>
-    public List<BattingStatsEntity> BattingStats { get; set; } = new List<BattingStatsEntity>();
+    public List<BattingStatsEntity> BattingStats { get; set; } = [];
 
     /// <summary>League statuses for a given Player.</summary>
-    public List<PlayerLeagueStatusEntity> LeagueStatuses { get; set; } = new List<PlayerLeagueStatusEntity>();
+    public List<PlayerLeagueStatusEntity> LeagueStatuses { get; set; } = [];
 
     /// <summary>Collection of Pitching Stats for a given player.</summary>
-    public List<PitchingStatsEntity> PitchingStats { get; set; } = new List<PitchingStatsEntity>();
+    public List<PitchingStatsEntity> PitchingStats { get; set; } = [];
 
     /// <summary>The team that the player is a part of.</summary>
     public TeamEntity PlayerTeam { get; set; }
 
     /// <summary>Collection of positions that this player plays.</summary>
-    public List<PlayerPositionEntity> Positions { get; set; } = new List<PlayerPositionEntity>();
+    public List<PlayerPositionEntity> Positions { get; set; } = [];
   }
 }

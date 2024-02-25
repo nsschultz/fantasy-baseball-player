@@ -9,7 +9,6 @@ namespace FantasyBaseball.PlayerService.Models.Enums.UnitTests
     [InlineData(PlayerType.U, "Unknown")]
     [InlineData(PlayerType.B, "Batter")]
     [InlineData(PlayerType.P, "Pitcher")]
-    [InlineData(null, "Unknown")]
     public void GetDescriptionTest(PlayerType type, string description) => Assert.Equal(description, GetDescription(type));
 
     [Theory]

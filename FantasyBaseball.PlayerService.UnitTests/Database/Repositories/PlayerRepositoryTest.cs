@@ -14,7 +14,7 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
   {
     private readonly Guid PlayerMatchingId = Guid.NewGuid();
     private readonly Guid PlayerMissingId = Guid.NewGuid();
-    private PlayerContext _context;
+    private readonly PlayerContext _context;
 
     public PlayerRepositoryTest() => _context = CreateContext().Result;
 
@@ -110,11 +110,11 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
     {
       var values = new List<PlayerEntity>
       {
-        new PlayerEntity { BhqId = 1, Type = PlayerType.B, Team = "MIL" },
-        new PlayerEntity { BhqId = 2, Type = PlayerType.B, Team = "MIL" },
-        new PlayerEntity { BhqId = 4, Type = PlayerType.P, Team = "MIL" },
-        new PlayerEntity { Id = PlayerMatchingId, BhqId = 5, Type = PlayerType.P, Team = "MIL" },
-        new PlayerEntity { Id = PlayerMissingId, BhqId = 1, Type = PlayerType.B, Team = "MIL" },
+        new() { BhqId = 1, Type = PlayerType.B, Team = "MIL" },
+        new() { BhqId = 2, Type = PlayerType.B, Team = "MIL" },
+        new() { BhqId = 4, Type = PlayerType.P, Team = "MIL" },
+        new() { Id = PlayerMatchingId, BhqId = 5, Type = PlayerType.P, Team = "MIL" },
+        new() { Id = PlayerMissingId, BhqId = 1, Type = PlayerType.B, Team = "MIL" },
       };
       await Assert.ThrowsAsync<InvalidOperationException>(async () => await new PlayerRepository(_context).UpsertPlayers(values));
       Assert.Equal(3, _context.Players.Count());
@@ -132,17 +132,17 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
       var values = new List<PlayerEntity>
       {
         existingPlayer,
-        new PlayerEntity
+        new()
         {
           BhqId = 4,
           Type = PlayerType.P,
           Team = "MIL",
-          PitchingStats = new List<PitchingStatsEntity>
-          {
-            new PitchingStatsEntity { StatsType = StatsType.YTD, InningsPitched = 2 },
-            new PitchingStatsEntity { StatsType = StatsType.PROJ, InningsPitched = 4 }
-          },
-          LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 2, LeagueStatus = LeagueStatus.R } }
+          PitchingStats =
+          [
+            new() { StatsType = StatsType.YTD, InningsPitched = 2 },
+            new() { StatsType = StatsType.PROJ, InningsPitched = 4 }
+          ],
+          LeagueStatuses = [new() { LeagueId = 2, LeagueStatus = LeagueStatus.R }]
         }
       };
       await new PlayerRepository(_context).UpsertPlayers(values);
@@ -155,6 +155,13 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
 
     public void Dispose()
     {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+      if (!disposing) return;
       _context.Database.EnsureDeleted();
       _context.Dispose();
     }
@@ -174,8 +181,8 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
           BhqId = 1,
           Type = PlayerType.B,
           Team = "MIL",
-          BattingStats = new List<BattingStatsEntity> { new BattingStatsEntity { StatsType = StatsType.YTD, AtBats = 1 } },
-          LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 1, LeagueStatus = LeagueStatus.R } }
+          BattingStats = [new() { StatsType = StatsType.YTD, AtBats = 1 }],
+          LeagueStatuses = [new() { LeagueId = 1, LeagueStatus = LeagueStatus.R }]
         },
         new PlayerEntity
         {
@@ -183,16 +190,16 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
           BhqId = 2,
           Type = PlayerType.P,
           Team = "MIL",
-          PitchingStats = new List<PitchingStatsEntity> { new PitchingStatsEntity { StatsType = StatsType.YTD, InningsPitched = 2 } },
-          LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 2, LeagueStatus = LeagueStatus.R } }
+          PitchingStats = [new() { StatsType = StatsType.YTD, InningsPitched = 2 }],
+          LeagueStatuses = [new() { LeagueId = 2, LeagueStatus = LeagueStatus.R }]
         },
         new PlayerEntity
         {
           BhqId = 3,
           Type = PlayerType.B,
           Team = "TB",
-          BattingStats = new List<BattingStatsEntity> { new BattingStatsEntity { StatsType = StatsType.PROJ, AtBats = 3 } },
-          LeagueStatuses = new List<PlayerLeagueStatusEntity> { new PlayerLeagueStatusEntity { LeagueId = 3, LeagueStatus = LeagueStatus.R } }
+          BattingStats = [new() { StatsType = StatsType.PROJ, AtBats = 3 }],
+          LeagueStatuses = [new() { LeagueId = 3, LeagueStatus = LeagueStatus.R }]
         }
       );
       await context.SaveChangesAsync();

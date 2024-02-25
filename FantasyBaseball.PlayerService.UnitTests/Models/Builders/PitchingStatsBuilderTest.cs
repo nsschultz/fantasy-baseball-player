@@ -9,7 +9,7 @@ namespace FantasyBaseball.PlayerService.Models.Builders.UnitTests
     [Fact] public void BuildEmptyList() => Compare(new PitchingStats(), new PitchingStatsBuilder().Build());
 
     [Fact]
-    public void BuildWithEmptyCollection() => Compare(new PitchingStats(), new PitchingStatsBuilder().AddStats(new PitchingStats[] { }).Build());
+    public void BuildWithEmptyCollection() => Compare(new PitchingStats(), new PitchingStatsBuilder().AddStats([]).Build());
 
     [Fact]
     public void BuildWithNullCollection() => Compare(new PitchingStats(), new PitchingStatsBuilder().AddStats((List<PitchingStats>)null).Build());
@@ -79,7 +79,7 @@ namespace FantasyBaseball.PlayerService.Models.Builders.UnitTests
         GroundBallToFlyBallRate = 1.5,
         BasePerformanceValue = 225.5
       };
-      Compare(expected, new PitchingStatsBuilder().AddStats(stats1).AddStats(new PitchingStats[] { stats2, null }).Build());
+      Compare(expected, new PitchingStatsBuilder().AddStats(stats1).AddStats([stats2, null]).Build());
     }
 
     [Fact]
@@ -145,7 +145,7 @@ namespace FantasyBaseball.PlayerService.Models.Builders.UnitTests
         GroundBallToFlyBallRate = 1.5,
         BasePerformanceValue = 225.5
       };
-      Compare(expected, new PitchingStatsBuilder().AddStats(new PitchingStats[] { stats1, stats2 }).Build());
+      Compare(expected, new PitchingStatsBuilder().AddStats([stats1, stats2]).Build());
     }
 
     [Fact]

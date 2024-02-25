@@ -22,8 +22,7 @@ namespace FantasyBaseball.PlayerService.Services
     /// <param name="player">The player to update.</param>
     public async Task UpdatePlayer(BaseballPlayer player)
     {
-      var existingPlayer = await _playerRepo.GetPlayerById(player.Id);
-      if (existingPlayer == null) throw new BadRequestException("This player does not exist");
+      var existingPlayer = await _playerRepo.GetPlayerById(player.Id) ?? throw new BadRequestException("This player does not exist");
       if (existingPlayer.Type != player.Type) throw new BadRequestException("The player type cannot be changed");
       var updatedPlayer = await _mergeService.MergePlayer(Merger, player, existingPlayer);
       await _playerRepo.UpdatePlayer(updatedPlayer);

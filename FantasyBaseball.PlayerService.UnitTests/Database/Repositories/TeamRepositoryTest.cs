@@ -16,6 +16,13 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
 
     public void Dispose()
     {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+      if (!disposing) return;
       _context.Database.EnsureDeleted();
       _context.Dispose();
     }

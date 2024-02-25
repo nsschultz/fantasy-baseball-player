@@ -11,7 +11,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
 {
   public class BaseballPlayerProfileTest
   {
-    private IMapper _mapper;
+    private readonly IMapper _mapper;
 
     public BaseballPlayerProfileTest() => _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile())).CreateMapper();
 
@@ -27,7 +27,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
     }
 
     private static PlayerEntity BuildPlayer(int value, PlayerType type) =>
-      new PlayerEntity
+      new()
       {
         Id = Guid.NewGuid(),
         BhqId = value,
@@ -35,9 +35,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
         LastName = $"Last-{value}",
         Age = value,
         Type = type,
-        Positions = type == PlayerType.B
-          ? BuildPositionList(new string[] { "XX", "OF", "1B" })
-          : BuildPositionList(new string[] { "SP", "XX", "RP" }),
+        Positions = type == PlayerType.B ? BuildPositionList(["XX", "OF", "1B"]) : BuildPositionList(["SP", "XX", "RP"]),
         Team = type == PlayerType.B ? "MIL" : "TB",
         PlayerTeam = type == PlayerType.B
           ? new TeamEntity { Code = "MIL", LeagueId = "NL", City = "Milwaukee", Nickname = "Brewers" }
@@ -49,17 +47,10 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
         DraftedPercentage = value + 4,
         MayberryMethod = value + 5,
         Reliability = value + 6,
-        LeagueStatuses = new List<PlayerLeagueStatusEntity>
-        {
-          new PlayerLeagueStatusEntity
-          {
-            LeagueId = value == 10 ? 1 : 2,
-            LeagueStatus = value == 10 ? LeagueStatus.R : LeagueStatus.X
-          }
-        },
-        BattingStats = new List<BattingStatsEntity>
-        {
-          new BattingStatsEntity
+        LeagueStatuses = [new() { LeagueId = value == 10 ? 1 : 2, LeagueStatus = value == 10 ? LeagueStatus.R : LeagueStatus.X }],
+        BattingStats =
+        [
+          new()
           {
             StatsType = value == 10 ? StatsType.YTD : StatsType.PROJ,
             AtBats = 300,
@@ -76,10 +67,10 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
             Power = 100,
             Speed = 61
           }
-        },
-        PitchingStats = new List<PitchingStatsEntity>
-        {
-          new PitchingStatsEntity
+        ],
+        PitchingStats =
+        [
+          new()
           {
             StatsType = value == 10 ? StatsType.YTD : StatsType.PROJ,
             Wins = 12,
@@ -97,7 +88,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
             FlyBallRate = 0.2,
             GroundBallRate = 0.31
           }
-        }
+        ]
       };
 
     private static List<PlayerPositionEntity> BuildPositionList(string[] positions) =>

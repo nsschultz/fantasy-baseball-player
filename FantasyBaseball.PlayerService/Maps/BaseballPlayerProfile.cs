@@ -35,7 +35,7 @@ namespace FantasyBaseball.PlayerService.Maps
         .AddStats(player.BattingStats.FirstOrDefault(b => b.StatsType == StatsType.PROJ))
         .SetStatsType(StatsType.CMBD)
         .Build());
-      player.BattingStats = player.BattingStats.OrderBy(p => p.StatsType).ToList();
+      player.BattingStats = [.. player.BattingStats.OrderBy(p => p.StatsType)];
       ReplacePitchingStats(player.PitchingStats, StatsType.YTD);
       ReplacePitchingStats(player.PitchingStats, StatsType.PROJ);
       ReplacePitchingStats(player.PitchingStats, StatsType.CMBD, new PitchingStatsBuilder()
@@ -43,7 +43,7 @@ namespace FantasyBaseball.PlayerService.Maps
         .AddStats(player.PitchingStats.FirstOrDefault(p => p.StatsType == StatsType.PROJ))
         .SetStatsType(StatsType.CMBD)
         .Build());
-      player.PitchingStats = player.PitchingStats.OrderBy(p => p.StatsType).ToList();
+      player.PitchingStats = [.. player.PitchingStats.OrderBy(p => p.StatsType)];
     }
 
     private static LeagueStatus GetLeagueStatus(PlayerEntity entity, int leagueId) =>

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -16,11 +15,10 @@ namespace FantasyBaseball.PlayerService.Exceptions.UnitTests
 
     [Fact] public void ServiceExceptionTest() => ValidateExceptionHandling(new ServiceException("Something horrible happened"), 500);
 
-    private void ValidateExceptionHandling(Exception e, int statusCode)
+    private static void ValidateExceptionHandling(Exception e, int statusCode)
     {
       var actionContext = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor(), new ModelStateDictionary());
-      var context = new ActionExecutedContext(actionContext, new List<IFilterMetadata>(), controller: null); new ExceptionFilter();
-      context.Exception = e;
+      var context = new ActionExecutedContext(actionContext, [], controller: null) { Exception = e };
       new ExceptionFilter().OnActionExecuted(context);
       var result = context.Result as ObjectResult;
       Assert.Equal(statusCode, result.StatusCode);

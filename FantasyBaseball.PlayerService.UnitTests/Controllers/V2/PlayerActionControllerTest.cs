@@ -21,7 +21,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
     {
       var fileContent = Encoding.ASCII.GetBytes("file-content");
       var getService = new Mock<IGetPlayerService>();
-      getService.Setup(o => o.GetPlayers()).ReturnsAsync(new List<BaseballPlayer> { new BaseballPlayer() });
+      getService.Setup(o => o.GetPlayers()).ReturnsAsync([new()]);
       var writer = new Mock<ICsvFileWriterService>();
       writer.Setup(o => o.WriteCsvData(It.Is<List<BaseballPlayer>>(p => p.Count == 1))).Returns(fileContent);
       var controller = new PlayerActionController(getService.Object, writer.Object, null);
@@ -93,9 +93,5 @@ namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
       controller.ControllerContext = new ControllerContext() { HttpContext = httpContext.Object };
       await Assert.ThrowsAsync<BadRequestException>(() => controller.UploadPitcherFile());
     }
-
-    private static CsvBaseballPlayer BuildTestPlayer(int id) => new CsvBaseballPlayer { BhqId = id };
-
-    private static List<CsvBaseballPlayer> BuildTestPlayerList(int id) => new List<CsvBaseballPlayer> { new CsvBaseballPlayer { BhqId = id } };
   }
 }

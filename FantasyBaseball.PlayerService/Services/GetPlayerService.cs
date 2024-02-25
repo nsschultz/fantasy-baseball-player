@@ -31,8 +31,7 @@ namespace FantasyBaseball.PlayerService.Services
     public async Task<BaseballPlayer> GetPlayer(Guid id)
     {
       var positions = await _positionsService.GetPositions();
-      var player = await _playerRepo.GetPlayerById(id);
-      if (player == null) throw new BadRequestException("This player does not exist");
+      var player = await _playerRepo.GetPlayerById(id) ?? throw new BadRequestException("This player does not exist");
       return _mapper.Map<PlayerEntity, BaseballPlayer>(player, opt => opt.AfterMap((src, dest) => dest.Positions = BuildBaseballPositions(src, positions)));
     }
 
@@ -51,11 +50,10 @@ namespace FantasyBaseball.PlayerService.Services
       player.Positions.SelectMany(p => positions.Where(pp => pp.Code == p.PositionCode)).OrderBy(p => p.SortOrder).ToList();
 
     private static List<BaseballPlayer> SortPlayers(List<BaseballPlayer> players) =>
-      players
+      [.. players
         .OrderBy(p => p.Type)
         .ThenBy(p => p.LastName.ToUpper())
         .ThenBy(p => p.FirstName.ToUpper())
-        .ThenBy(p => p.BhqId)
-        .ToList();
+        .ThenBy(p => p.BhqId)];
   }
 }

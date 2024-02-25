@@ -18,6 +18,13 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
 
     public void Dispose()
     {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+      if (!disposing) return;
       Client.Dispose();
       _application.Dispose();
     }

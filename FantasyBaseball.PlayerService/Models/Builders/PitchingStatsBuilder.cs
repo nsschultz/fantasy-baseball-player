@@ -14,7 +14,7 @@ namespace FantasyBaseball.PlayerService.Models.Builders
     private static readonly int WeightControl = 27;
     private static readonly int WeightGroundBallRate = 100;
     private static readonly int WeightDominance = 18;
-    private readonly List<PitchingStats> statsList = new List<PitchingStats>();
+    private readonly List<PitchingStats> statsList = [];
     private StatsType statsType = StatsType.UNKN;
 
     /// <summary>Adds another instance of <c>PitchingStats</c> to the list.</summary>
@@ -73,7 +73,7 @@ namespace FantasyBaseball.PlayerService.Models.Builders
     private static double Divide(double dividend, double divisor) => divisor == 0 || dividend == 0 ? 0 : dividend / divisor;
 
     private PitchingStats Sum() =>
-      new PitchingStats
+      new()
       {
         StatsType = statsType,
         Wins = statsList.Select(s => s.Wins).Sum(),

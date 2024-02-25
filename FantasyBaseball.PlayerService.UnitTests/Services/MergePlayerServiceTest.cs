@@ -14,63 +14,63 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
 {
   public class MergePlayerServiceTest
   {
-    private static readonly Dictionary<int, string> EXPECTED_TEAMS = new Dictionary<int, string> { { 10, "MIL" }, { 100, "TB" }, { 123, "" } };
+    private static readonly Dictionary<int, string> EXPECTED_TEAMS = new() { { 10, "MIL" }, { 100, "TB" }, { 123, "" } };
     private static readonly IPlayerMerger MERGER = new FullPlayerMerger();
-    private static readonly List<BaseballPosition> POSITIONS = new List<BaseballPosition>
-    {
-      new BaseballPosition { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
-      new BaseballPosition { Code = "C"   , FullName = "Catcher"          , PlayerType = PlayerType.B, SortOrder = 0            },
-      new BaseballPosition { Code = "1B"  , FullName = "First Baseman"    , PlayerType = PlayerType.B, SortOrder = 1            },
-      new BaseballPosition { Code = "2B"  , FullName = "Second Baseman"   , PlayerType = PlayerType.B, SortOrder = 2            },
-      new BaseballPosition { Code = "3B"  , FullName = "Third Baseman"    , PlayerType = PlayerType.B, SortOrder = 3            },
-      new BaseballPosition { Code = "SS"  , FullName = "Shortstop"        , PlayerType = PlayerType.B, SortOrder = 4            },
-      new BaseballPosition { Code = "CIF" , FullName = "Corner Infielder" , PlayerType = PlayerType.B, SortOrder = 5            },
-      new BaseballPosition { Code = "MIF" , FullName = "Middle Infielder" , PlayerType = PlayerType.B, SortOrder = 6            },
-      new BaseballPosition { Code = "IF"  , FullName = "Infielder"        , PlayerType = PlayerType.B, SortOrder = 7            },
-      new BaseballPosition { Code = "LF"  , FullName = "Left Fielder"     , PlayerType = PlayerType.B, SortOrder = 8            },
-      new BaseballPosition { Code = "CF"  , FullName = "Center Feilder"   , PlayerType = PlayerType.B, SortOrder = 9            },
-      new BaseballPosition { Code = "RF"  , FullName = "Right Fielder"    , PlayerType = PlayerType.B, SortOrder = 10           },
-      new BaseballPosition { Code = "OF"  , FullName = "Outfielder"       , PlayerType = PlayerType.B, SortOrder = 11           },
-      new BaseballPosition { Code = "DH"  , FullName = "Designated Hitter", PlayerType = PlayerType.B, SortOrder = 12           },
-      new BaseballPosition { Code = "UTIL", FullName = "Utility"          , PlayerType = PlayerType.B, SortOrder = 13           },
-      new BaseballPosition { Code = "SP"  , FullName = "Starting Pitcher" , PlayerType = PlayerType.P, SortOrder = 100          },
-      new BaseballPosition { Code = "RP"  , FullName = "Relief Pitcher"   , PlayerType = PlayerType.P, SortOrder = 101          },
-      new BaseballPosition { Code = "P"   , FullName = "Pitcher"          , PlayerType = PlayerType.P, SortOrder = 102          }
-    };
-    private static readonly List<TeamEntity> TEAMS = new List<TeamEntity>
-    {
-      new TeamEntity { Code = ""   , LeagueId = ""  , City = "Free Agent"   , Nickname = "Free Agent"                            },
-      new TeamEntity { Code = "BAL", LeagueId = "AL", City = "Baltimore"    , Nickname = "Orioles"                               },
-      new TeamEntity { Code = "BOS", LeagueId = "AL", City = "Boston"       , Nickname = "Red Sox"                               },
-      new TeamEntity { Code = "NYY", LeagueId = "AL", City = "New York"     , Nickname = "Yankees"                               },
-      new TeamEntity { Code = "TB" , LeagueId = "AL", City = "Tampa Bay"    , Nickname = "Rays"       , AlternativeCode = "TAM"  },
-      new TeamEntity { Code = "TOR", LeagueId = "AL", City = "Toronto"      , Nickname = "Blue Jays"                             },
-      new TeamEntity { Code = "CWS", LeagueId = "AL", City = "Chicago"      , Nickname = "White Sox"  , AlternativeCode = "CHW"  },
-      new TeamEntity { Code = "CLE", LeagueId = "AL", City = "Cleveland"    , Nickname = "Indians"                               },
-      new TeamEntity { Code = "DET", LeagueId = "AL", City = "Detriot"      , Nickname = "Tigers"                                },
-      new TeamEntity { Code = "KC" , LeagueId = "AL", City = "Kansas City"  , Nickname = "Royals"                                },
-      new TeamEntity { Code = "MIN", LeagueId = "AL", City = "Minnesota"    , Nickname = "Twins"                                 },
-      new TeamEntity { Code = "HOU", LeagueId = "AL", City = "Houston"      , Nickname = "Astros"                                },
-      new TeamEntity { Code = "LAA", LeagueId = "AL", City = "Los Angeles"  , Nickname = "Angels"                                },
-      new TeamEntity { Code = "OAK", LeagueId = "AL", City = "Oakland"      , Nickname = "Athletics"                             },
-      new TeamEntity { Code = "SEA", LeagueId = "AL", City = "Seattle"      , Nickname = "Mariners"                              },
-      new TeamEntity { Code = "TEX", LeagueId = "AL", City = "Texas"        , Nickname = "Rangers"                               },
-      new TeamEntity { Code = "ATL", LeagueId = "NL", City = "Atlanta"      , Nickname = "Braves"                                },
-      new TeamEntity { Code = "MIA", LeagueId = "NL", City = "Miami"        , Nickname = "Marlins"                               },
-      new TeamEntity { Code = "NYM", LeagueId = "NL", City = "New York"     , Nickname = "Mets"                                  },
-      new TeamEntity { Code = "PHI", LeagueId = "NL", City = "Philadelphia" , Nickname = "Phillies"                              },
-      new TeamEntity { Code = "WAS", LeagueId = "NL", City = "Washington"   , Nickname = "Nationals"                             },
-      new TeamEntity { Code = "CHC", LeagueId = "NL", City = "Chicago"      , Nickname = "Cubs"                                  },
-      new TeamEntity { Code = "CIN", LeagueId = "NL", City = "Cincinnati"   , Nickname = "Reds"                                  },
-      new TeamEntity { Code = "MIL", LeagueId = "NL", City = "Milwaukee"    , Nickname = "Brewers"                               },
-      new TeamEntity { Code = "PIT", LeagueId = "NL", City = "Pittsburgh"   , Nickname = "Pirates"                               },
-      new TeamEntity { Code = "STL", LeagueId = "NL", City = "St. Louis"    , Nickname = "Cardinals"                             },
-      new TeamEntity { Code = "ARZ", LeagueId = "NL", City = "Arizona"      , Nickname = "Diamondbacks", AlternativeCode = "ARI" },
-      new TeamEntity { Code = "COL", LeagueId = "NL", City = "Colorado"     , Nickname = "Rockies"                               },
-      new TeamEntity { Code = "LAD", LeagueId = "NL", City = "Los Angeles"  , Nickname = "Dodgers"     , AlternativeCode = "LA"  },
-      new TeamEntity { Code = "SD" , LeagueId = "NL", City = "San Diego"    , Nickname = "Padres"                                },
-      new TeamEntity { Code = "SF" , LeagueId = "NL", City = "San Francisco", Nickname = "Giants"                                }
-    };
+    private static readonly List<BaseballPosition> POSITIONS =
+    [
+      new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
+      new() { Code = "C"   , FullName = "Catcher"          , PlayerType = PlayerType.B, SortOrder = 0            },
+      new() { Code = "1B"  , FullName = "First Baseman"    , PlayerType = PlayerType.B, SortOrder = 1            },
+      new() { Code = "2B"  , FullName = "Second Baseman"   , PlayerType = PlayerType.B, SortOrder = 2            },
+      new() { Code = "3B"  , FullName = "Third Baseman"    , PlayerType = PlayerType.B, SortOrder = 3            },
+      new() { Code = "SS"  , FullName = "Shortstop"        , PlayerType = PlayerType.B, SortOrder = 4            },
+      new() { Code = "CIF" , FullName = "Corner Infielder" , PlayerType = PlayerType.B, SortOrder = 5            },
+      new() { Code = "MIF" , FullName = "Middle Infielder" , PlayerType = PlayerType.B, SortOrder = 6            },
+      new() { Code = "IF"  , FullName = "Infielder"        , PlayerType = PlayerType.B, SortOrder = 7            },
+      new() { Code = "LF"  , FullName = "Left Fielder"     , PlayerType = PlayerType.B, SortOrder = 8            },
+      new() { Code = "CF"  , FullName = "Center Feilder"   , PlayerType = PlayerType.B, SortOrder = 9            },
+      new() { Code = "RF"  , FullName = "Right Fielder"    , PlayerType = PlayerType.B, SortOrder = 10           },
+      new() { Code = "OF"  , FullName = "Outfielder"       , PlayerType = PlayerType.B, SortOrder = 11           },
+      new() { Code = "DH"  , FullName = "Designated Hitter", PlayerType = PlayerType.B, SortOrder = 12           },
+      new() { Code = "UTIL", FullName = "Utility"          , PlayerType = PlayerType.B, SortOrder = 13           },
+      new() { Code = "SP"  , FullName = "Starting Pitcher" , PlayerType = PlayerType.P, SortOrder = 100          },
+      new() { Code = "RP"  , FullName = "Relief Pitcher"   , PlayerType = PlayerType.P, SortOrder = 101          },
+      new() { Code = "P"   , FullName = "Pitcher"          , PlayerType = PlayerType.P, SortOrder = 102          }
+    ];
+    private static readonly List<TeamEntity> TEAMS =
+    [
+      new() { Code = ""   , LeagueId = ""  , City = "Free Agent"   , Nickname = "Free Agent"                            },
+      new() { Code = "BAL", LeagueId = "AL", City = "Baltimore"    , Nickname = "Orioles"                               },
+      new() { Code = "BOS", LeagueId = "AL", City = "Boston"       , Nickname = "Red Sox"                               },
+      new() { Code = "NYY", LeagueId = "AL", City = "New York"     , Nickname = "Yankees"                               },
+      new() { Code = "TB" , LeagueId = "AL", City = "Tampa Bay"    , Nickname = "Rays"       , AlternativeCode = "TAM"  },
+      new() { Code = "TOR", LeagueId = "AL", City = "Toronto"      , Nickname = "Blue Jays"                             },
+      new() { Code = "CWS", LeagueId = "AL", City = "Chicago"      , Nickname = "White Sox"  , AlternativeCode = "CHW"  },
+      new() { Code = "CLE", LeagueId = "AL", City = "Cleveland"    , Nickname = "Indians"                               },
+      new() { Code = "DET", LeagueId = "AL", City = "Detriot"      , Nickname = "Tigers"                                },
+      new() { Code = "KC" , LeagueId = "AL", City = "Kansas City"  , Nickname = "Royals"                                },
+      new() { Code = "MIN", LeagueId = "AL", City = "Minnesota"    , Nickname = "Twins"                                 },
+      new() { Code = "HOU", LeagueId = "AL", City = "Houston"      , Nickname = "Astros"                                },
+      new() { Code = "LAA", LeagueId = "AL", City = "Los Angeles"  , Nickname = "Angels"                                },
+      new() { Code = "OAK", LeagueId = "AL", City = "Oakland"      , Nickname = "Athletics"                             },
+      new() { Code = "SEA", LeagueId = "AL", City = "Seattle"      , Nickname = "Mariners"                              },
+      new() { Code = "TEX", LeagueId = "AL", City = "Texas"        , Nickname = "Rangers"                               },
+      new() { Code = "ATL", LeagueId = "NL", City = "Atlanta"      , Nickname = "Braves"                                },
+      new() { Code = "MIA", LeagueId = "NL", City = "Miami"        , Nickname = "Marlins"                               },
+      new() { Code = "NYM", LeagueId = "NL", City = "New York"     , Nickname = "Mets"                                  },
+      new() { Code = "PHI", LeagueId = "NL", City = "Philadelphia" , Nickname = "Phillies"                              },
+      new() { Code = "WAS", LeagueId = "NL", City = "Washington"   , Nickname = "Nationals"                             },
+      new() { Code = "CHC", LeagueId = "NL", City = "Chicago"      , Nickname = "Cubs"                                  },
+      new() { Code = "CIN", LeagueId = "NL", City = "Cincinnati"   , Nickname = "Reds"                                  },
+      new() { Code = "MIL", LeagueId = "NL", City = "Milwaukee"    , Nickname = "Brewers"                               },
+      new() { Code = "PIT", LeagueId = "NL", City = "Pittsburgh"   , Nickname = "Pirates"                               },
+      new() { Code = "STL", LeagueId = "NL", City = "St. Louis"    , Nickname = "Cardinals"                             },
+      new() { Code = "ARZ", LeagueId = "NL", City = "Arizona"      , Nickname = "Diamondbacks", AlternativeCode = "ARI" },
+      new() { Code = "COL", LeagueId = "NL", City = "Colorado"     , Nickname = "Rockies"                               },
+      new() { Code = "LAD", LeagueId = "NL", City = "Los Angeles"  , Nickname = "Dodgers"     , AlternativeCode = "LA"  },
+      new() { Code = "SD" , LeagueId = "NL", City = "San Diego"    , Nickname = "Padres"                                },
+      new() { Code = "SF" , LeagueId = "NL", City = "San Francisco", Nickname = "Giants"                                }
+    ];
 
     [Fact]
     public async Task MergePlayerEntityNullTest()
@@ -119,11 +119,11 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     {
       var player = BuildPlayer(value, type);
       var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(MERGER, BuildPlayer(value, type, true), null);
-      ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, null));
+      ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, otherEntity));
     }
 
     private static BattingStats BuildBattingStats(StatsType statsType) =>
-      new BattingStats
+      new()
       {
         StatsType = statsType,
         AtBats = 300,
@@ -152,7 +152,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     }
 
     private static PitchingStats BuildPitchingStats(StatsType statsType) =>
-      new PitchingStats
+      new()
       {
         StatsType = statsType,
         Wins = 12,
@@ -172,7 +172,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
       };
 
     private static BaseballPlayer BuildPlayer(int value, PlayerType type, bool bothStats = false) =>
-      new BaseballPlayer
+      new()
       {
         BhqId = value,
         FirstName = $"First-{value}",
@@ -180,8 +180,8 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         Age = value,
         Type = type,
         Positions = type == PlayerType.B
-          ? BuildPositionList(new string[] { "XX", "OF", "1B" })
-          : type == PlayerType.P ? BuildPositionList(new string[] { "SP", "XX", "RP" }) : BuildPositionList(new string[] { "XX" }),
+          ? BuildPositionList(["XX", "OF", "1B"])
+          : type == PlayerType.P ? BuildPositionList(["SP", "XX", "RP"]) : BuildPositionList(["XX"]),
         Team = new BaseballTeam { Code = type == PlayerType.B ? "MIL" : type == PlayerType.P ? "TB" : "XX" },
         Status = value == 10 ? PlayerStatus.XX : PlayerStatus.DL,
         DraftRank = value + 1,
@@ -192,16 +192,16 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         Reliability = value + 6,
         League1 = value == 10 ? LeagueStatus.R : LeagueStatus.A,
         League2 = value != 10 ? LeagueStatus.X : LeagueStatus.A,
-        BattingStats = !bothStats && PlayerType.U == type ? new List<BattingStats>() : new List<BattingStats>
-        {
+        BattingStats = !bothStats && PlayerType.U == type ? [] :
+        [
           bothStats || value == 10 ? BuildBattingStats(StatsType.YTD) : new BattingStats { StatsType = StatsType.YTD },
           bothStats || value != 10 ? BuildBattingStats(StatsType.PROJ) : new BattingStats { StatsType = StatsType.PROJ }
-        },
-        PitchingStats = !bothStats && PlayerType.U == type ? new List<PitchingStats>() : new List<PitchingStats>
-        {
+        ],
+        PitchingStats = !bothStats && PlayerType.U == type ? [] :
+        [
           bothStats || value == 10 ? BuildPitchingStats(StatsType.YTD) : new PitchingStats { StatsType = StatsType.YTD },
           bothStats || value != 10 ? BuildPitchingStats(StatsType.PROJ) : new PitchingStats { StatsType = StatsType.PROJ }
-        }
+        ]
       };
 
     private static List<BaseballPosition> BuildPositionList(string[] positions) =>

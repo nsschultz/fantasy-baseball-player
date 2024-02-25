@@ -53,8 +53,8 @@ namespace FantasyBaseball.PlayerService.Services
 
     private static PlayerEntity FindAndRemovePlayer(Dictionary<ProjectionKey, PlayerEntity> existingDictionary, ProjectionKey key)
     {
-      if (!existingDictionary.ContainsKey(key)) return null;
-      var existingPlayer = existingDictionary[key];
+      if (!existingDictionary.TryGetValue(key, out PlayerEntity value)) return null;
+      var existingPlayer = value;
       existingDictionary.Remove(key);
       return existingPlayer;
     }
@@ -67,7 +67,7 @@ namespace FantasyBaseball.PlayerService.Services
       var mergedPlayers = new List<Task<PlayerEntity>>();
       mergedPlayers.AddRange(projectedPlayers.Select(b => MergePlayer(FindAndRemovePlayer(existingPlayers, BuildKey(b)), b)));
       mergedPlayers.AddRange(existingPlayers.Values.Select(e => MergePlayer(e, new CsvBaseballPlayer())));
-      return (await Task.WhenAll(mergedPlayers)).ToList();
+      return [.. (await Task.WhenAll(mergedPlayers))];
     }
   }
 }

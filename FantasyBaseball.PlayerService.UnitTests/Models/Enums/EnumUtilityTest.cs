@@ -11,7 +11,6 @@ namespace FantasyBaseball.PlayerService.Models.Enums.UnitTests
     [InlineData(StatsType.PROJ, "Projected")]
     [InlineData(StatsType.YTD, "Year to Date")]
     [InlineData(StatsType.UNKN, "Unknown")]
-    [InlineData(null, "Unknown")]
     public void GetDescriptionTest(StatsType type, string description) => Assert.Equal(description, GetDescription(type));
 
     [Theory]
