@@ -40,7 +40,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
         PlayerTeam = type == PlayerType.B
           ? new TeamEntity { Code = "MIL", LeagueId = "NL", City = "Milwaukee", Nickname = "Brewers" }
           : new TeamEntity { Code = "TB", LeagueId = "AL", City = "Tampa Bay", Nickname = "Rays", AlternativeCode = "TAM" },
-        Status = value == 10 ? PlayerStatus.XX : PlayerStatus.DL,
+        Status = value == 10 ? PlayerStatus.XX : PlayerStatus.IL,
         DraftRank = value + 1,
         AverageDraftPick = value + 2,
         HighestPick = value + 3,

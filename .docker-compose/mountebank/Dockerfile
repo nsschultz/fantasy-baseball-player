@@ -1,5 +1,5 @@
-FROM node:13.12.0
-RUN npm install -g mountebank@2.8.0
+FROM node:19.1.0 
+RUN npm install -g mountebank@2.9.1
 ENTRYPOINT ["mb"]
 CMD ["start", "--configfile", "/imposters.ejs", "--allowInjection"]
 COPY *.ejs .

@@ -7,7 +7,7 @@ namespace FantasyBaseball.PlayerService.Maps.Converters.UnitTests
   {
     [Theory]
     [InlineData("ne", PlayerStatus.NE)]
-    [InlineData(" DL ", PlayerStatus.DL)]
+    [InlineData(" IL ", PlayerStatus.IL)]
     [InlineData("Not Available", PlayerStatus.NA)]
     [InlineData("", PlayerStatus.XX)]
     [InlineData(null, PlayerStatus.XX)]

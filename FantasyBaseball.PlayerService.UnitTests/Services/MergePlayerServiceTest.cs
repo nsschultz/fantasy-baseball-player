@@ -183,7 +183,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
           ? BuildPositionList(["XX", "OF", "1B"])
           : type == PlayerType.P ? BuildPositionList(["SP", "XX", "RP"]) : BuildPositionList(["XX"]),
         Team = new BaseballTeam { Code = type == PlayerType.B ? "MIL" : type == PlayerType.P ? "TB" : "XX" },
-        Status = value == 10 ? PlayerStatus.XX : PlayerStatus.DL,
+        Status = value == 10 ? PlayerStatus.XX : PlayerStatus.IL,
         DraftRank = value + 1,
         AverageDraftPick = value + 2,
         HighestPick = value + 3,

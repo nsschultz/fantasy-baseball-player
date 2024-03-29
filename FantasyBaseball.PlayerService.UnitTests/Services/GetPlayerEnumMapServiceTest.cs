@@ -8,7 +8,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     private static readonly Dictionary<string, Dictionary<int, string>> VALUES = new Dictionary<string, Dictionary<int, string>>()
     {
       { "LEAGUESTATUS", new Dictionary<int, string>() { { 0, "Available" }, { 1, "Rostered" }, { 2, "Unavailable" }, { 3, "Scouted" } } },
-      { "PLAYERSTATUS", new Dictionary<int, string>() { { 0, "" }, { 1, "Disabled List" }, { 2, "Not Available" }, { 3, "New Entry" } } },
+      { "PLAYERSTATUS", new Dictionary<int, string>() { { 0, "" }, { 1, "Injured List" }, { 2, "Not Available" }, { 3, "New Entry" } } },
       { "PLAYERTYPE", new Dictionary<int, string>() { { 0, "Unknown" }, { 1, "Batter" }, { 2, "Pitcher" } } },
       { "STATSTYPE", new Dictionary<int, string>() { { 0, "Unknown" }, { 1, "Year to Date" }, { 2, "Projected" }, { 3, "Combined" } } },
     };
