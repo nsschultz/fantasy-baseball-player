@@ -7,14 +7,14 @@ namespace FantasyBaseball.PlayerService.Models.Enums.UnitTests
   {
     [Theory]
     [InlineData(PlayerStatus.XX, "")]
-    [InlineData(PlayerStatus.DL, "Disabled List")]
+    [InlineData(PlayerStatus.IL, "Injured List")]
     [InlineData(PlayerStatus.NA, "Not Available")]
     [InlineData(PlayerStatus.NE, "New Entry")]
     public void GetDescriptionTest(PlayerStatus type, string description) => Assert.Equal(description, GetDescription(type));
 
     [Theory]
     [InlineData(PlayerStatus.XX, "")]
-    [InlineData(PlayerStatus.DL, "DISABLED List")]
+    [InlineData(PlayerStatus.IL, "INJURED List")]
     [InlineData(PlayerStatus.NA, "NOT Available")]
     [InlineData(PlayerStatus.NE, "New ENTRY")]
     [InlineData(PlayerStatus.XX, "Normal")]
@@ -23,7 +23,7 @@ namespace FantasyBaseball.PlayerService.Models.Enums.UnitTests
 
     [Theory]
     [InlineData(PlayerStatus.XX, "")]
-    [InlineData(PlayerStatus.DL, "dl")]
+    [InlineData(PlayerStatus.IL, "il")]
     [InlineData(PlayerStatus.NA, "nA")]
     [InlineData(PlayerStatus.NE, "Ne")]
     [InlineData(PlayerStatus.XX, "XX")]
