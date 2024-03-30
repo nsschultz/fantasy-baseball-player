@@ -11,6 +11,7 @@ namespace FantasyBaseball.PlayerService.Models.UnitTests
     {
       var obj = new BaseballPlayer();
       Assert.Equal(Guid.Empty, obj.Id);
+      Assert.Equal(0, obj.MlbAmId);
       Assert.Equal(0, obj.BhqId);
       Assert.Null(obj.FirstName);
       Assert.Null(obj.LastName);
@@ -23,6 +24,8 @@ namespace FantasyBaseball.PlayerService.Models.UnitTests
       Assert.Equal(LeagueStatus.A, obj.League2);
       Assert.Equal(9999, obj.DraftRank);
       Assert.Equal(9999, obj.AverageDraftPick);
+      Assert.Equal(9999, obj.AverageDraftPickMax);
+      Assert.Equal(9999, obj.AverageDraftPickMin);
       Assert.Equal(9999, obj.HighestPick);
       Assert.Equal(0, obj.DraftedPercentage);
       Assert.Equal(0, obj.Reliability);

@@ -13,6 +13,9 @@ namespace FantasyBaseball.PlayerService.Models
     /// <summary>The player's ID.</summary>
     public Guid Id { get; set; }
 
+    /// <summary>The player's MLB BAM ID.</summary>
+    public int MlbAmId { get; set; }
+
     /// <summary>The player's BHQ ID.</summary>
     public int BhqId { get; set; }
 
@@ -37,11 +40,17 @@ namespace FantasyBaseball.PlayerService.Models
     /// <summary>The average draft position (ADP) for this player.</summary>
     public int AverageDraftPick { get; set; } = MaxDraftPick;
 
+    /// <summary>The earliest pick used on this player.</summary>
+    public int AverageDraftPickMin { get; set; } = MaxDraftPick;
+
+    /// <summary>The latest pick used on this player.</summary>
+    public int AverageDraftPickMax { get; set; } = MaxDraftPick;
+
     /// <summary>The highest pick that was used on this player.</summary>
-    public int HighestPick { get; set; } = MaxDraftPick;
+    [Obsolete("Use AvererageDraftPickMin instead.")] public int HighestPick { get; set; } = MaxDraftPick;
 
     /// <summary>The percentage of time that this player was drafted.</summary>
-    public double DraftedPercentage { get; set; }
+    [Obsolete("Not being used anymore.")] public double DraftedPercentage { get; set; }
 
     /// <summary>The player's projected reliability.</summary>
     public double Reliability { get; set; }
