@@ -6,13 +6,11 @@ using Microsoft.EntityFrameworkCore;
 namespace FantasyBaseball.PlayerService.Database.Repositories
 {
   /// <summary>Repo for CRUD functionality regarding to teams.</summary>
-  public class TeamRepository : ITeamRepository
+  /// <remarks>Creates a new instance of the repository.</remarks>
+  /// <param name="context">The player context.</param>
+  public class TeamRepository(IPlayerContext context) : ITeamRepository
   {
-    private readonly IPlayerContext _context;
-
-    /// <summary>Creates a new instance of the repository.</summary>
-    /// <param name="context">The player context.</param>
-    public TeamRepository(IPlayerContext context) => _context = context;
+    private readonly IPlayerContext _context = context;
 
     /// <summary>Gets all of the teams in the database.</summary>
     /// <returns>All of the teams in the database.</returns>

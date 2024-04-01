@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Http;
 namespace FantasyBaseball.PlayerService.FileReaders
 {
   /// <summary>Helper for reading the contents of a file on a web request.</summary>
-  public class FormFileReader : IFileReader
+  /// <remarks>Creates a wrapper around the web request.</remarks>
+  /// <param name="request">The incoming web request.</param>
+  public class FormFileReader(HttpRequest request) : IFileReader
   {
-    private readonly HttpRequest request;
-
-    /// <summary>Creates a wrapper around the web request.</summary>
-    /// <param name="request">The incoming web request.</param>
-    public FormFileReader(HttpRequest request) => this.request = request;
+    private readonly HttpRequest request = request;
 
     /// <summary>Reads in all of the lines from the file.</summary>
     /// <returns>All of the lines from the files.</returns>

@@ -7,13 +7,11 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 namespace FantasyBaseball.PlayerService.Services.HealthChecks
 {
   /// <summary>Health check to verify that the position service is healthy.</summary>
-  public class PositionHealthCheck : IHealthCheck
+  /// <remarks>Creates a new instance of the service.</remarks>
+  /// <param name="config">The configuration for the application.</param>
+  public class PositionHealthCheck(IConfiguration config) : IHealthCheck
   {
-    private readonly IConfiguration _config;
-
-    /// <summary>Creates a new instance of the service.</summary>
-    /// <param name="config">The configuration for the application.</param>
-    public PositionHealthCheck(IConfiguration config) => _config = config;
+    private readonly IConfiguration _config = config;
 
     /// <summary>Runs the health check, returning the status of the component being checked.</summary>
     /// <param name="context">A context object associated with the current execution.</param>

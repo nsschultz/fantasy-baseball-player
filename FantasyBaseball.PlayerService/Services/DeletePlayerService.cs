@@ -6,13 +6,11 @@ using FantasyBaseball.PlayerService.Exceptions;
 namespace FantasyBaseball.PlayerService.Services
 {
   /// <summary>Service for deleting a player.</summary>
-  public class DeletePlayerService : IDeletePlayerService
+  /// <remarks>Creates a new instance of the service.</remarks>
+  /// <param name="playerRepo">Repo for CRUD functionality regarding to players.</param>
+  public class DeletePlayerService(IPlayerRepository playerRepo) : IDeletePlayerService
   {
-    private readonly IPlayerRepository _playerRepo;
-
-    /// <summary>Creates a new instance of the service.</summary>
-    /// <param name="playerRepo">Repo for CRUD functionality regarding to players.</param>
-    public DeletePlayerService(IPlayerRepository playerRepo) => _playerRepo = playerRepo;
+    private readonly IPlayerRepository _playerRepo = playerRepo;
 
     /// <summary>Deletes the given player from the data store.</summary>
     /// <param name="id">The guid of the player to delete.</param>

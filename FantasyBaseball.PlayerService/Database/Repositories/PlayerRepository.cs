@@ -9,13 +9,11 @@ using Microsoft.EntityFrameworkCore;
 namespace FantasyBaseball.PlayerService.Database.Repositories
 {
   /// <summary>Repo for CRUD functionality regarding to players.</summary>
-  public class PlayerRepository : IPlayerRepository
+  /// <remarks>Creates a new instance of the repository.</remarks>
+  /// <param name="context">The player context.</param>
+  public class PlayerRepository(IPlayerContext context) : IPlayerRepository
   {
-    private readonly IPlayerContext _context;
-
-    /// <summary>Creates a new instance of the repository.</summary>
-    /// <param name="context">The player context.</param>
-    public PlayerRepository(IPlayerContext context) => _context = context;
+    private readonly IPlayerContext _context = context;
 
     /// <summary>Adds the given player to the database.</summary>
     /// <param name="player">The player data.</param>

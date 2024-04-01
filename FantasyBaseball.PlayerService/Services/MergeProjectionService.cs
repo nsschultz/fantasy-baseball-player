@@ -15,7 +15,7 @@ namespace FantasyBaseball.PlayerService.Services
   /// <summary>Service for merging the CSV file into the existing data store.</summary>
   public class MergeProjectionService : IMergeProjectionService
   {
-    private static readonly Dictionary<PlayerType, ClassMap> CsvFileMaps = new Dictionary<PlayerType, ClassMap>
+    private static readonly Dictionary<PlayerType, ClassMap> CsvFileMaps = new()
     {
       { PlayerType.B, new BhqBattingStatsMap() },
       { PlayerType.P, new BhqPitchingStatsMap() }

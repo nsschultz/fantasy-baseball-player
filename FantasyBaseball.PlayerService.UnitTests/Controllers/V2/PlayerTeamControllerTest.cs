@@ -14,7 +14,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
     [Fact]
     public async Task GetTeamsTest()
     {
-      var teams = new List<TeamEntity> { new TeamEntity(), new TeamEntity() };
+      var teams = new List<TeamEntity> { new(), new() };
       var mapper = new Mock<IMapper>();
       mapper.Setup(o => o.Map<BaseballTeam>(It.IsAny<TeamEntity>())).Returns(new BaseballTeam());
       var getTeamsService = new Mock<IGetTeamsService>();

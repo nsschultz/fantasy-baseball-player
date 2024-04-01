@@ -12,7 +12,7 @@ namespace FantasyBaseball.PlayerService.Services
   /// <summary>Service for converting a BaseballPlayer to a PlayerEntity.</summary>
   public class MergePlayerService : IMergePlayerService
   {
-    private static readonly List<StatsType> ExpectedStats = new List<StatsType> { StatsType.YTD, StatsType.PROJ };
+    private static readonly List<StatsType> ExpectedStats = [StatsType.YTD, StatsType.PROJ];
     private readonly IGetPositionService _positionsService;
     private readonly IGetTeamsService _teamsService;
     private readonly IMapper _mapper;
