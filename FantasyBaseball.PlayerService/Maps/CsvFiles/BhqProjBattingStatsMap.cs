@@ -6,15 +6,15 @@ using FantasyBaseball.PlayerService.Models.Enums;
 namespace FantasyBaseball.PlayerService.Maps.CsvMaps
 {
   /// <summary>Mapper for BHQ's projected batting file.</summary>
-  public class BhqProjectedStatsMap : ClassMap<CsvBaseballPlayer>
+  public class BhqProjectedBattingsStatsMap : ClassMap<CsvBaseballPlayer>
   {
     /// <summary>Creates a new instance of the mapper.</summary>
-    public BhqProjectedStatsMap()
+    public BhqProjectedBattingsStatsMap()
     {
       // Constants
       Map(m => m.Type).Constant(PlayerType.B);
       Map(m => m.Status).Constant(PlayerStatus.NE);
-      // Skipped player fields: Bats, Lg, Pos, LY5, LY10, LY15, LY20, LIMA, DL, 12$,	15$, 
+      // Skipped player fields: Bats,Lg,Pos,LY5,LY10,LY15,LY20,LIMA,DL,12$,15$
       Map(m => m.BhqId).Name("HQID");
       Map(m => m.MlbAmId).Name("MLBAMID");
       Map(m => m.FullName).Name("Player");
@@ -25,7 +25,7 @@ namespace FantasyBaseball.PlayerService.Maps.CsvMaps
       Map(m => m.AverageDraftPick).Name("ADP");
       Map(m => m.AverageDraftPickMin).Name("Min ADP");
       Map(m => m.AverageDraftPickMax).Name("Max ADP");
-      // Skipped stat fields:	PA, AVG, OBP, SLG, OPS, BB%, ct%, Eye, h%, SPD,	G%, L%, F%, xBA, BA, RC/G, RAR, BPX
+      // Skipped stat fields:	PA,AVG,OBP,SLG,OPS,BB%,ct%,Eye,h%,SPD,G%,L%,F%,xBA,BA,RC/G,RAR,BPX
       Map(m => m.ProjectedBattingStats.AtBats).Name("AB");
       Map(m => m.ProjectedBattingStats.Runs).Name("R");
       Map(m => m.ProjectedBattingStats.Hits).Name("H");
