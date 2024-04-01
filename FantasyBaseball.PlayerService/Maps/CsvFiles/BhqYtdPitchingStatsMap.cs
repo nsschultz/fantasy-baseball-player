@@ -25,20 +25,20 @@ namespace FantasyBaseball.PlayerService.Maps.CsvMaps
       Map(m => m.AverageDraftPickMin).Name("Min ADP");
       Map(m => m.AverageDraftPickMax).Name("Max ADP");
       // Skipped stat fields:	G,GS,SV%,ERA,xERA,WHIP,BF/G,Vel,BB%,K/9,K%,SwK%,K-BB%,H%,S%,LD %,HR/9,HR/FB,xHR/FB,OBA,RAR,REff%,LI,BPX,Dom%,Dis%,R$,5x5$
-      Map(m => m.ProjectedPitchingStats.InningsPitched).Name("IP");
-      Map(m => m.ProjectedPitchingStats.QualityStarts).Name("QS");
-      Map(m => m.ProjectedPitchingStats.Wins).Name("W");
-      Map(m => m.ProjectedPitchingStats.Losses).Name("L");
-      Map(m => m.ProjectedPitchingStats.Saves).Name("SV");
-      Map(m => m.ProjectedPitchingStats.Holds).Name("HD");
-      Map(m => m.ProjectedPitchingStats.BlownSaves).Name("BS");
-      Map(m => m.ProjectedPitchingStats.HitsAllowed).Name("H");
-      Map(m => m.ProjectedPitchingStats.EarnedRuns).Name("ER");
-      Map(m => m.ProjectedPitchingStats.HomeRunsAllowed).Name("HR");
-      Map(m => m.ProjectedPitchingStats.StrikeOuts).Name("K");
-      Map(m => m.ProjectedPitchingStats.BaseOnBallsAllowed).Name("BB");
-      Map(m => m.ProjectedPitchingStats.GroundBallRate).Name("GB %").TypeConverter<RateConverter>();
-      Map(m => m.ProjectedPitchingStats.FlyBallRate).Name("FB %").TypeConverter<RateConverter>();
+      Map(m => m.YearToDatePitchingStats.InningsPitched).Name("IP");
+      Map(m => m.YearToDatePitchingStats.QualityStarts).Name("QS");
+      Map(m => m.YearToDatePitchingStats.Wins).Name("W");
+      Map(m => m.YearToDatePitchingStats.Losses).Name("L");
+      Map(m => m.YearToDatePitchingStats.Saves).Name("SV");
+      Map(m => m.YearToDatePitchingStats.Holds).Name("HD");
+      Map(m => m.YearToDatePitchingStats.BlownSaves).Name("BS");
+      Map(m => m.YearToDatePitchingStats.HitsAllowed).Name("H");
+      Map(m => m.YearToDatePitchingStats.EarnedRuns).Name("ER");
+      Map(m => m.YearToDatePitchingStats.HomeRunsAllowed).Name("HR");
+      Map(m => m.YearToDatePitchingStats.StrikeOuts).Name("K");
+      Map(m => m.YearToDatePitchingStats.BaseOnBallsAllowed).Name("BB");
+      Map(m => m.YearToDatePitchingStats.GroundBallRate).Name("GB %").TypeConverter<RateConverter>();
+      Map(m => m.YearToDatePitchingStats.FlyBallRate).Name("FB %").TypeConverter<RateConverter>();
     }
   }
 }

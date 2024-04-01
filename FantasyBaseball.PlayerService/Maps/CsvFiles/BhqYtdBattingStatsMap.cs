@@ -25,20 +25,20 @@ namespace FantasyBaseball.PlayerService.Maps.CsvMaps
       Map(m => m.AverageDraftPickMax).Name("Max ADP");
       // Skipped stat fields:	PA,OBP,SLG,OPS,BB%,Ct%,Eye,H%,HctX,xBA,GB %,LD %,FB %,xPX,SPD,RCG,RAR,BPV,C,1B,2B,3B,SS,OF,DH
       // TODO: Need to calculate AB
-      Map(m => m.ProjectedBattingStats.Runs).Name("R");
-      Map(m => m.ProjectedBattingStats.Hits).Name("H");
-      Map(m => m.ProjectedBattingStats.Doubles).Name("2B");
-      Map(m => m.ProjectedBattingStats.Triples).Name("3B");
-      Map(m => m.ProjectedBattingStats.HomeRuns).Name("HR");
-      Map(m => m.ProjectedBattingStats.RunsBattedIn).Name("RBI");
-      Map(m => m.ProjectedBattingStats.BaseOnBalls).Name("BB");
-      Map(m => m.ProjectedBattingStats.StrikeOuts).Name("K");
-      Map(m => m.ProjectedBattingStats.StolenBases).Name("SB");
-      Map(m => m.ProjectedBattingStats.CaughtStealing).Name("CS");
-      Map(m => m.ProjectedBattingStats.BattingAverage).Name("AVG");
-      Map(m => m.ProjectedBattingStats.ContractRate).Name("Ct%").TypeConverter<RateConverter>(); ;
-      Map(m => m.ProjectedBattingStats.Power).Name("PX");
-      Map(m => m.ProjectedBattingStats.Speed).Name("RSPD");
+      Map(m => m.YearToDateBattingStats.Runs).Name("R");
+      Map(m => m.YearToDateBattingStats.Hits).Name("H");
+      Map(m => m.YearToDateBattingStats.Doubles).Name("2B");
+      Map(m => m.YearToDateBattingStats.Triples).Name("3B");
+      Map(m => m.YearToDateBattingStats.HomeRuns).Name("HR");
+      Map(m => m.YearToDateBattingStats.RunsBattedIn).Name("RBI");
+      Map(m => m.YearToDateBattingStats.BaseOnBalls).Name("BB");
+      Map(m => m.YearToDateBattingStats.StrikeOuts).Name("K");
+      Map(m => m.YearToDateBattingStats.StolenBases).Name("SB");
+      Map(m => m.YearToDateBattingStats.CaughtStealing).Name("CS");
+      Map(m => m.YearToDateBattingStats.BattingAverage).Name("AVG");
+      Map(m => m.YearToDateBattingStats.ContractRate).Name("Ct%").TypeConverter<RateConverter>(); ;
+      Map(m => m.YearToDateBattingStats.Power).Name("PX");
+      Map(m => m.YearToDateBattingStats.Speed).Name("RSPD");
     }
   }
 }
