@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using FantasyBaseball.PlayerService.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FantasyBaseball.PlayerService.Controllers.V2
+namespace FantasyBaseball.PlayerService.Controllers.V3
 {
   /// <summary>Endpoint for retrieving enum data relevant to players.</summary>
   [Route("api/v2/enum-map")]
+  [Route("api/v3/enum-map")]
   [ApiController]
   public class PlayerEnumController : ControllerBase
   {

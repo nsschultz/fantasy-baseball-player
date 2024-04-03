@@ -1,41 +1,20 @@
 using System;
-using System.Net.Mime;
 using System.Threading.Tasks;
 using FantasyBaseball.PlayerService.Exceptions;
 using FantasyBaseball.PlayerService.FileReaders;
 using FantasyBaseball.PlayerService.Models.Enums;
 using FantasyBaseball.PlayerService.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyBaseball.PlayerService.Controllers.V2
 {
   /// <summary>Endpoint for retrieving player data.</summary>
+  /// <remarks>Creates a new instance of the controller.</remarks>
+  /// <param name="mergeService">Service for merging the CSV file into the existing data store.</param>
   [ApiController]
-  public class PlayerActionController : ControllerBase
+  public class PlayerActionController(IMergeProjectionService mergeService) : ControllerBase
   {
-    private readonly ICsvFileWriterService _writerService;
-    private readonly IGetPlayerService _getService;
-    private readonly IMergeProjectionService _mergeService;
-
-
-    /// <summary>Creates a new instance of the controller.</summary>
-    /// <param name="getService">Service for getting players.</param>
-    /// <param name="mergeService">Service for merging the CSV file into the existing data store.</param>
-    /// <param name="writerService">The service for writting the CSV file.</param>
-    public PlayerActionController(IGetPlayerService getService, ICsvFileWriterService writerService, IMergeProjectionService mergeService) =>
-      (_getService, _mergeService, _writerService) = (getService, mergeService, writerService);
-
-    /// <summary>Export the players as a CSV file.</summary>
-    /// <returns>A CSV file containing the players.</returns>
-    [HttpGet("api/v2/action/export")]
-    public async Task<IActionResult> ExportPlayers()
-    {
-      var players = await _getService.GetPlayers();
-      var fileContent = _writerService.WriteCsvData(players);
-      Response.Headers.Append("Content-Disposition", new ContentDisposition { FileName = "players.csv", Inline = false }.ToString());
-      return File(fileContent, "application/octet-stream", "players.csv");
-    }
+    private readonly IMergeProjectionService _mergeService = mergeService;
 
     /// <summary>Overwrites the underlying batter.csv file.</summary>
     [HttpPost("api/v2/action/upload/projection/batters")]

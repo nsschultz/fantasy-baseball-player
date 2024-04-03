@@ -17,7 +17,7 @@ using Microsoft.OpenApi.Models;
 var BaseballSpecificOrigins = "_BaseballSpecificOrigins";
 var SwaggerBasePath = "api";
 var SwaggerTitle = "FantasyBaseball.PlayerService";
-var SwaggerVersion = "v2";
+var SwaggerVersion = "v3";
 
 // Build the App Config
 var builder = WebApplication.CreateBuilder(args);
