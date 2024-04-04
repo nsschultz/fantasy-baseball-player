@@ -35,10 +35,10 @@ namespace FantasyBaseball.PlayerService.Models
     public PlayerStatus Status { get; set; }
 
     /// <summary>The rank of this player in the draft.</summary>
-    public int DraftRank { get; set; } = MaxDraftPick;
+    [Obsolete("Use AvererageDraftPickMin instead.")] public int DraftRank { get; set; } = MaxDraftPick;
 
     /// <summary>The average draft position (ADP) for this player.</summary>
-    public int AverageDraftPick { get; set; } = MaxDraftPick;
+    public double AverageDraftPick { get; set; } = MaxDraftPick;
 
     /// <summary>The earliest pick used on this player.</summary>
     public int AverageDraftPickMin { get; set; } = MaxDraftPick;
