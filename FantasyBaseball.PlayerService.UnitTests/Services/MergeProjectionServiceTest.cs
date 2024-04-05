@@ -19,7 +19,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     {
       var returnList = new List<CsvBaseballPlayer>();
       var fileService = new Mock<ICsvFileReaderService>();
-      fileService.Setup(o => o.ReadCsvData(It.IsAny<ClassMap>(), It.IsAny<IFileReader>())).ReturnsAsync(returnList);
+      fileService.Setup(o => o.ReadCsvData(It.IsAny<ClassMap>(), It.IsAny<IFileReader>(), true)).ReturnsAsync(returnList);
       Assert.Equal(0, await new MergeProjectionService(null, fileService.Object, null).MergeProjection(null, PlayerType.B));
     }
 
@@ -42,7 +42,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         new() { BhqId = 789, Type = PlayerType.U }
       };
       var fileService = new Mock<ICsvFileReaderService>();
-      fileService.Setup(o => o.ReadCsvData(It.IsAny<ClassMap>(), It.IsAny<IFileReader>())).ReturnsAsync(newPlayers);
+      fileService.Setup(o => o.ReadCsvData(It.IsAny<ClassMap>(), It.IsAny<IFileReader>(), true)).ReturnsAsync(newPlayers);
       var mergeService = new Mock<IMergePlayerService>();
       mergeService
         .Setup(o => o.MergePlayer(It.IsAny<BhqPlayerMerger>(), It.IsAny<BaseballPlayer>(), It.IsAny<PlayerEntity>()))

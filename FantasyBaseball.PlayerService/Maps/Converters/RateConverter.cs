@@ -21,8 +21,11 @@ namespace FantasyBaseball.PlayerService.Maps.Converters
     /// <returns>The object created from the string.</returns>
     public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData) => value?.ToString() ?? "0";
 
-    private static double ConvertRate(double value) => value < 1 ? value : value / 100;
+    private static double ConvertRate(double value) => value > 1 ? value / 100 : value;
 
-    private static double ConvertRate(string value) => string.IsNullOrEmpty(value) ? 0 : ConvertRate(double.Parse(value));
+    private static double ConvertRate(string value) =>
+      string.IsNullOrEmpty(value) ? 0 : ConvertRate(ParseDouble(value.Contains('%') ? value.Replace("%", "") : value));
+
+    private static double ParseDouble(string value) => double.TryParse(value.Trim(), out var d) ? d : 0;
   }
 }
