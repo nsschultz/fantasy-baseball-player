@@ -11,6 +11,7 @@ namespace FantasyBaseball.PlayerService.Models.UnitTests
     {
       var obj = new CsvBaseballPlayer();
       Assert.Equal(Guid.Empty, obj.Id);
+      Assert.Equal(0, obj.MlbAmId);
       Assert.Equal(0, obj.BhqId);
       Assert.Null(obj.FirstName);
       Assert.Null(obj.LastName);
@@ -23,12 +24,34 @@ namespace FantasyBaseball.PlayerService.Models.UnitTests
       Assert.Equal(LeagueStatus.A, obj.League2);
       Assert.Equal(9999, obj.DraftRank);
       Assert.Equal(9999, obj.AverageDraftPick);
+      Assert.Equal(9999, obj.AverageDraftPickMax);
+      Assert.Equal(9999, obj.AverageDraftPickMin);
       Assert.Equal(9999, obj.HighestPick);
       Assert.Equal(0, obj.DraftedPercentage);
       Assert.Equal(0, obj.Reliability);
       Assert.Equal(0, obj.MayberryMethod);
       Assert.Empty(obj.BattingStats);
       Assert.Empty(obj.PitchingStats);
+    }
+
+    [Fact]
+    public void FullNameTest()
+    {
+      var player = new CsvBaseballPlayer { FirstName = "John", LastName = "Doe" };
+      Assert.Equal("Doe, John", player.FullName);
+      player = new CsvBaseballPlayer { LastName = "Doe" };
+      Assert.Equal("Doe", player.FullName);
+      player = new CsvBaseballPlayer();
+      Assert.Null(player.FullName);
+      player = new CsvBaseballPlayer { FullName = "Smith, Jane" };
+      Assert.Equal("Smith", player.LastName);
+      Assert.Equal("Jane", player.FirstName);
+      player = new CsvBaseballPlayer { FullName = "Ichiro" };
+      Assert.Equal("Ichiro", player.LastName);
+      Assert.Null(player.FirstName);
+      player = new CsvBaseballPlayer { FullName = "" };
+      Assert.Null(player.LastName);
+      Assert.Null(player.FirstName);
     }
 
     [Fact]

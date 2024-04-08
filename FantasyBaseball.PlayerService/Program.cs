@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 var BaseballSpecificOrigins = "_BaseballSpecificOrigins";
-var SwaggerBasePath = "api/v2";
+var SwaggerBasePath = "api";
 var SwaggerTitle = "FantasyBaseball.PlayerService";
 var SwaggerVersion = "v2";
 
@@ -80,7 +80,7 @@ builder.Services
   .AddSingleton<IGetPositionService, GetPositionService>()
   .AddScoped<IGetTeamsService, GetTeamsService>()
   .AddScoped<IMergePlayerService, MergePlayerService>()
-  .AddScoped<IMergeProjectionService, MergeProjectionService>()
+  .AddScoped<IMergeStatsService, MergeStatsService>()
   .AddScoped<IUpdatePlayerService, UpdatePlayerService>();
 // Setup Swagger
 builder.Services.AddSwaggerGen(o =>

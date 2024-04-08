@@ -184,10 +184,9 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
           : type == PlayerType.P ? BuildPositionList(["SP", "XX", "RP"]) : BuildPositionList(["XX"]),
         Team = new BaseballTeam { Code = type == PlayerType.B ? "MIL" : type == PlayerType.P ? "TB" : "XX" },
         Status = value == 10 ? PlayerStatus.XX : PlayerStatus.IL,
-        DraftRank = value + 1,
         AverageDraftPick = value + 2,
-        HighestPick = value + 3,
-        DraftedPercentage = value + 4,
+        AverageDraftPickMin = value + 1,
+        AverageDraftPickMax = value + 4,
         MayberryMethod = value + 5,
         Reliability = value + 6,
         League1 = value == 10 ? LeagueStatus.R : LeagueStatus.A,
@@ -226,10 +225,9 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
       Assert.Equal(BuildPositionString(expected.Positions), BuildPositionString(actual.Positions));
       Assert.Equal(EXPECTED_TEAMS[value], actual.Team);
       Assert.Equal(expected.Status, actual.Status);
-      Assert.Equal(expected.DraftRank, actual.DraftRank);
       Assert.Equal(expected.AverageDraftPick, actual.AverageDraftPick);
-      Assert.Equal(expected.HighestPick, actual.HighestPick);
-      Assert.Equal(expected.DraftedPercentage, actual.DraftedPercentage);
+      Assert.Equal(expected.AverageDraftPickMax, actual.AverageDraftPickMax);
+      Assert.Equal(expected.AverageDraftPickMin, actual.AverageDraftPickMin);
       Assert.Equal(expected.MayberryMethod, actual.MayberryMethod);
       Assert.Equal(expected.Reliability, actual.Reliability);
       Assert.Equal(expected.League1, actual.LeagueStatuses.First(l => l.LeagueId == 1).LeagueStatus);

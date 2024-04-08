@@ -7,11 +7,10 @@ using Xunit;
 
 namespace FantasyBaseball.PlayerService.IntegrationTests
 {
-  public class PlayerIntegrationTests : IClassFixture<HttpClientFixture>
+  public class PlayerIntegrationTests(HttpClientFixture fixture) : IClassFixture<HttpClientFixture>
   {
-    private HttpClientFixture _fixture;
-
-    public PlayerIntegrationTests(HttpClientFixture fixture) => _fixture = fixture;
+    private readonly HttpClientFixture _fixture = fixture;
+    private readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true };
 
     [Theory]
     [InlineData("/api/v2/enum-map?enumType=LeagueStatus", 4)]
@@ -23,7 +22,7 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
       var repsonse = await _fixture.Client.GetAsync(url);
       Assert.Equal(HttpStatusCode.OK, repsonse.StatusCode);
       var values = await JsonSerializer.DeserializeAsync<Dictionary<int, string>>(
-      await repsonse.Content.ReadAsStreamAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+      await repsonse.Content.ReadAsStreamAsync(), _options);
       Assert.Equal(count, values.Count);
     }
 
@@ -37,7 +36,7 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
     [Theory]
     [InlineData("/api/health")]
     [InlineData("/api/v2/action/export")]
-    [InlineData("/api/v2/swagger/index.html")]
+    [InlineData("/api/swagger/index.html")]
     public async void GetSimpleTests(string url)
     {
       var httpResponse = await _fixture.Client.GetAsync(url);
@@ -51,7 +50,7 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
       var repsonse = await _fixture.Client.GetAsync(url);
       Assert.Equal(HttpStatusCode.OK, repsonse.StatusCode);
       var values = await JsonSerializer.DeserializeAsync<List<T>>(
-      await repsonse.Content.ReadAsStreamAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+      await repsonse.Content.ReadAsStreamAsync(), _options);
       Assert.Equal(count, values.Count);
       return values;
     }

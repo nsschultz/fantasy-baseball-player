@@ -18,8 +18,6 @@ services:
       - VERSION=${VERSION_NUMBER}
     ports:
       - "8080:8080"
-    volumes:
-      - ../:/app:cached
   database:
     build: database/
     restart: always

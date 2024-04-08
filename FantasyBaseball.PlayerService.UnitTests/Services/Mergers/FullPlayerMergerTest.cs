@@ -95,19 +95,18 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
         LastName = "Last",
         Age = 36,
         Type = PlayerType.U,
-        Positions = BuildPositionList(new string[] { "OF", "1B" }),
+        Positions = BuildPositionList(["OF", "1B"]),
         Team = new BaseballTeam { Code = "MIL" },
         Status = PlayerStatus.XX,
-        DraftRank = 1,
         AverageDraftPick = 2,
-        HighestPick = 3,
-        DraftedPercentage = 4,
+        AverageDraftPickMin = 1,
+        AverageDraftPickMax = 4,
         MayberryMethod = 5,
         Reliability = 6,
         League1 = LeagueStatus.R,
         League2 = LeagueStatus.X,
-        BattingStats = new List<BattingStats> { BuildBattingStats(StatsType.YTD), BuildBattingStats(StatsType.PROJ) },
-        PitchingStats = new List<PitchingStats> { BuildPitchingStats(StatsType.YTD), BuildPitchingStats(StatsType.PROJ) }
+        BattingStats = [BuildBattingStats(StatsType.YTD), BuildBattingStats(StatsType.PROJ)],
+        PitchingStats = [BuildPitchingStats(StatsType.YTD), BuildPitchingStats(StatsType.PROJ)]
       };
 
     private static List<BaseballPosition> BuildPositionList(string[] positions) =>
@@ -132,10 +131,9 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
       Assert.Equal(BuildPositionString(expected.Positions), BuildPositionString(actual.Positions));
       Assert.Equal(expected.Team.Code, actual.Team);
       Assert.Equal(expected.Status, actual.Status);
-      Assert.Equal(expected.DraftRank, actual.DraftRank);
       Assert.Equal(expected.AverageDraftPick, actual.AverageDraftPick);
-      Assert.Equal(expected.HighestPick, actual.HighestPick);
-      Assert.Equal(expected.DraftedPercentage, actual.DraftedPercentage);
+      Assert.Equal(expected.AverageDraftPickMax, actual.AverageDraftPickMax);
+      Assert.Equal(expected.AverageDraftPickMin, actual.AverageDraftPickMin);
       Assert.Equal(expected.MayberryMethod, actual.MayberryMethod);
       Assert.Equal(expected.Reliability, actual.Reliability);
       Assert.Equal(expected.League1, actual.LeagueStatuses.First(l => l.LeagueId == 1).LeagueStatus);

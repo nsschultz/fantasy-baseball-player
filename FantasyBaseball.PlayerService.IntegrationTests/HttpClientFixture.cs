@@ -6,7 +6,7 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
 {
   public class HttpClientFixture : IDisposable
   {
-    private WebApplicationFactory<Program> _application;
+    private readonly WebApplicationFactory<Program> _application;
 
     public HttpClientFixture()
     {

@@ -49,7 +49,7 @@ docker compose -f .docker-compose/docker-compose-runtime.yaml -p fantasy-basebal
 ### Local Connections
 
 - Player API
-  - View Swagger/Test Endpoints: http://localhost:8080/api/v2/player/swagger/index.html
+  - View Swagger/Test Endpoints: http://localhost:8080/api/swagger/index.html
 - PG Admin
   - GUI: http://localhost:9000
 - Postgres Database

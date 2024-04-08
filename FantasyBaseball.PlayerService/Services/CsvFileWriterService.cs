@@ -11,14 +11,12 @@ using FantasyBaseball.PlayerService.Models;
 namespace FantasyBaseball.PlayerService.Services
 {
   /// <summary>Service for writing the CSV file.</summary>
-  public class CsvFileWriterService : ICsvFileWriterService
+  /// <remarks>Creates a new instance and configures the service.</remarks>
+  /// <param name="mapper">Instance of the auto mapper.</param>
+  public class CsvFileWriterService(IMapper mapper) : ICsvFileWriterService
   {
     private readonly CsvConfiguration _configuration = new(CultureInfo.CurrentCulture);
-    private readonly IMapper _mapper;
-
-    /// <summary>Creates a new instance and configures the service.</summary>
-    /// <param name="mapper">Instance of the auto mapper.</param>
-    public CsvFileWriterService(IMapper mapper) => _mapper = mapper;
+    private readonly IMapper _mapper = mapper;
 
     /// <summary>Reads in data from the given CSV file.</summary>
     /// <param name="players">All of the players to to write to the CSV.</param>

@@ -11,22 +11,19 @@ namespace FantasyBaseball.PlayerService.Database.Entities
     public int Age { get; set; }
 
     /// <summary>The average draft position (ADP) for this player.</summary>
-    public int AverageDraftPick { get; set; }
+    public double AverageDraftPick { get; set; }
+
+    /// <summary>The latest pick used on this player.</summary>
+    public int AverageDraftPickMax { get; set; }
+
+    /// <summary>The earliest pick used on this player.</summary>
+    public int AverageDraftPickMin { get; set; }
 
     /// <summary>The player's BHQ ID.</summary>
     public int BhqId { get; set; }
 
-    /// <summary>The percentage of time that this player was drafted.</summary>
-    public double DraftedPercentage { get; set; }
-
-    /// <summary>The rank of this player in the draft.</summary>
-    public int DraftRank { get; set; }
-
     /// <summary>The player's first name.</summary>
     public string FirstName { get; set; }
-
-    /// <summary>The highest pick that was used on this player.</summary>
-    public int HighestPick { get; set; }
 
     /// <summary>The player's ID.</summary>
     public Guid Id { get; set; }
@@ -36,6 +33,9 @@ namespace FantasyBaseball.PlayerService.Database.Entities
 
     /// <summary>The player's Mayberry Method score.</summary>
     public int MayberryMethod { get; set; }
+
+    /// <summary>The player's MLB BAM ID.</summary>
+    public int MlbAmId { get; set; }
 
     /// <summary>The player's projected reliability.</summary>
     public double Reliability { get; set; }

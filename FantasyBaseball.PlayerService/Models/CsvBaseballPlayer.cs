@@ -7,6 +7,20 @@ namespace FantasyBaseball.PlayerService.Models
   /// <summary>A marker object for breaking up the mappers.</summary>
   public class CsvBaseballPlayer : BaseballPlayer
   {
+    /// <summary>The fullname of the player.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+    public string FullName
+    {
+      get { return !string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName) ? $"{LastName}, {FirstName}" : LastName; }
+      set
+      {
+        if (string.IsNullOrEmpty(value)) return;
+        var parts = value.Split(',');
+        LastName = parts[0].Trim();
+        if (parts.Length == 2) FirstName = parts[1].Trim();
+      }
+    }
+
     /// <summary>Pitching Stats (Projected) for a given player.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     public BattingStats CombinedBattingStats

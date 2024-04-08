@@ -5,7 +5,7 @@
 -- Dumped from database version 14.1
 -- Dumped by pg_dump version 14.2
 
--- Started on 2022-11-14 19:01:00 UTC
+-- Started on 2024-04-04 21:43:37 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -63,7 +63,7 @@ CREATE TABLE public."LeagueStatuses" (
 ALTER TABLE public."LeagueStatuses" OWNER TO postgres;
 
 --
--- TOC entry 211 (class 1259 OID 16394)
+-- TOC entry 211 (class 1259 OID 16391)
 -- Name: PitchingStats; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -90,20 +90,20 @@ CREATE TABLE public."PitchingStats" (
 ALTER TABLE public."PitchingStats" OWNER TO postgres;
 
 --
--- TOC entry 212 (class 1259 OID 16397)
+-- TOC entry 212 (class 1259 OID 16394)
 -- Name: PlayerPositionEntity; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public."PlayerPositionEntity" (
     "PlayerId" uuid NOT NULL,
-    "PositionCode" character varying(3) NOT NULL
+    "PositionCode" character varying(4) NOT NULL
 );
 
 
 ALTER TABLE public."PlayerPositionEntity" OWNER TO postgres;
 
 --
--- TOC entry 213 (class 1259 OID 16400)
+-- TOC entry 213 (class 1259 OID 16397)
 -- Name: Players; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -116,19 +116,19 @@ CREATE TABLE public."Players" (
     "Age" integer NOT NULL,
     "Team" character varying(3),
     "Status" integer NOT NULL,
-    "DraftRank" integer NOT NULL,
-    "AverageDraftPick" integer NOT NULL,
-    "HighestPick" integer NOT NULL,
-    "DraftedPercentage" double precision NOT NULL,
+    "AverageDraftPickMin" integer NOT NULL,
+    "AverageDraftPick" double precision NOT NULL,
+    "MlbAmId" integer NOT NULL,
     "Reliability" double precision NOT NULL,
-    "MayberryMethod" integer NOT NULL
+    "MayberryMethod" integer NOT NULL,
+    "AverageDraftPickMax" integer DEFAULT 0 NOT NULL
 );
 
 
 ALTER TABLE public."Players" OWNER TO postgres;
 
 --
--- TOC entry 215 (class 1259 OID 16453)
+-- TOC entry 214 (class 1259 OID 16400)
 -- Name: Teams; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -144,7 +144,7 @@ CREATE TABLE public."Teams" (
 ALTER TABLE public."Teams" OWNER TO postgres;
 
 --
--- TOC entry 214 (class 1259 OID 16403)
+-- TOC entry 215 (class 1259 OID 16403)
 -- Name: __EFMigrationsHistory; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -157,7 +157,7 @@ CREATE TABLE public."__EFMigrationsHistory" (
 ALTER TABLE public."__EFMigrationsHistory" OWNER TO postgres;
 
 --
--- TOC entry 3350 (class 0 OID 16385)
+-- TOC entry 3351 (class 0 OID 16385)
 -- Dependencies: 209
 -- Data for Name: BattingStats; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -276,7 +276,7 @@ INSERT INTO public."BattingStats" ("PlayerId", "StatsType", "AtBats", "Runs", "H
 
 
 --
--- TOC entry 3351 (class 0 OID 16388)
+-- TOC entry 3352 (class 0 OID 16388)
 -- Dependencies: 210
 -- Data for Name: LeagueStatuses; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -389,7 +389,7 @@ INSERT INTO public."LeagueStatuses" ("PlayerId", "LeagueId", "LeagueStatus") VAL
 
 
 --
--- TOC entry 3352 (class 0 OID 16394)
+-- TOC entry 3353 (class 0 OID 16391)
 -- Dependencies: 211
 -- Data for Name: PitchingStats; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -497,7 +497,7 @@ INSERT INTO public."PitchingStats" ("PlayerId", "StatsType", "Wins", "Losses", "
 
 
 --
--- TOC entry 3353 (class 0 OID 16397)
+-- TOC entry 3354 (class 0 OID 16394)
 -- Dependencies: 212
 -- Data for Name: PlayerPositionEntity; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -627,108 +627,108 @@ INSERT INTO public."PlayerPositionEntity" ("PlayerId", "PositionCode") VALUES ('
 
 
 --
--- TOC entry 3354 (class 0 OID 16400)
+-- TOC entry 3355 (class 0 OID 16397)
 -- Dependencies: 213
 -- Data for Name: Players; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('2399dd10-b652-4796-8248-80b3975a936a', 7096, 1, 'Vaughn', 'Grissom', 21, 'ATL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 13);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('6f353142-40d0-41df-ac78-2b437c7c2263', 5358, 2, 'Brent', 'Suter', 32, 'MIL', 0, 408, 9999, 9999, 0.03, 0.3333333333333333, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('7198c9e4-12ef-4035-b539-7ee9ad8b3345', 6538, 2, 'Luis', 'Garcia', 25, 'HOU', 0, 156, 9999, 9999, 0.89, 0.8000000000000002, 30);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('5801e077-cc58-43e9-ad4a-f9802fee7369', 6209, 1, 'Jazz', 'Chisholm Jr.', 24, 'MIA', 1, 65, 9999, 9999, 0.97, 0.7333333333333334, 15);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('0aa22cce-8c66-4b09-9b5d-7ac2db34bbe3', 6179, 1, 'Mike', 'Brosseau', 28, 'MIL', 0, 9999, 9999, 9999, 0, 0.6, 7);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('0ae9f4c0-1349-481b-9bd0-a649ba6615dc', 4614, 2, 'Robbie', 'Ray', 30, 'SEA', 0, 50, 9999, 9999, 0.99, 0.5333333333333333, 85);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('111adb78-e25e-45ef-ab8f-67389b691964', 5879, 2, 'Freddy', 'Peralta', 26, 'MIL', 1, 51, 9999, 9999, 0.99, 0.8000000000000002, 11);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('17331001-9ba0-478d-ae5d-141f64d84196', 5199, 1, 'Rowdy', 'Tellez', 27, 'MIL', 0, 316, 9999, 9999, 0.05, 0.6666666666666666, 65);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('19abc855-4ce0-40f7-8e58-8808a15f0462', 5472, 1, 'Alex', 'Jackson', 26, 'MIL', 0, 9999, 9999, 9999, 0, 0.5333333333333333, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('1b43560c-6ac5-4e77-9368-631a24e16e6f', 5333, 1, 'David', 'Dahl', 28, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('61712e5d-41a6-4df7-8394-f4c71ba0f401', 6633, 2, 'Garrett', 'Whitlock', 26, 'BOS', 0, 272, 9999, 9999, 0.68, 0.5333333333333333, 26);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('82a7ac73-8279-481f-b41e-49b0b9901250', 2567, 1, 'Andrew', 'McCutchen', 35, 'MIL', 0, 291, 9999, 9999, 0.18, 0.7999999999999999, 50);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('23889720-3073-4c37-a7dd-63fdb633498b', 5083, 1, 'Hunter', 'Renfroe', 30, 'MIL', 0, 150, 9999, 9999, 0.84, 0.7999999999999999, 65);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('23950b3c-eef2-4d71-ada6-fc67d88d53e3', 3976, 2, 'Brad', 'Boxberger', 34, 'MIL', 0, 416, 9999, 9999, 0.04, 0.6000000000000001, 6);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('17c04c57-e2a3-4265-b4e7-173c97bbb1cd', 3941, 1, 'Bryce', 'Harper', 29, 'PHI', 0, 9, 9999, 9999, 0.99, 0.7999999999999999, 45);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('1e6f7190-9b05-4abe-b88d-e4624f4b555d', 6373, 1, 'Daulton', 'Varsho', 26, 'ARZ', 0, 168, 9999, 9999, 0.92, 0.7333333333333334, 65);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('1fe5d5b4-e833-4828-ac28-4bd253c78aa0', 5048, 1, 'Aaron', 'Judge', 30, 'NYY', 0, 33, 9999, 9999, 0.99, 0.8000000000000002, 80);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('25f7a378-4ce3-41f1-86c0-5e631e47cd35', 2972, 2, 'David', 'Robertson', 37, 'PHI', 0, 9999, 9999, 9999, 0.05, 0.20000000000000004, 30);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('39c2b781-d30c-4c4e-bb7a-42134a9b249a', 5627, 2, 'Hoby', 'Milner', 31, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('29a2c849-3eca-4a32-a695-d42dfdc865cd', 6596, 1, 'Ha-Seong', 'Kim', 26, 'SD', 0, 9999, 9999, 9999, 0.03, 0.9333333333333332, 65);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('43ee2b05-10b6-4894-a6cd-5c47a2f45160', 5981, 1, 'Pablo', 'Reyes', 28, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('4cc4cef2-30b0-425b-91a1-799d9a4c812f', 5601, 2, 'Triston', 'McKenzie', 24, 'CLE', 0, 195, 9999, 9999, 0.74, 0.7333333333333334, 60);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('096483e1-eaf6-4eb8-85b1-6492ff7db10d', 6002, 1, 'Andres', 'Gimenez', 23, 'CLE', 0, 342, 9999, 9999, 0.05, 0.8666666666666667, 85);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('341681b1-c99b-4c2b-90f7-9b1af902ddc2', 2841, 2, 'Max', 'Scherzer', 37, 'NYM', 1, 13, 9999, 9999, 0.99, 0.7333333333333334, 48);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('31ac324b-fed5-4aec-80ee-f14688e07919', 4886, 1, 'Tyrone', 'Taylor', 28, 'MIL', 0, 9999, 9999, 9999, 0.01, 0.7333333333333334, 36);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('36147a16-d7c4-48bb-b647-b8d59a5ec899', 5085, 2, 'Adrian', 'Houser', 29, 'MIL', 0, 487, 9999, 9999, 0.09, 0.8666666666666667, 3);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('379e76bb-af9c-490f-b8d1-73a0f3cdb9f8', 5053, 1, 'Willy', 'Adames', 26, 'MIL', 0, 134, 9999, 9999, 0.87, 1, 70);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('379f2dec-88b0-46c4-961e-40e5df7ba20f', 5736, 1, 'Kyle', 'Tucker', 25, 'HOU', 0, 8, 9999, 9999, 0.99, 0.8666666666666667, 80);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('38e839cc-52b8-49e2-a677-51846d2dca95', 5098, 2, 'Seth', 'Lugo', 32, 'NYM', 0, 493, 9999, 9999, 0.03, 0.6, 10);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('643d1447-e90a-4677-898a-bd1d02bed609', 6806, 1, 'MJ', 'Melendez', 23, 'KC', 0, 9999, 9999, 9999, 0.04, 0.6666666666666666, 55);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('8a03b582-c34a-4f16-afa5-6f3447a4b47a', 6881, 1, 'Riley', 'Greene', 21, 'DET', 0, 301, 9999, 9999, 0.29, 0.6666666666666666, 21);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('3d71e823-f1e8-49e5-aad1-97f39ca448ef', 5316, 1, 'Omar', 'Narvaez', 30, 'MIL', 0, 320, 9999, 9999, 0.19, 0.7999999999999999, 15);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('7b7017f3-7de6-4348-b4a9-81286367d15c', 4528, 1, 'Francisco', 'Lindor', 28, 'NYM', 0, 37, 9999, 9999, 0.99, 0.8666666666666667, 75);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('47b9f5a7-811a-4a16-9385-f575de5d4389', 4363, 1, 'George', 'Springer', 32, 'TOR', 0, 49, 9999, 9999, 0.99, 0.6666666666666666, 85);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('48b7aa93-3463-4fc2-b9b1-0311e5c60277', 6580, 2, 'Aaron', 'Ashby', 24, 'MIL', 0, 297, 9999, 9999, 0.21, 0.4666666666666666, 30);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('081f3aa5-b16c-4e83-80d7-1b905c525a72', 6053, 1, 'Isaac', 'Paredes', 23, 'TB', 0, 9999, 9999, 9999, 0, 0.6666666666666666, 30);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('50e93fc7-68d6-4523-875f-0bb344cb91e5', 5924, 2, 'Corbin', 'Burnes', 27, 'MIL', 0, 7, 9999, 9999, 0.99, 0.6, 100);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('1a2b372b-44b2-4989-8af0-6499a2659c87', 4335, 1, 'Christian', 'Yelich', 30, 'MIL', 0, 89, 9999, 9999, 0.97, 0.6, 75);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('6d69e269-8028-4703-b0f2-62a2dcdb15dc', 6675, 2, 'Alec', 'Bettinger', 26, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('9876ba8d-d95d-44de-9460-1f4f0c3b09d1', 5427, 2, 'Brandon', 'Woodruff', 29, 'MIL', 0, 17, 9999, 9999, 0.99, 0.9333333333333332, 48);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('9a4be7e0-e5a0-4281-99ff-4b498401d124', 3677, 2, 'Rex', 'Brothers', 34, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('9eadde7d-b72e-4a6e-9ac3-77075ae359b0', 5955, 2, 'Chad', 'Sobotka', 28, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('9f0384ee-02a9-43b7-88dc-4d9c7f530dda', 5407, 1, 'Matt', 'Chapman', 29, 'TOR', 0, 141, 9999, 9999, 0.92, 0.8666666666666667, 60);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('a07eb266-0b30-43c6-b53c-7b0e8a2bb883', 5237, 2, 'Joe', 'Musgrove', 29, 'SD', 0, 57, 9999, 9999, 0.98, 0.7333333333333334, 80);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('a0dcc1fb-0beb-4b1f-8f19-c6d7568b573d', 6694, 2, 'J.C.', 'Mejia', 25, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('a54864b7-9923-44aa-8627-3acb70462246', 5391, 1, 'Rhys', 'Hoskins', 29, 'PHI', 0, 106, 9999, 9999, 0.92, 0.8666666666666667, 75);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('a920a779-1a2a-40ce-ba10-69f9b022e458', 3659, 2, 'Blaine', 'Hardy', 35, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('ac2a670c-6da8-4252-99fd-7d952706a816', 6009, 1, 'Keston', 'Hiura', 25, 'MIL', 0, 9999, 9999, 9999, 0.09, 0.7333333333333334, 36);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('a7da4769-9b95-4317-8a35-251d4ec5fd20', 5611, 1, 'Nick', 'Gordon', 26, 'MIN', 0, 9999, 9999, 9999, 0.01, 0.7333333333333334, 36);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('b1f37406-2a67-4b8c-91c1-75a50a6f763d', 6216, 1, 'Jake', 'Fraley', 27, 'CIN', 0, 378, 9999, 9999, 0.03, 0.4666666666666666, 11);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('b55cf6a3-77fc-4689-bae8-694d34055070', 6719, 2, 'Joe', 'Ryan', 26, 'MIN', 0, 217, 9999, 9999, 0.67, 0.4666666666666666, 30);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('b78b26fa-88c7-4f12-addb-585140bacde7', 6729, 2, 'Miguel', 'Sanchez', 28, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('b690f262-e87a-4038-add9-6d64af2ada29', 6885, 1, 'Nolan', 'Gorman', 22, 'STL', 0, 9999, 9999, 9999, 0.07, 0.6666666666666666, 33);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('0354b4bf-2ef4-47be-bf08-ecaa1704873c', 6444, 1, 'Jakson', 'Reetz', 26, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('bd9c9d88-4fe4-492a-b70a-f60982b8216d', 6122, 2, 'Emmanuel', 'Clase', 24, 'CLE', 0, 94, 9999, 9999, 0.98, 0.7333333333333334, 48);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('bf019d49-25bd-4885-9d2b-55ee958fe547', 5741, 1, 'Luis', 'Urias', 25, 'MIL', 0, 219, 9999, 9999, 0.56, 0.8666666666666667, 50);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('c6ba6850-6017-4ab3-9090-81b83d046c5a', 5890, 2, 'Shane', 'Bieber', 27, 'CLE', 0, 24, 9999, 9999, 0.99, 0.6666666666666666, 90);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('ca82ac78-e3c3-4051-a15b-a70ef623d6c3', 5255, 2, 'Taylor', 'Rogers', 31, 'MIL', 0, 209, 9999, 9999, 0.85, 0.6000000000000001, 54);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('952984f5-7fb4-4a29-92a2-bd90a01c5cc3', 3955, 2, 'Matt', 'Bush', 36, 'MIL', 0, 9999, 9999, 9999, 0, 0.20000000000000004, 16);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('d0fc0a0d-2d4d-4040-89dd-d67ed85a69e9', 6724, 2, 'Jake', 'Cousins', 27, 'MIL', 0, 9999, 9999, 9999, 0.01, 0.39999999999999997, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('d1df308b-1ea9-4419-8729-d2cac3753e6b', 6637, 1, 'Jonathan', 'India', 25, 'CIN', 0, 79, 9999, 9999, 0.97, 1, 24);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('c378cd4e-d49d-44fb-8b63-adb7abc1ff64', 5187, 2, 'Edwin', 'Diaz', 28, 'NYM', 0, 103, 9999, 9999, 0.98, 0.8666666666666667, 54);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('c4608bbb-dc81-4891-9775-78946407d39c', 4217, 1, 'Kolten', 'Wong', 31, 'MIL', 0, 188, 9999, 9999, 0.56, 0.8000000000000002, 80);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('dff2cb50-a73b-40df-bdc0-f229299769de', 6226, 2, 'Devin', 'Williams', 27, 'MIL', 0, 249, 9999, 9999, 0.78, 0.5333333333333333, 34);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('e0deb378-7f52-4742-a2f9-75ae12346db4', 5864, 2, 'Eric', 'Lauer', 27, 'MIL', 0, 322, 9999, 9999, 0.08, 0.5333333333333333, 27);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('e2f3a018-6216-43fa-a24c-96d5f6f61685', 6883, 1, 'Julio', 'Rodriguez', 21, 'SEA', 0, 356, 9999, 9999, 0.46, 0.4666666666666666, 85);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('eb338553-881b-45df-b252-70b47040b42c', 6578, 2, 'Ethan', 'Small', 25, 'MIL', 0, 9999, 9999, 9999, 0.01, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('d017942e-c5f9-49bf-9fb7-dbd129dedcab', 6774, 1, 'Garrett', 'Mitchell', 23, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('ebe41b0a-d144-4f3d-8c57-3b4f5300b44f', 6582, 1, 'Brice', 'Turang', 22, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('18fa5de6-e188-45f4-be68-f95140061639', 6581, 1, 'Mario', 'Feliciano', 23, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('8d89ac4c-28ef-48bb-b6f4-b4bd7ae55022', 6142, 2, 'Andres', 'Munoz', 23, 'SEA', 0, 9999, 9999, 9999, 0.01, 0.20000000000000004, 16);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('e21028aa-5084-42b6-aa62-10cbcde98ce2', 6945, 1, 'Brett', 'Sullivan', 28, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('e9137344-a90c-4d35-be6f-cd3f435542eb', 6589, 1, 'Wander', 'Franco', 21, 'TB', 0, 44, 9999, 9999, 0.99, 0.5333333333333333, 42);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('e7d67172-ee82-4a30-9bb1-ff3d51285cf6', 6099, 2, 'Jordan', 'Romano', 29, 'TOR', 0, 140, 9999, 9999, 0.96, 0.4666666666666666, 51);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('e8774047-7ff9-43e7-b709-f7f66cb4def9', 5129, 1, 'Dansby', 'Swanson', 28, 'ATL', 0, 110, 9999, 9999, 0.93, 0.9333333333333332, 60);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('153215ee-f49a-4b7d-a910-72fa3a9d47cb', 4951, 2, 'Trevor', 'Gott', 29, 'MIL', 0, 9999, 9999, 9999, 0, 0.3333333333333333, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('64583442-204f-4f02-b223-a397cdf09d90', 5351, 2, 'Jandel', 'Gustave', 29, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('35601382-71e5-41c5-ba1e-542441107a98', 5072, 2, 'Jorge', 'Lopez', 29, 'MIN', 0, 9999, 9999, 9999, 0, 0.8666666666666667, 42);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('ed798f1a-0241-4b94-98a7-876fe949ee91', 4800, 1, 'Kyle', 'Schwarber', 29, 'PHI', 0, 90, 9999, 9999, 0.95, 0.7333333333333334, 70);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('ef0b95a8-da60-4c25-926d-cf60476821b0', 4775, 1, 'Christian', 'Walker', 31, 'ARZ', 0, 363, 9999, 9999, 0.05, 0.8666666666666667, 65);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('f2915b39-76e3-47d8-8dc3-44ce0ff4b793', 4784, 2, 'Aaron', 'Nola', 29, 'PHI', 0, 36, 9999, 9999, 0.99, 0.8666666666666667, 95);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('91ed9cb9-e41a-4214-85be-dc6f6cef224b', 6187, 2, 'Trevor', 'Kelley', 28, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('f39e1057-9003-4ea5-9360-94c12b1cec69', 4611, 1, 'Jace', 'Peterson', 32, 'MIL', 0, 9999, 9999, 9999, 0.01, 0.7999999999999999, 36);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('1b6f447e-affe-4509-845a-09aadeba3b4c', 7015, 1, 'Esteury', 'Ruiz', 23, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('392b9ad3-2e05-4496-965e-044013da057b', 5138, 2, 'Luis', 'Perdomo', 29, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('4b264e78-617a-477e-8d27-177c878fec9a', 7024, 2, 'Peter', 'Strzelecki', 27, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('f44be3eb-2a2b-476d-ac6f-27244bc47978', 5508, 1, 'Victor', 'Caratini', 28, 'MIL', 0, 9999, 9999, 9999, 0, 0.8666666666666667, 21);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('f774ff89-a188-4adb-a2ab-38186a60a609', 5006, 2, 'Blake', 'Snell', 29, 'SD', 0, 132, 9999, 9999, 0.94, 0.7333333333333334, 14);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('0035735d-c42e-43da-8ae2-fbc476692203', 7020, 2, 'Luke', 'Barker', 30, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('010ae0a2-84ee-48cf-9cf7-8a2ec508cc33', 5988, 1, 'Jonathan', 'Davis', 30, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 0);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('62795f8a-bdf9-433c-86f0-ee63d2ba9fb6', 7023, 2, 'Jason', 'Alexander', 29, 'MIL', 0, 9999, 9999, 9999, 0, 0.4666666666666666, 3);
-INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "DraftRank", "AverageDraftPick", "HighestPick", "DraftedPercentage", "Reliability", "MayberryMethod") VALUES ('faccb3da-4eca-413e-b119-930b7ae8f76e', 5831, 2, 'A.J.', 'Puk', 27, 'OAK', 0, 9999, 9999, 9999, 0.02, 0.20000000000000004, 13);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('2399dd10-b652-4796-8248-80b3975a936a', 7096, 1, 'Vaughn', 'Grissom', 21, 'ATL', 0, 9999, 9999, 9999, 0.4666666666666666, 13, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('6f353142-40d0-41df-ac78-2b437c7c2263', 5358, 2, 'Brent', 'Suter', 32, 'MIL', 0, 408, 9999, 9999, 0.3333333333333333, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('7198c9e4-12ef-4035-b539-7ee9ad8b3345', 6538, 2, 'Luis', 'Garcia', 25, 'HOU', 0, 156, 9999, 9999, 0.8000000000000002, 30, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('5801e077-cc58-43e9-ad4a-f9802fee7369', 6209, 1, 'Jazz', 'Chisholm Jr.', 24, 'MIA', 1, 65, 9999, 9999, 0.7333333333333334, 15, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('0aa22cce-8c66-4b09-9b5d-7ac2db34bbe3', 6179, 1, 'Mike', 'Brosseau', 28, 'MIL', 0, 9999, 9999, 9999, 0.6, 7, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('0ae9f4c0-1349-481b-9bd0-a649ba6615dc', 4614, 2, 'Robbie', 'Ray', 30, 'SEA', 0, 50, 9999, 9999, 0.5333333333333333, 85, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('111adb78-e25e-45ef-ab8f-67389b691964', 5879, 2, 'Freddy', 'Peralta', 26, 'MIL', 1, 51, 9999, 9999, 0.8000000000000002, 11, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('17331001-9ba0-478d-ae5d-141f64d84196', 5199, 1, 'Rowdy', 'Tellez', 27, 'MIL', 0, 316, 9999, 9999, 0.6666666666666666, 65, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('19abc855-4ce0-40f7-8e58-8808a15f0462', 5472, 1, 'Alex', 'Jackson', 26, 'MIL', 0, 9999, 9999, 9999, 0.5333333333333333, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('1b43560c-6ac5-4e77-9368-631a24e16e6f', 5333, 1, 'David', 'Dahl', 28, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('61712e5d-41a6-4df7-8394-f4c71ba0f401', 6633, 2, 'Garrett', 'Whitlock', 26, 'BOS', 0, 272, 9999, 9999, 0.5333333333333333, 26, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('82a7ac73-8279-481f-b41e-49b0b9901250', 2567, 1, 'Andrew', 'McCutchen', 35, 'MIL', 0, 291, 9999, 9999, 0.7999999999999999, 50, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('23889720-3073-4c37-a7dd-63fdb633498b', 5083, 1, 'Hunter', 'Renfroe', 30, 'MIL', 0, 150, 9999, 9999, 0.7999999999999999, 65, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('23950b3c-eef2-4d71-ada6-fc67d88d53e3', 3976, 2, 'Brad', 'Boxberger', 34, 'MIL', 0, 416, 9999, 9999, 0.6000000000000001, 6, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('17c04c57-e2a3-4265-b4e7-173c97bbb1cd', 3941, 1, 'Bryce', 'Harper', 29, 'PHI', 0, 9, 9999, 9999, 0.7999999999999999, 45, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('1e6f7190-9b05-4abe-b88d-e4624f4b555d', 6373, 1, 'Daulton', 'Varsho', 26, 'ARZ', 0, 168, 9999, 9999, 0.7333333333333334, 65, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('1fe5d5b4-e833-4828-ac28-4bd253c78aa0', 5048, 1, 'Aaron', 'Judge', 30, 'NYY', 0, 33, 9999, 9999, 0.8000000000000002, 80, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('25f7a378-4ce3-41f1-86c0-5e631e47cd35', 2972, 2, 'David', 'Robertson', 37, 'PHI', 0, 9999, 9999, 9999, 0.20000000000000004, 30, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('39c2b781-d30c-4c4e-bb7a-42134a9b249a', 5627, 2, 'Hoby', 'Milner', 31, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('29a2c849-3eca-4a32-a695-d42dfdc865cd', 6596, 1, 'Ha-Seong', 'Kim', 26, 'SD', 0, 9999, 9999, 9999, 0.9333333333333332, 65, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('43ee2b05-10b6-4894-a6cd-5c47a2f45160', 5981, 1, 'Pablo', 'Reyes', 28, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('4cc4cef2-30b0-425b-91a1-799d9a4c812f', 5601, 2, 'Triston', 'McKenzie', 24, 'CLE', 0, 195, 9999, 9999, 0.7333333333333334, 60, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('096483e1-eaf6-4eb8-85b1-6492ff7db10d', 6002, 1, 'Andres', 'Gimenez', 23, 'CLE', 0, 342, 9999, 9999, 0.8666666666666667, 85, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('341681b1-c99b-4c2b-90f7-9b1af902ddc2', 2841, 2, 'Max', 'Scherzer', 37, 'NYM', 1, 13, 9999, 9999, 0.7333333333333334, 48, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('31ac324b-fed5-4aec-80ee-f14688e07919', 4886, 1, 'Tyrone', 'Taylor', 28, 'MIL', 0, 9999, 9999, 9999, 0.7333333333333334, 36, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('36147a16-d7c4-48bb-b647-b8d59a5ec899', 5085, 2, 'Adrian', 'Houser', 29, 'MIL', 0, 487, 9999, 9999, 0.8666666666666667, 3, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('379e76bb-af9c-490f-b8d1-73a0f3cdb9f8', 5053, 1, 'Willy', 'Adames', 26, 'MIL', 0, 134, 9999, 9999, 1, 70, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('379f2dec-88b0-46c4-961e-40e5df7ba20f', 5736, 1, 'Kyle', 'Tucker', 25, 'HOU', 0, 8, 9999, 9999, 0.8666666666666667, 80, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('38e839cc-52b8-49e2-a677-51846d2dca95', 5098, 2, 'Seth', 'Lugo', 32, 'NYM', 0, 493, 9999, 9999, 0.6, 10, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('643d1447-e90a-4677-898a-bd1d02bed609', 6806, 1, 'MJ', 'Melendez', 23, 'KC', 0, 9999, 9999, 9999, 0.6666666666666666, 55, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('8a03b582-c34a-4f16-afa5-6f3447a4b47a', 6881, 1, 'Riley', 'Greene', 21, 'DET', 0, 301, 9999, 9999, 0.6666666666666666, 21, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('3d71e823-f1e8-49e5-aad1-97f39ca448ef', 5316, 1, 'Omar', 'Narvaez', 30, 'MIL', 0, 320, 9999, 9999, 0.7999999999999999, 15, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('7b7017f3-7de6-4348-b4a9-81286367d15c', 4528, 1, 'Francisco', 'Lindor', 28, 'NYM', 0, 37, 9999, 9999, 0.8666666666666667, 75, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('47b9f5a7-811a-4a16-9385-f575de5d4389', 4363, 1, 'George', 'Springer', 32, 'TOR', 0, 49, 9999, 9999, 0.6666666666666666, 85, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('48b7aa93-3463-4fc2-b9b1-0311e5c60277', 6580, 2, 'Aaron', 'Ashby', 24, 'MIL', 0, 297, 9999, 9999, 0.4666666666666666, 30, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('081f3aa5-b16c-4e83-80d7-1b905c525a72', 6053, 1, 'Isaac', 'Paredes', 23, 'TB', 0, 9999, 9999, 9999, 0.6666666666666666, 30, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('50e93fc7-68d6-4523-875f-0bb344cb91e5', 5924, 2, 'Corbin', 'Burnes', 27, 'MIL', 0, 7, 9999, 9999, 0.6, 100, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('1a2b372b-44b2-4989-8af0-6499a2659c87', 4335, 1, 'Christian', 'Yelich', 30, 'MIL', 0, 89, 9999, 9999, 0.6, 75, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('6d69e269-8028-4703-b0f2-62a2dcdb15dc', 6675, 2, 'Alec', 'Bettinger', 26, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('9876ba8d-d95d-44de-9460-1f4f0c3b09d1', 5427, 2, 'Brandon', 'Woodruff', 29, 'MIL', 0, 17, 9999, 9999, 0.9333333333333332, 48, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('9a4be7e0-e5a0-4281-99ff-4b498401d124', 3677, 2, 'Rex', 'Brothers', 34, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('9eadde7d-b72e-4a6e-9ac3-77075ae359b0', 5955, 2, 'Chad', 'Sobotka', 28, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('9f0384ee-02a9-43b7-88dc-4d9c7f530dda', 5407, 1, 'Matt', 'Chapman', 29, 'TOR', 0, 141, 9999, 9999, 0.8666666666666667, 60, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('a07eb266-0b30-43c6-b53c-7b0e8a2bb883', 5237, 2, 'Joe', 'Musgrove', 29, 'SD', 0, 57, 9999, 9999, 0.7333333333333334, 80, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('a0dcc1fb-0beb-4b1f-8f19-c6d7568b573d', 6694, 2, 'J.C.', 'Mejia', 25, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('a54864b7-9923-44aa-8627-3acb70462246', 5391, 1, 'Rhys', 'Hoskins', 29, 'PHI', 0, 106, 9999, 9999, 0.8666666666666667, 75, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('a920a779-1a2a-40ce-ba10-69f9b022e458', 3659, 2, 'Blaine', 'Hardy', 35, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('ac2a670c-6da8-4252-99fd-7d952706a816', 6009, 1, 'Keston', 'Hiura', 25, 'MIL', 0, 9999, 9999, 9999, 0.7333333333333334, 36, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('a7da4769-9b95-4317-8a35-251d4ec5fd20', 5611, 1, 'Nick', 'Gordon', 26, 'MIN', 0, 9999, 9999, 9999, 0.7333333333333334, 36, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('b1f37406-2a67-4b8c-91c1-75a50a6f763d', 6216, 1, 'Jake', 'Fraley', 27, 'CIN', 0, 378, 9999, 9999, 0.4666666666666666, 11, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('b55cf6a3-77fc-4689-bae8-694d34055070', 6719, 2, 'Joe', 'Ryan', 26, 'MIN', 0, 217, 9999, 9999, 0.4666666666666666, 30, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('b78b26fa-88c7-4f12-addb-585140bacde7', 6729, 2, 'Miguel', 'Sanchez', 28, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('b690f262-e87a-4038-add9-6d64af2ada29', 6885, 1, 'Nolan', 'Gorman', 22, 'STL', 0, 9999, 9999, 9999, 0.6666666666666666, 33, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('0354b4bf-2ef4-47be-bf08-ecaa1704873c', 6444, 1, 'Jakson', 'Reetz', 26, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('bd9c9d88-4fe4-492a-b70a-f60982b8216d', 6122, 2, 'Emmanuel', 'Clase', 24, 'CLE', 0, 94, 9999, 9999, 0.7333333333333334, 48, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('bf019d49-25bd-4885-9d2b-55ee958fe547', 5741, 1, 'Luis', 'Urias', 25, 'MIL', 0, 219, 9999, 9999, 0.8666666666666667, 50, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('c6ba6850-6017-4ab3-9090-81b83d046c5a', 5890, 2, 'Shane', 'Bieber', 27, 'CLE', 0, 24, 9999, 9999, 0.6666666666666666, 90, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('ca82ac78-e3c3-4051-a15b-a70ef623d6c3', 5255, 2, 'Taylor', 'Rogers', 31, 'MIL', 0, 209, 9999, 9999, 0.6000000000000001, 54, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('952984f5-7fb4-4a29-92a2-bd90a01c5cc3', 3955, 2, 'Matt', 'Bush', 36, 'MIL', 0, 9999, 9999, 9999, 0.20000000000000004, 16, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('d0fc0a0d-2d4d-4040-89dd-d67ed85a69e9', 6724, 2, 'Jake', 'Cousins', 27, 'MIL', 0, 9999, 9999, 9999, 0.39999999999999997, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('d1df308b-1ea9-4419-8729-d2cac3753e6b', 6637, 1, 'Jonathan', 'India', 25, 'CIN', 0, 79, 9999, 9999, 1, 24, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('c378cd4e-d49d-44fb-8b63-adb7abc1ff64', 5187, 2, 'Edwin', 'Diaz', 28, 'NYM', 0, 103, 9999, 9999, 0.8666666666666667, 54, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('c4608bbb-dc81-4891-9775-78946407d39c', 4217, 1, 'Kolten', 'Wong', 31, 'MIL', 0, 188, 9999, 9999, 0.8000000000000002, 80, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('dff2cb50-a73b-40df-bdc0-f229299769de', 6226, 2, 'Devin', 'Williams', 27, 'MIL', 0, 249, 9999, 9999, 0.5333333333333333, 34, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('e0deb378-7f52-4742-a2f9-75ae12346db4', 5864, 2, 'Eric', 'Lauer', 27, 'MIL', 0, 322, 9999, 9999, 0.5333333333333333, 27, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('e2f3a018-6216-43fa-a24c-96d5f6f61685', 6883, 1, 'Julio', 'Rodriguez', 21, 'SEA', 0, 356, 9999, 9999, 0.4666666666666666, 85, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('eb338553-881b-45df-b252-70b47040b42c', 6578, 2, 'Ethan', 'Small', 25, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('d017942e-c5f9-49bf-9fb7-dbd129dedcab', 6774, 1, 'Garrett', 'Mitchell', 23, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('ebe41b0a-d144-4f3d-8c57-3b4f5300b44f', 6582, 1, 'Brice', 'Turang', 22, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('18fa5de6-e188-45f4-be68-f95140061639', 6581, 1, 'Mario', 'Feliciano', 23, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('8d89ac4c-28ef-48bb-b6f4-b4bd7ae55022', 6142, 2, 'Andres', 'Munoz', 23, 'SEA', 0, 9999, 9999, 9999, 0.20000000000000004, 16, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('e21028aa-5084-42b6-aa62-10cbcde98ce2', 6945, 1, 'Brett', 'Sullivan', 28, 'MIL', 0, 9999, 9999, 9999, 0, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('e9137344-a90c-4d35-be6f-cd3f435542eb', 6589, 1, 'Wander', 'Franco', 21, 'TB', 0, 44, 9999, 9999, 0.5333333333333333, 42, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('e7d67172-ee82-4a30-9bb1-ff3d51285cf6', 6099, 2, 'Jordan', 'Romano', 29, 'TOR', 0, 140, 9999, 9999, 0.4666666666666666, 51, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('e8774047-7ff9-43e7-b709-f7f66cb4def9', 5129, 1, 'Dansby', 'Swanson', 28, 'ATL', 0, 110, 9999, 9999, 0.9333333333333332, 60, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('153215ee-f49a-4b7d-a910-72fa3a9d47cb', 4951, 2, 'Trevor', 'Gott', 29, 'MIL', 0, 9999, 9999, 9999, 0.3333333333333333, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('64583442-204f-4f02-b223-a397cdf09d90', 5351, 2, 'Jandel', 'Gustave', 29, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('35601382-71e5-41c5-ba1e-542441107a98', 5072, 2, 'Jorge', 'Lopez', 29, 'MIN', 0, 9999, 9999, 9999, 0.8666666666666667, 42, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('ed798f1a-0241-4b94-98a7-876fe949ee91', 4800, 1, 'Kyle', 'Schwarber', 29, 'PHI', 0, 90, 9999, 9999, 0.7333333333333334, 70, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('ef0b95a8-da60-4c25-926d-cf60476821b0', 4775, 1, 'Christian', 'Walker', 31, 'ARZ', 0, 363, 9999, 9999, 0.8666666666666667, 65, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('f2915b39-76e3-47d8-8dc3-44ce0ff4b793', 4784, 2, 'Aaron', 'Nola', 29, 'PHI', 0, 36, 9999, 9999, 0.8666666666666667, 95, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('91ed9cb9-e41a-4214-85be-dc6f6cef224b', 6187, 2, 'Trevor', 'Kelley', 28, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('f39e1057-9003-4ea5-9360-94c12b1cec69', 4611, 1, 'Jace', 'Peterson', 32, 'MIL', 0, 9999, 9999, 9999, 0.7999999999999999, 36, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('1b6f447e-affe-4509-845a-09aadeba3b4c', 7015, 1, 'Esteury', 'Ruiz', 23, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('392b9ad3-2e05-4496-965e-044013da057b', 5138, 2, 'Luis', 'Perdomo', 29, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('4b264e78-617a-477e-8d27-177c878fec9a', 7024, 2, 'Peter', 'Strzelecki', 27, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('f44be3eb-2a2b-476d-ac6f-27244bc47978', 5508, 1, 'Victor', 'Caratini', 28, 'MIL', 0, 9999, 9999, 9999, 0.8666666666666667, 21, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('f774ff89-a188-4adb-a2ab-38186a60a609', 5006, 2, 'Blake', 'Snell', 29, 'SD', 0, 132, 9999, 9999, 0.7333333333333334, 14, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('0035735d-c42e-43da-8ae2-fbc476692203', 7020, 2, 'Luke', 'Barker', 30, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('010ae0a2-84ee-48cf-9cf7-8a2ec508cc33', 5988, 1, 'Jonathan', 'Davis', 30, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 0, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('62795f8a-bdf9-433c-86f0-ee63d2ba9fb6', 7023, 2, 'Jason', 'Alexander', 29, 'MIL', 0, 9999, 9999, 9999, 0.4666666666666666, 3, 0);
+INSERT INTO public."Players" ("Id", "BhqId", "Type", "FirstName", "LastName", "Age", "Team", "Status", "AverageDraftPickMin", "AverageDraftPick", "MlbAmId", "Reliability", "MayberryMethod", "AverageDraftPickMax") VALUES ('faccb3da-4eca-413e-b119-930b7ae8f76e', 5831, 2, 'A.J.', 'Puk', 27, 'OAK', 0, 9999, 9999, 9999, 0.20000000000000004, 13, 0);
 
 
 --
--- TOC entry 3356 (class 0 OID 16453)
--- Dependencies: 215
+-- TOC entry 3356 (class 0 OID 16400)
+-- Dependencies: 214
 -- Data for Name: Teams; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -737,7 +737,6 @@ INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nick
 INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('ATL', NULL, 'NL', 'Atlanta', 'Braves');
 INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('BAL', NULL, 'AL', 'Baltimore', 'Orioles');
 INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('BOS', NULL, 'AL', 'Boston', 'Red Sox');
-INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('CHC', NULL, 'NL', 'Chicago', 'Cubs');
 INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('CIN', NULL, 'NL', 'Cincinnati', 'Reds');
 INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('CLE', NULL, 'AL', 'Cleveland', 'Guardians');
 INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('COL', NULL, 'NL', 'Colorado', 'Rockies');
@@ -762,22 +761,26 @@ INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nick
 INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('TB', 'TAM', 'AL', 'Tampa Bay', 'Rays');
 INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('TEX', NULL, 'AL', 'Texas', 'Rangers');
 INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('TOR', NULL, 'AL', 'Toronto', 'Blue Jays');
-INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('WAS', NULL, 'NL', 'Washington', 'Nationals');
+INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('CHC', 'CHI', 'NL', 'Chicago', 'Cubs');
+INSERT INTO public."Teams" ("Code", "AlternativeCode", "LeagueId", "City", "Nickname") VALUES ('WAS', 'WSH', 'NL', 'Washington', 'Nationals');
 
 
 --
--- TOC entry 3355 (class 0 OID 16403)
--- Dependencies: 214
+-- TOC entry 3357 (class 0 OID 16403)
+-- Dependencies: 215
 -- Data for Name: __EFMigrationsHistory; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 INSERT INTO public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") VALUES ('20200513041941_InitialCreate', '3.1.3');
 INSERT INTO public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") VALUES ('20221101060806_RemovePosition', '6.0.5');
 INSERT INTO public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") VALUES ('20221114075540_RenameTeams', '6.0.5');
+INSERT INTO public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") VALUES ('20221213065028_increase-pos-size', '8.0.2');
+INSERT INTO public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") VALUES ('20240222173322_team-alt-codes', '8.0.2');
+INSERT INTO public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") VALUES ('20240404202243_NewBhqFields', '8.0.2');
 
 
 --
--- TOC entry 3190 (class 2606 OID 16407)
+-- TOC entry 3191 (class 2606 OID 16407)
 -- Name: BattingStats BattingStats_PK; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -786,7 +789,7 @@ ALTER TABLE ONLY public."BattingStats"
 
 
 --
--- TOC entry 3192 (class 2606 OID 16409)
+-- TOC entry 3193 (class 2606 OID 16409)
 -- Name: LeagueStatuses LeagueStatus_PK; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -795,7 +798,7 @@ ALTER TABLE ONLY public."LeagueStatuses"
 
 
 --
--- TOC entry 3196 (class 2606 OID 16413)
+-- TOC entry 3197 (class 2606 OID 16449)
 -- Name: PlayerPositionEntity PK_PlayerPositionEntity; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -804,7 +807,7 @@ ALTER TABLE ONLY public."PlayerPositionEntity"
 
 
 --
--- TOC entry 3203 (class 2606 OID 16415)
+-- TOC entry 3206 (class 2606 OID 16413)
 -- Name: __EFMigrationsHistory PK___EFMigrationsHistory; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -813,7 +816,7 @@ ALTER TABLE ONLY public."__EFMigrationsHistory"
 
 
 --
--- TOC entry 3194 (class 2606 OID 16417)
+-- TOC entry 3195 (class 2606 OID 16415)
 -- Name: PitchingStats PitchingStats_PK; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -822,7 +825,7 @@ ALTER TABLE ONLY public."PitchingStats"
 
 
 --
--- TOC entry 3199 (class 2606 OID 16419)
+-- TOC entry 3200 (class 2606 OID 16417)
 -- Name: Players Player_Bhq_AK; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -831,7 +834,7 @@ ALTER TABLE ONLY public."Players"
 
 
 --
--- TOC entry 3201 (class 2606 OID 16421)
+-- TOC entry 3202 (class 2606 OID 16419)
 -- Name: Players Player_PK; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -840,7 +843,7 @@ ALTER TABLE ONLY public."Players"
 
 
 --
--- TOC entry 3205 (class 2606 OID 16457)
+-- TOC entry 3204 (class 2606 OID 16421)
 -- Name: Teams Team_PK; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -849,7 +852,7 @@ ALTER TABLE ONLY public."Teams"
 
 
 --
--- TOC entry 3197 (class 1259 OID 16422)
+-- TOC entry 3198 (class 1259 OID 16422)
 -- Name: IX_Players_Team; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -857,7 +860,7 @@ CREATE INDEX "IX_Players_Team" ON public."Players" USING btree ("Team");
 
 
 --
--- TOC entry 3206 (class 2606 OID 16423)
+-- TOC entry 3207 (class 2606 OID 16423)
 -- Name: BattingStats BattingStats_Player_FK; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -866,7 +869,7 @@ ALTER TABLE ONLY public."BattingStats"
 
 
 --
--- TOC entry 3207 (class 2606 OID 16428)
+-- TOC entry 3208 (class 2606 OID 16428)
 -- Name: LeagueStatuses LeagueStatus_Player_FK; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -875,7 +878,7 @@ ALTER TABLE ONLY public."LeagueStatuses"
 
 
 --
--- TOC entry 3208 (class 2606 OID 16433)
+-- TOC entry 3209 (class 2606 OID 16433)
 -- Name: PitchingStats PitchingStats_Player_FK; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -884,7 +887,7 @@ ALTER TABLE ONLY public."PitchingStats"
 
 
 --
--- TOC entry 3209 (class 2606 OID 16438)
+-- TOC entry 3210 (class 2606 OID 16438)
 -- Name: PlayerPositionEntity PlayerPosition_Player_FK; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -893,7 +896,7 @@ ALTER TABLE ONLY public."PlayerPositionEntity"
 
 
 --
--- TOC entry 3210 (class 2606 OID 16458)
+-- TOC entry 3211 (class 2606 OID 16443)
 -- Name: Players Player_Team_FK; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -901,7 +904,7 @@ ALTER TABLE ONLY public."Players"
     ADD CONSTRAINT "Player_Team_FK" FOREIGN KEY ("Team") REFERENCES public."Teams"("Code");
 
 
--- Completed on 2022-11-14 19:01:00 UTC
+-- Completed on 2024-04-04 21:43:37 UTC
 
 --
 -- PostgreSQL database dump complete
