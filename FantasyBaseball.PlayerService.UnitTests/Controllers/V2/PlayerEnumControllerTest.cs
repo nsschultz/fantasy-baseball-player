@@ -3,7 +3,7 @@ using FantasyBaseball.PlayerService.Services;
 using Moq;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Controllers.V3.UnitTests
+namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
 {
   public class PlayerEnumControllerTest
   {

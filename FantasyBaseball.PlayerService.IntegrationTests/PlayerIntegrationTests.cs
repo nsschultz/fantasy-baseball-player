@@ -36,7 +36,6 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
     [Theory]
     [InlineData("/api/health")]
     [InlineData("/api/v2/action/export")]
-    [InlineData("/api/v3/action/export")]
     [InlineData("/api/swagger/index.html")]
     public async void GetSimpleTests(string url)
     {

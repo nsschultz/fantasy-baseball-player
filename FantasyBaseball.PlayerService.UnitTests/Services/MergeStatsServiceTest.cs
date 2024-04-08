@@ -15,12 +15,12 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
   public class MergeProjectionServiceTest
   {
     [Fact]
-    public async Task MergeProjectionEmpty()
+    public async Task MergeStatsEmpty()
     {
       var returnList = new List<CsvBaseballPlayer>();
       var fileService = new Mock<ICsvFileReaderService>();
-      fileService.Setup(o => o.ReadCsvData(It.IsAny<ClassMap>(), It.IsAny<IFileReader>(), true)).ReturnsAsync(returnList);
-      Assert.Equal(0, await new MergeProjectionService(null, fileService.Object, null).MergeProjection(null, PlayerType.B));
+      fileService.Setup(o => o.ReadCsvData(It.IsAny<ClassMap>(), It.IsAny<IFileReader>())).ReturnsAsync(returnList);
+      Assert.Equal(0, await new MergeStatsService(null, fileService.Object, null).MergeStats(null, PlayerType.B, StatsType.PROJ));
     }
 
     [Fact]
@@ -42,12 +42,12 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
         new() { BhqId = 789, Type = PlayerType.U }
       };
       var fileService = new Mock<ICsvFileReaderService>();
-      fileService.Setup(o => o.ReadCsvData(It.IsAny<ClassMap>(), It.IsAny<IFileReader>(), true)).ReturnsAsync(newPlayers);
+      fileService.Setup(o => o.ReadCsvData(It.IsAny<ClassMap>(), It.IsAny<IFileReader>())).ReturnsAsync(newPlayers);
       var mergeService = new Mock<IMergePlayerService>();
       mergeService
         .Setup(o => o.MergePlayer(It.IsAny<BhqPlayerMerger>(), It.IsAny<BaseballPlayer>(), It.IsAny<PlayerEntity>()))
         .ReturnsAsync(new PlayerEntity());
-      Assert.Equal(3, await new MergeProjectionService(playerRepo.Object, fileService.Object, mergeService.Object).MergeProjection(null, PlayerType.B));
+      Assert.Equal(3, await new MergeStatsService(playerRepo.Object, fileService.Object, mergeService.Object).MergeStats(null, PlayerType.B, StatsType.PROJ));
       playerRepo.VerifyAll();
     }
   }
