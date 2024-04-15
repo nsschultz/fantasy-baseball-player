@@ -27,13 +27,23 @@ namespace FantasyBaseball.PlayerService.Services
     private readonly ICsvFileReaderService _fileReaderService;
     private readonly IMergePlayerService _mergeService;
     private readonly IPlayerRepository _playerRepo;
+    private readonly IBattingStatsRepository _battingStatsRepo;
+    private readonly IPitchingStatsRepository _pitchingStatsRepo;
 
     /// <summary>Creates a new instance of the service.</summary>
     /// <param name="fileReaderService">Service for reading CSV file.</param>
     /// <param name="playerRepo">Repo for CRUD functionality regarding to players.</param>
     /// <param name="mergeService">Service for converting a BaseballPlayer to a PlayerEntity.</param>
-    public MergeStatsService(IPlayerRepository playerRepo, ICsvFileReaderService fileReaderService, IMergePlayerService mergeService) =>
-      (_playerRepo, _fileReaderService, _mergeService) = (playerRepo, fileReaderService, mergeService);
+    /// <param name="battingStatsRepo">Repo for CRUD functionality regarding to batting stats.</param>
+    /// <param name="pitchingStatsRepo">Repo for CRUD functionality regarding to pitching stats.</param>
+    public MergeStatsService(
+        IPlayerRepository playerRepo,
+        ICsvFileReaderService fileReaderService,
+        IMergePlayerService mergeService,
+        IBattingStatsRepository battingStatsRepo,
+        IPitchingStatsRepository pitchingStatsRepo) =>
+      (_playerRepo, _fileReaderService, _mergeService, _battingStatsRepo, _pitchingStatsRepo) =
+       (playerRepo, fileReaderService, mergeService, battingStatsRepo, pitchingStatsRepo);
 
     /// <summary>Reads in data from the given CSV file and merges it into the existing data store.</summary>
     /// <param name="fileReader">Helper for reading the contents of a file.</param>
@@ -45,6 +55,7 @@ namespace FantasyBaseball.PlayerService.Services
       var tuple = new Tuple<PlayerType, StatsType>(player, stats);
       var incomingPlayers = await _fileReaderService.ReadCsvData(CsvFileMaps[tuple], fileReader);
       if (incomingPlayers.Count == 0) return 0;
+      await CleanupStats(player, stats);
       var existingPlayers = await _playerRepo.GetPlayers(player);
       var existingDictionary = existingPlayers.GroupBy(BuildKey).ToDictionary(g => g.Key, g => g.First());
       var mergedPlayers = await MergePlayers(existingDictionary, incomingPlayers);
@@ -55,6 +66,12 @@ namespace FantasyBaseball.PlayerService.Services
     private static Tuple<int, PlayerType> BuildKey(CsvBaseballPlayer player) => new(player.BhqId, player.Type);
 
     private static Tuple<int, PlayerType> BuildKey(PlayerEntity player) => new(player.BhqId, player.Type);
+
+    private async Task CleanupStats(PlayerType playerType, StatsType statsType)
+    {
+      if (playerType == PlayerType.B) await _battingStatsRepo.DeleteAllBattingStats(statsType);
+      else await _pitchingStatsRepo.DeleteAllPitchingStats(statsType);
+    }
 
     private static PlayerEntity FindAndRemovePlayer(Dictionary<Tuple<int, PlayerType>, PlayerEntity> existingDictionary, Tuple<int, PlayerType> key)
     {

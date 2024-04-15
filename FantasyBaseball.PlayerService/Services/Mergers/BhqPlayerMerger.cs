@@ -24,8 +24,8 @@ namespace FantasyBaseball.PlayerService.Services.Mergers
         existing.Reliability = incoming.Reliability;
         existing.MayberryMethod = incoming.MayberryMethod;
       }
-      existing.BattingStats = incoming.BattingStats.Select(b => mapper.Map<BattingStatsEntity>(b)).ToList();
-      existing.PitchingStats = incoming.PitchingStats.Select(p => mapper.Map<PitchingStatsEntity>(p)).ToList();
+      incoming.BattingStats.Select(mapper.Map<BattingStatsEntity>).ToList().ForEach(existing.BattingStats.Add);
+      incoming.PitchingStats.Select(mapper.Map<PitchingStatsEntity>).ToList().ForEach(existing.PitchingStats.Add);
       return existing;
     }
   }
