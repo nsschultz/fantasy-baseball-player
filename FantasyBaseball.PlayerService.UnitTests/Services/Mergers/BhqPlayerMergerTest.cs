@@ -47,8 +47,6 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
       var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
       var player = BuildPlayer();
       var entity = new BhqPlayerMerger().MergePlayer(mapper, player, null);
-      player.BattingStats.Clear();
-      player.PitchingStats.Clear();
       ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, new BaseballPlayer(), entity));
     }
 
@@ -125,8 +123,8 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
         Reliability = 6,
         League1 = LeagueStatus.R,
         League2 = LeagueStatus.X,
-        BattingStats = new List<BattingStats> { BuildBattingStats(StatsType.YTD), BuildBattingStats(StatsType.PROJ) },
-        PitchingStats = new List<PitchingStats> { BuildPitchingStats(StatsType.YTD), BuildPitchingStats(StatsType.PROJ) }
+        BattingStats = [BuildBattingStats(StatsType.YTD), BuildBattingStats(StatsType.PROJ)],
+        PitchingStats = [BuildPitchingStats(StatsType.YTD), BuildPitchingStats(StatsType.PROJ)]
       };
 
     private static List<BaseballPosition> BuildPositionList(string[] positions) =>
