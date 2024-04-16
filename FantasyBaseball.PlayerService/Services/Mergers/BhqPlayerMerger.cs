@@ -19,10 +19,14 @@ namespace FantasyBaseball.PlayerService.Services.Mergers
       if (incoming.BhqId > 0)
       {
         existing.BhqId = incoming.BhqId;
+        existing.MlbAmId = incoming.MlbAmId;
         existing.Age = incoming.Age;
         existing.Team = incoming.Team.Code;
         existing.Reliability = incoming.Reliability;
         existing.MayberryMethod = incoming.MayberryMethod;
+        existing.AverageDraftPick = incoming.AverageDraftPick;
+        existing.AverageDraftPickMax = incoming.AverageDraftPickMax;
+        existing.AverageDraftPickMin = incoming.AverageDraftPickMin;
       }
       incoming.BattingStats.Select(mapper.Map<BattingStatsEntity>).ToList().ForEach(existing.BattingStats.Add);
       incoming.PitchingStats.Select(mapper.Map<PitchingStatsEntity>).ToList().ForEach(existing.PitchingStats.Add);

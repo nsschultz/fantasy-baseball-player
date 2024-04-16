@@ -61,6 +61,9 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
       entity.Team = "xyasasdfasdf";
       entity.Reliability = 6745674567465;
       entity.MayberryMethod = 53451;
+      entity.AverageDraftPick = 345;
+      entity.AverageDraftPickMax = 654;
+      entity.AverageDraftPickMin = 234;
       entity.BattingStats.Clear();
       entity.PitchingStats.Clear();
       ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, player, entity));
