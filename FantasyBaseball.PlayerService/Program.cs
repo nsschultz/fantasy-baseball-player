@@ -68,6 +68,8 @@ builder.Services
   // Cache
   .AddLazyCache()
   // Repos
+  .AddScoped<IBattingStatsRepository, BattingStatsRepository>()
+  .AddScoped<IPitchingStatsRepository, PitchinStatsRepository>()
   .AddScoped<IPlayerRepository, PlayerRepository>()
   .AddScoped<ITeamRepository, TeamRepository>()
   // Services
