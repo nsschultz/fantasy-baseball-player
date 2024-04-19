@@ -174,7 +174,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     private static BaseballPlayer BuildPlayer(int value, PlayerType type, bool bothStats = false) =>
       new()
       {
-        BhqId = value,
+        MlbAmId = value,
         FirstName = $"First-{value}",
         LastName = $"Last-{value}",
         Age = value,
@@ -217,7 +217,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
 
     private static void ValidatePlayer(int value, BaseballPlayer expected, PlayerEntity actual)
     {
-      Assert.Equal(expected.BhqId, actual.BhqId);
+      Assert.Equal(expected.MlbAmId, actual.MlbAmId);
       Assert.Equal(expected.FirstName, actual.FirstName);
       Assert.Equal(expected.LastName, actual.LastName);
       Assert.Equal(expected.Age, actual.Age);

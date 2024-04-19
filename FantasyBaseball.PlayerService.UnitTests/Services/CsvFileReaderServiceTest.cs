@@ -59,7 +59,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTets
       fileReader.Setup(o => o.ReadLines()).ReturnsAsync(BATTER_PROJ_RESULTS);
       var results = await new CsvFileReaderService().ReadCsvData(new BhqProjBattingsStatsMap(), fileReader.Object);
       Assert.Single(results);
-      Assert.Equal(6791, results.First().BhqId);
+      Assert.Equal(682928, results.First().MlbAmId);
     }
 
     [Fact]
@@ -69,7 +69,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTets
       fileReader.Setup(o => o.ReadLines()).ReturnsAsync(BATTER_YTD_RESULTS);
       var results = await new CsvFileReaderService().ReadCsvData(new BhqYtdBattingsStatsMap(), fileReader.Object);
       Assert.Single(results);
-      Assert.Equal(6791, results.First().BhqId);
+      Assert.Equal(682928, results.First().MlbAmId);
     }
 
     [Fact]
@@ -79,7 +79,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTets
       fileReader.Setup(o => o.ReadLines()).ReturnsAsync(PITCHER_PROJ_RESULTS);
       var results = await new CsvFileReaderService().ReadCsvData(new BhqProjPitchingStatsMap(), fileReader.Object);
       Assert.Single(results);
-      Assert.Equal(7179, results.First().BhqId);
+      Assert.Equal(671096, results.First().MlbAmId);
     }
 
     [Fact]
@@ -89,7 +89,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTets
       fileReader.Setup(o => o.ReadLines()).ReturnsAsync(PITCHER_YTD_RESULTS);
       var results = await new CsvFileReaderService().ReadCsvData(new BhqYtdPitchingStatsMap(), fileReader.Object);
       Assert.Single(results);
-      Assert.Equal(6034, results.First().BhqId);
+      Assert.Equal(650556, results.First().MlbAmId);
     }
   }
 }

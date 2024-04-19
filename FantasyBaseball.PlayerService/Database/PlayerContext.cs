@@ -135,7 +135,7 @@ namespace FantasyBaseball.PlayerService.Database
       builder.Property(p => p.Id).ValueGeneratedOnAdd();
       builder.Property(p => p.FirstName).HasMaxLength(20);
       builder.Property(p => p.LastName).HasMaxLength(20);
-      builder.HasAlternateKey(p => new { p.BhqId, p.Type }).HasName("Player_Bhq_AK");
+      builder.HasAlternateKey(p => new { p.MlbAmId, p.Type }).HasName("Player_MlbAmId_AK");
       builder.HasOne(p => p.PlayerTeam)
         .WithMany(t => t.Players)
         .HasForeignKey(p => p.Team)

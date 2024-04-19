@@ -19,9 +19,6 @@ namespace FantasyBaseball.PlayerService.Database.Entities
     /// <summary>The earliest pick used on this player.</summary>
     public int AverageDraftPickMin { get; set; }
 
-    /// <summary>The player's BHQ ID.</summary>
-    public int BhqId { get; set; }
-
     /// <summary>The player's first name.</summary>
     public string FirstName { get; set; }
 

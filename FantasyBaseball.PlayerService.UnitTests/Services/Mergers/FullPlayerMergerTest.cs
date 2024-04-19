@@ -123,7 +123,7 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
 
     private static void ValidatePlayer(BaseballPlayer expected, PlayerEntity actual)
     {
-      Assert.Equal(expected.BhqId, actual.BhqId);
+      Assert.Equal(expected.MlbAmId, actual.MlbAmId);
       Assert.Equal(expected.FirstName, actual.FirstName);
       Assert.Equal(expected.LastName, actual.LastName);
       Assert.Equal(expected.Age, actual.Age);

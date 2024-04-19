@@ -19,7 +19,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     [
       new()
       {
-        BhqId = 1,
+        MlbAmId = 1,
         FirstName = "Christian",
         LastName = "Yelich",
         Type = PlayerType.B,
@@ -29,7 +29,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
       },
       new()
       {
-        BhqId = 2,
+        MlbAmId = 2,
         FirstName = "Corbin",
         LastName = "Burnes",
         Type = PlayerType.P,
@@ -39,7 +39,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
       },
       new()
       {
-        BhqId = 3,
+        MlbAmId = 3,
         FirstName = "Wander",
         LastName = "Franco",
         Type = PlayerType.B,

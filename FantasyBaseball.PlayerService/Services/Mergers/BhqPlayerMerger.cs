@@ -16,9 +16,8 @@ namespace FantasyBaseball.PlayerService.Services.Mergers
     public PlayerEntity MergePlayer(IMapper mapper, BaseballPlayer incoming, PlayerEntity existing)
     {
       if (existing == null) return mapper.Map<PlayerEntity>(incoming);
-      if (incoming.BhqId > 0)
+      if (incoming.MlbAmId > 0)
       {
-        existing.BhqId = incoming.BhqId;
         existing.MlbAmId = incoming.MlbAmId;
         existing.Age = incoming.Age;
         existing.Team = incoming.Team.Code;

@@ -63,9 +63,9 @@ namespace FantasyBaseball.PlayerService.Services
       return incomingPlayers.Count;
     }
 
-    private static Tuple<int, PlayerType> BuildKey(CsvBaseballPlayer player) => new(player.BhqId, player.Type);
+    private static Tuple<int, PlayerType> BuildKey(CsvBaseballPlayer player) => new(player.MlbAmId, player.Type);
 
-    private static Tuple<int, PlayerType> BuildKey(PlayerEntity player) => new(player.BhqId, player.Type);
+    private static Tuple<int, PlayerType> BuildKey(PlayerEntity player) => new(player.MlbAmId, player.Type);
 
     private async Task CleanupStats(PlayerType playerType, StatsType statsType)
     {

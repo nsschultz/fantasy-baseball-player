@@ -62,9 +62,9 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     }
 
     private static CsvBaseballPlayer BuildPlayer(int value, PlayerType type) =>
-      new CsvBaseballPlayer
+      new()
       {
-        BhqId = value,
+        MlbAmId = value,
         FirstName = $"First-{value}",
         LastName = $"Last-{value}",
         Age = value,

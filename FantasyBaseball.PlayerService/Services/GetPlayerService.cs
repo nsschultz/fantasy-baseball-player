@@ -54,6 +54,6 @@ namespace FantasyBaseball.PlayerService.Services
         .OrderBy(p => p.Type)
         .ThenBy(p => p.LastName.ToUpper())
         .ThenBy(p => p.FirstName.ToUpper())
-        .ThenBy(p => p.BhqId)];
+        .ThenBy(p => p.MlbAmId)];
   }
 }

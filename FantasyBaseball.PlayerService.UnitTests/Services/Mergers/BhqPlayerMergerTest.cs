@@ -56,7 +56,7 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
       var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
       var player = BuildPlayer();
       var entity = new BhqPlayerMerger().MergePlayer(mapper, player, null);
-      entity.BhqId = 1231243;
+      entity.MlbAmId = 1231243;
       entity.Age = 34563453;
       entity.Team = "xyasasdfasdf";
       entity.Reliability = 6745674567465;
@@ -111,7 +111,7 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
     private static BaseballPlayer BuildPlayer() =>
       new()
       {
-        BhqId = 123,
+        MlbAmId = 123,
         FirstName = "First",
         LastName = "Last",
         Age = 36,
@@ -144,7 +144,7 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
 
     private static void ValidatePlayer(BaseballPlayer expected, PlayerEntity actual)
     {
-      Assert.Equal(expected.BhqId, actual.BhqId);
+      Assert.Equal(expected.MlbAmId, actual.MlbAmId);
       Assert.Equal(expected.FirstName, actual.FirstName);
       Assert.Equal(expected.LastName, actual.LastName);
       Assert.Equal(expected.Age, actual.Age);

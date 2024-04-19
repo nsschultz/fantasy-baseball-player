@@ -10,7 +10,6 @@ namespace FantasyBaseball.PlayerService.Database.Entities.UnitTests
     {
       var obj = new PlayerEntity();
       Assert.Equal(default, obj.Id);
-      Assert.Equal(0, obj.BhqId);
       Assert.Equal(0, obj.MlbAmId);
       Assert.Equal(PlayerType.U, obj.Type);
       Assert.Null(obj.FirstName);
