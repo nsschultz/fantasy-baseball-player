@@ -10,7 +10,7 @@ namespace FantasyBaseball.PlayerService.Maps.CsvFiles
     /// <summary>Creates a new instance of the mapper.</summary>
     public ExportedPlayerMap()
     {
-      Map(m => m.BhqId).Index(0).Name("..PLAYER ID");
+      Map(m => m.MlbAmId).Index(0).Name("..PLAYER ID");
       Map(m => m.FirstName).Index(1).Name("..FIRST NAME");
       Map(m => m.LastName).Index(2).Name("..LAST NAME");
       Map(m => m.Age).Index(3).Name("..AGE");

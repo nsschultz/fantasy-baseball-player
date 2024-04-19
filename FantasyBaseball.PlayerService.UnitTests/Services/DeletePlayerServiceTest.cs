@@ -23,7 +23,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     public async void UpdatePlayerTestValid()
     {
       var id = Guid.NewGuid();
-      var entity = new PlayerEntity { Id = id, BhqId = 1, Type = PlayerType.B, Team = "MIL" };
+      var entity = new PlayerEntity { Id = id, MlbAmId = 1, Type = PlayerType.B, Team = "MIL" };
       var playerRepo = new Mock<IPlayerRepository>();
       playerRepo.Setup(o => o.GetPlayerById(It.Is<Guid>(i => i == id))).ReturnsAsync(entity);
       playerRepo.Setup(o => o.DeletePlayer(It.Is<PlayerEntity>(p => p.Id == id))).Returns(Task.FromResult(0));

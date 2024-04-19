@@ -15,7 +15,6 @@ namespace FantasyBaseball.PlayerService.Maps.CsvMaps
       Map(m => m.Type).Constant(PlayerType.P);
       Map(m => m.Status).Constant(PlayerStatus.NE);
       // Skipped player fields: Throws,LG,LIMA,DL,12$,15$
-      Map(m => m.BhqId).Name("HQID").TypeConverter<DefaultIntConverter>();
       Map(m => m.MlbAmId).Name("MLBAMID").TypeConverter<DefaultIntConverter>();
       Map(m => m.FullName).Name("Player");
       Map(m => m.Age).Name("Age").TypeConverter<DefaultIntConverter>();

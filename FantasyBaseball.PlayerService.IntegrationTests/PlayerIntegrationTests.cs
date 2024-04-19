@@ -29,7 +29,7 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
     [Fact]
     public async void GetPlayersV2Test()
     {
-      var players = await GetCountTest<BaseballPlayer>("/api/v2/player", 92);
+      var players = await GetCountTest<BaseballPlayer>("/api/v2/player", 87);
       ValidatePlayerStats(players);
     }
 

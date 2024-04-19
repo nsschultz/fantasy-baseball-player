@@ -30,7 +30,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
       new()
       {
         Id = Guid.NewGuid(),
-        BhqId = value,
+        MlbAmId = value,
         FirstName = $"First-{value}",
         LastName = $"Last-{value}",
         Age = value,
@@ -96,7 +96,7 @@ namespace FantasyBaseball.PlayerService.Maps.UnitTests
     private static void ValidatePlayer(int value, PlayerEntity expected, BaseballPlayer actual)
     {
       Assert.Equal(expected.Id, actual.Id);
-      Assert.Equal(expected.BhqId, actual.BhqId);
+      Assert.Equal(expected.MlbAmId, actual.BhqId);
       Assert.Equal(expected.FirstName, actual.FirstName);
       Assert.Equal(expected.LastName, actual.LastName);
       Assert.Equal(expected.Age, actual.Age);

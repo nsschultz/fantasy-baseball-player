@@ -66,11 +66,11 @@ namespace FantasyBaseball.PlayerService.Database.Repositories
     }
 
     /// <summary>Finds a player matching the given values (which must be a uniqure combo in the db) or null if there is no match.</summary>
-    /// <param name="bhqId">The id from the external system.</param>
+    /// <param name="mlbAmId">The id from the external system.</param>
     /// <param name="type">The type of the player (which makes the BHQ Id combo unique).</param>
     /// <returns>The player matching the given values.</returns>
-    public async Task<PlayerEntity> GetPlayerByBhqId(int bhqId, PlayerType type) =>
-      await GetQueryable().Where(p => p.BhqId == bhqId).Where(p => p.Type == type).FirstOrDefaultAsync();
+    public async Task<PlayerEntity> GetPlayerByMlbAmId(int mlbAmId, PlayerType type) =>
+      await GetQueryable().Where(p => p.MlbAmId == mlbAmId).Where(p => p.Type == type).FirstOrDefaultAsync();
 
     /// <summary>Finds a player matching the given id or null if there is no match.</summary>
     /// <param name="id">The guid of the player to find.</param>

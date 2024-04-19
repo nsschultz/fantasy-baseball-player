@@ -28,9 +28,9 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     {
       var oldPlayers = new List<PlayerEntity>
       {
-        new() { BhqId = 000, Type = PlayerType.B },
-        new() { BhqId = 456, Type = PlayerType.P },
-        new() { BhqId = 789, Type = PlayerType.P }
+        new() { MlbAmId = 000, Type = PlayerType.B },
+        new() { MlbAmId = 456, Type = PlayerType.P },
+        new() { MlbAmId = 789, Type = PlayerType.P }
       };
       var playerRepo = new Mock<IPlayerRepository>();
       playerRepo.Setup(o => o.GetPlayers(It.Is<PlayerType>(i => i == PlayerType.B))).ReturnsAsync(oldPlayers);
@@ -59,9 +59,9 @@ namespace FantasyBaseball.PlayerService.Services.UnitTests
     {
       var oldPlayers = new List<PlayerEntity>
       {
-        new() { BhqId = 000, Type = PlayerType.B },
-        new() { BhqId = 456, Type = PlayerType.P },
-        new() { BhqId = 789, Type = PlayerType.P }
+        new() { MlbAmId = 000, Type = PlayerType.B },
+        new() { MlbAmId = 456, Type = PlayerType.P },
+        new() { MlbAmId = 789, Type = PlayerType.P }
       };
       var playerRepo = new Mock<IPlayerRepository>();
       playerRepo.Setup(o => o.GetPlayers(It.Is<PlayerType>(i => i == PlayerType.P))).ReturnsAsync(oldPlayers);

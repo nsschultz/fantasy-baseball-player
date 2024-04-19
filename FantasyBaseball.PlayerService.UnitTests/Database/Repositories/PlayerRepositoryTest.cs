@@ -29,7 +29,7 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
     [Fact]
     public async void AddPlayerTestValid()
     {
-      var player = new PlayerEntity { BhqId = 100, Type = PlayerType.B, Team = "TB" };
+      var player = new PlayerEntity { MlbAmId = 100, Type = PlayerType.B, Team = "TB" };
       await new PlayerRepository(_context).AddPlayer(player);
       Assert.Equal(4, _context.Players.Count());
     }
@@ -48,7 +48,7 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
     [Fact]
     public async void DeletePlayerTestMissingIdException()
     {
-      var player = new PlayerEntity { Id = PlayerMissingId, BhqId = 1, Type = PlayerType.B, Team = "TB" };
+      var player = new PlayerEntity { Id = PlayerMissingId, MlbAmId = 1, Type = PlayerType.B, Team = "TB" };
       await Assert.ThrowsAsync<InvalidOperationException>(async () => await new PlayerRepository(_context).DeletePlayer(player));
       Assert.Equal(3, _context.Players.Count());
     }
@@ -61,13 +61,13 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
       Assert.Equal(2, _context.Players.Count());
     }
 
-    [Fact] public async void GetPlayerByBhqIdNull() => Assert.Null(await new PlayerRepository(_context).GetPlayerByBhqId(2, PlayerType.B));
+    [Fact] public async void GetPlayerByBhqIdNull() => Assert.Null(await new PlayerRepository(_context).GetPlayerByMlbAmId(2, PlayerType.B));
 
-    [Fact] public async void GetPlayerByBhqIdValid() => Assert.Equal(2, (await new PlayerRepository(_context).GetPlayerByBhqId(2, PlayerType.P)).BhqId);
+    [Fact] public async void GetPlayerByBhqIdValid() => Assert.Equal(2, (await new PlayerRepository(_context).GetPlayerByMlbAmId(2, PlayerType.P)).MlbAmId);
 
     [Fact] public async void GetPlayerByIdNull() => Assert.Null(await new PlayerRepository(_context).GetPlayerById(PlayerMissingId));
 
-    [Fact] public async void GetPlayerByIdValid() => Assert.Equal(2, (await new PlayerRepository(_context).GetPlayerById(PlayerMatchingId)).BhqId);
+    [Fact] public async void GetPlayerByIdValid() => Assert.Equal(2, (await new PlayerRepository(_context).GetPlayerById(PlayerMatchingId)).MlbAmId);
 
     [Theory]
     [InlineData(PlayerType.B, 2)]
@@ -80,9 +80,9 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
       Assert.Equal(count, players.Count);
       players.ForEach(player =>
       {
-        Assert.Equal(player.BhqId < 3 ? "Brewers" : "Rays", player.PlayerTeam.Nickname);
-        Assert.Equal(player.BhqId, player.Type == PlayerType.B ? player.BattingStats.First().AtBats : player.PitchingStats.First().InningsPitched);
-        Assert.Equal(player.BhqId, player.LeagueStatuses.First().LeagueId);
+        Assert.Equal(player.MlbAmId < 3 ? "Brewers" : "Rays", player.PlayerTeam.Nickname);
+        Assert.Equal(player.MlbAmId, player.Type == PlayerType.B ? player.BattingStats.First().AtBats : player.PitchingStats.First().InningsPitched);
+        Assert.Equal(player.MlbAmId, player.LeagueStatuses.First().LeagueId);
       });
     }
 
@@ -90,7 +90,7 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
     public async void UpdatePlayerTestMissingIdException()
     {
       Assert.Equal("MIL", _context.Players.Find(PlayerMatchingId).Team);
-      var player = new PlayerEntity { Id = PlayerMissingId, BhqId = 1, Type = PlayerType.B, Team = "TB" };
+      var player = new PlayerEntity { Id = PlayerMissingId, MlbAmId = 1, Type = PlayerType.B, Team = "TB" };
       await Assert.ThrowsAsync<InvalidOperationException>(async () => await new PlayerRepository(_context).UpdatePlayer(player));
       Assert.Equal("MIL", _context.Players.Find(PlayerMatchingId).Team);
     }
@@ -110,11 +110,11 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
     {
       var values = new List<PlayerEntity>
       {
-        new() { BhqId = 1, Type = PlayerType.B, Team = "MIL" },
-        new() { BhqId = 2, Type = PlayerType.B, Team = "MIL" },
-        new() { BhqId = 4, Type = PlayerType.P, Team = "MIL" },
-        new() { Id = PlayerMatchingId, BhqId = 5, Type = PlayerType.P, Team = "MIL" },
-        new() { Id = PlayerMissingId, BhqId = 1, Type = PlayerType.B, Team = "MIL" },
+        new() { MlbAmId = 1, Type = PlayerType.B, Team = "MIL" },
+        new() { MlbAmId = 2, Type = PlayerType.B, Team = "MIL" },
+        new() { MlbAmId = 4, Type = PlayerType.P, Team = "MIL" },
+        new() { Id = PlayerMatchingId, MlbAmId = 5, Type = PlayerType.P, Team = "MIL" },
+        new() { Id = PlayerMissingId, MlbAmId = 1, Type = PlayerType.B, Team = "MIL" },
       };
       await Assert.ThrowsAsync<InvalidOperationException>(async () => await new PlayerRepository(_context).UpsertPlayers(values));
       Assert.Equal(3, _context.Players.Count());
@@ -134,7 +134,7 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
         existingPlayer,
         new()
         {
-          BhqId = 4,
+          MlbAmId = 4,
           Type = PlayerType.P,
           Team = "MIL",
           PitchingStats =
@@ -178,7 +178,7 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
       await context.AddRangeAsync(
         new PlayerEntity
         {
-          BhqId = 1,
+          MlbAmId = 1,
           Type = PlayerType.B,
           Team = "MIL",
           BattingStats = [new() { StatsType = StatsType.YTD, AtBats = 1 }],
@@ -187,7 +187,7 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
         new PlayerEntity
         {
           Id = PlayerMatchingId,
-          BhqId = 2,
+          MlbAmId = 2,
           Type = PlayerType.P,
           Team = "MIL",
           PitchingStats = [new() { StatsType = StatsType.YTD, InningsPitched = 2 }],
@@ -195,7 +195,7 @@ namespace FantasyBaseball.PlayerService.Database.Repositories.UnitTests
         },
         new PlayerEntity
         {
-          BhqId = 3,
+          MlbAmId = 3,
           Type = PlayerType.B,
           Team = "TB",
           BattingStats = [new() { StatsType = StatsType.PROJ, AtBats = 3 }],
