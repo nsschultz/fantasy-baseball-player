@@ -10,10 +10,11 @@ dotnet sonarscanner begin \
   /v:$VERSION \
   /d:"sonar.cs.opencover.reportsPaths=coverage-results/coverage.opencover.xml" \
   $([ -n "Database/Migrations/*.cs" ] && echo "/d:sonar.coverage.exclusions=\"Database/Migrations/*.cs\"") \
-  $([ -n "Database/Migrations/*.cs" ] && echo "/d:sonar.exclusions=\"Database/Migrations/*.cs\"")
+  $([ -n "Database/Migrations/*.cs" ] && echo "/d:sonar.exclusions=\"Database/Migrations/*.cs\"") \
+  /d:sonar.host.url="https://sonarcloud.io"
 dotnet test --no-build \
   "/p:CollectCoverage=true" \
   "/p:CoverletOutput=../coverage-results/" \
   "/p:CoverletOutputFormat=\"json,opencover\"" \
   "/p:MergeWith=../coverage-results/coverage.json"
-dotnet sonarscanner end token="$SONAR_TOKEN"
+dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"

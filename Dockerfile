@@ -6,7 +6,7 @@ WORKDIR /app
 FROM dev AS ci
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man2
 RUN apt-get update && apt-get install -y --no-install-recommends default-jre && \
-    dotnet tool install --global dotnet-sonarscanner --version 4.9.0
+    dotnet tool install --global dotnet-sonarscanner --version 6.2.0
 ENV DOTNET_ROLL_FORWARD=Major
 
 FROM dev AS build
