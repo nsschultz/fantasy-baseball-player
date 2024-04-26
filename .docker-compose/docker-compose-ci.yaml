@@ -17,8 +17,8 @@ services:
       - PLAYER_DATABASE_USER=postgres
       - POSITION_SERVICE_HOST=mountebank:5555
       - POSITION_SERVICE_VERSION=v1
-      - GITHUB_TOKEN=${secrets.GITHUB_TOKEN}
-      - SONAR_TOKEN=${secrets.SONAR_TOKEN}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - SONAR_TOKEN=${SONAR_TOKEN}
     volumes:
       - ../:/app/
   database:
