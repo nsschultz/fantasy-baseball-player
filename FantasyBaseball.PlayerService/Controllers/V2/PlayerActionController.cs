@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FantasyBaseball.PlayerService.Controllers.V2
 {
   /// <summary>Endpoint for taking actions on the player objects.</summary>
+  [Route("api/v2/action")]
   [ApiController]
   public class PlayerActionController : ControllerBase
   {
@@ -27,7 +28,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
 
     /// <summary>Exports the players as a CSV file.</summary>
     /// <returns>A CSV file containing the players.</returns>
-    [HttpGet("api/v2/action/export")]
+    [HttpGet("export")]
     public async Task<IActionResult> ExportPlayers()
     {
       var players = await _getService.GetPlayers();
@@ -37,12 +38,12 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
     }
 
     /// <summary>Overwrites the underlying batter.csv file.</summary>
-    [HttpPost("api/v2/action/upload/projection/batters")]
+    [HttpPost("upload/projection/batters")]
     [Obsolete("Use the api/v2/action/upload/stats endpoint instead.")]
     public async Task<int> UploadBatterFile() => await UploadFile(PlayerType.B, StatsType.PROJ);
 
     /// <summary>Overwrites the underlying pitcher.csv file.</summary>
-    [HttpPost("api/v2/action/upload/projection/pitchers")]
+    [HttpPost("upload/projection/pitchers")]
     [Obsolete("Use the api/v2/action/upload/stats endpoint instead.")]
     public async Task<int> UploadPitcherFile() => await UploadFile(PlayerType.P, StatsType.PROJ);
 
@@ -50,7 +51,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
     /// <param name="player">The type of player.</param>
     /// <param name="stats">The type of statistics.</param>
     /// <returns>The number of records merged.</returns>
-    [HttpPost("api/v2/action/upload/stats")]
+    [HttpPost("upload/stats")]
     public async Task<int> UploadStats(PlayerType player, StatsType stats)
     {
       if (player == PlayerType.U) throw new BadRequestException("Invalid player type");

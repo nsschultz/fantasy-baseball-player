@@ -9,8 +9,8 @@ dotnet sonarscanner begin \
   /v:$VERSION \
   /d:sonar.cs.opencover.reportsPaths=coverage-results/coverage.opencover.xml \
   /d:sonar.dotnet.excludeTestProjects=true \
-  $([ -n "Database/Migrations/*.cs" ] && echo "/d:sonar.coverage.exclusions=\"Database/Migrations/*.cs\"") \
-  $([ -n "Database/Migrations/*.cs" ] && echo "/d:sonar.exclusions=\"Database/Migrations/*.cs\"") \
+  "/d:sonar.coverage.exclusions=\"**/Database/Migrations/*.cs\"" \
+  "/d:sonar.exclusions=\"**/Database/Migrations/*.cs\"" \
   /d:sonar.host.url="https://sonarcloud.io"
 dotnet test \
   "/p:CollectCoverage=true" \

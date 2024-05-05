@@ -66,7 +66,8 @@ namespace FantasyBaseball.PlayerService.Services
       var teamCode = string.IsNullOrWhiteSpace(entity.Team) ? string.Empty : entity.Team.Trim().ToUpper();
       var team = teams.Find(t => t.Code == teamCode || (!string.IsNullOrWhiteSpace(t.AlternativeCode) && t.AlternativeCode == teamCode));
       team ??= teams.Find(t => t.Code == string.Empty);
-      entity.Team = team.Code;
+      // This should never be null, but just in case
+      if (team != null) entity.Team = team.Code;
     }
   }
 }

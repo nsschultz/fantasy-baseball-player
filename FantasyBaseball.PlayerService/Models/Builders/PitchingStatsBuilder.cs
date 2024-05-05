@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.PlayerService.Utility;
 
 namespace FantasyBaseball.PlayerService.Models.Builders
 {
@@ -50,18 +51,18 @@ namespace FantasyBaseball.PlayerService.Models.Builders
 
     private PitchingStats Calculate(PitchingStats stats)
     {
-      stats.FlyBallRate = Divide(statsList.Select(s => s.InningsPitched * s.FlyBallRate).Sum(), stats.InningsPitched);
-      stats.GroundBallRate = Divide(statsList.Select(s => s.InningsPitched * s.GroundBallRate).Sum(), stats.InningsPitched);
-      stats.EarnedRunAverage = Divide(stats.EarnedRuns, stats.InningsPitched / 9);
-      stats.WalksAndHitsPerInningPitched = Divide(stats.HitsAllowed + stats.BaseOnBallsAllowed, stats.InningsPitched);
-      stats.BattingAverageOnBallsInPlay = Divide(stats.HitsAllowed - stats.HomeRunsAllowed,
+      stats.FlyBallRate = MathHelper.Divide(statsList.Select(s => s.InningsPitched * s.FlyBallRate).Sum(), stats.InningsPitched);
+      stats.GroundBallRate = MathHelper.Divide(statsList.Select(s => s.InningsPitched * s.GroundBallRate).Sum(), stats.InningsPitched);
+      stats.EarnedRunAverage = MathHelper.Divide(stats.EarnedRuns, stats.InningsPitched / 9);
+      stats.WalksAndHitsPerInningPitched = MathHelper.Divide(stats.HitsAllowed + stats.BaseOnBallsAllowed, stats.InningsPitched);
+      stats.BattingAverageOnBallsInPlay = MathHelper.Divide(stats.HitsAllowed - stats.HomeRunsAllowed,
         stats.InningsPitched * BabipMultiplier + stats.HitsAllowed - stats.StrikeOuts - stats.HomeRunsAllowed);
-      stats.StrandRate = Divide(stats.HitsAllowed + stats.BaseOnBallsAllowed - stats.EarnedRuns,
+      stats.StrandRate = MathHelper.Divide(stats.HitsAllowed + stats.BaseOnBallsAllowed - stats.EarnedRuns,
         stats.HitsAllowed + stats.BaseOnBallsAllowed - stats.HomeRunsAllowed);
-      stats.Dominance = Divide(stats.StrikeOuts, stats.InningsPitched / 9);
-      stats.Control = Divide(stats.BaseOnBallsAllowed, stats.InningsPitched / 9);
-      stats.Command = Divide(stats.Dominance, stats.Control);
-      stats.GroundBallToFlyBallRate = Divide(stats.GroundBallRate, stats.FlyBallRate);
+      stats.Dominance = MathHelper.Divide(stats.StrikeOuts, stats.InningsPitched / 9);
+      stats.Control = MathHelper.Divide(stats.BaseOnBallsAllowed, stats.InningsPitched / 9);
+      stats.Command = MathHelper.Divide(stats.Dominance, stats.Control);
+      stats.GroundBallToFlyBallRate = MathHelper.Divide(stats.GroundBallRate, stats.FlyBallRate);
       stats.BasePerformanceValue = stats.InningsPitched > 0
         ? (stats.Dominance - MinimumDominance) * WeightDominance
           + (MaxiumumControl - stats.Control) * WeightControl
@@ -69,8 +70,6 @@ namespace FantasyBaseball.PlayerService.Models.Builders
         : 0;
       return stats;
     }
-
-    private static double Divide(double dividend, double divisor) => divisor == 0 || dividend == 0 ? 0 : dividend / divisor;
 
     private PitchingStats Sum() =>
       new()

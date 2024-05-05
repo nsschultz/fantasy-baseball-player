@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.PlayerService.Utility;
 
 namespace FantasyBaseball.PlayerService.Models.Builders
 {
@@ -52,14 +53,14 @@ namespace FantasyBaseball.PlayerService.Models.Builders
     {
       stats.TotalBases = stats.Hits - stats.Doubles - stats.Triples - stats.HomeRuns
         + stats.Doubles * 2 + stats.Triples * 3 + stats.HomeRuns * 4;
-      stats.BattingAverage = Divide(stats.Hits, stats.AtBats);
-      stats.OnBasePercentage = Divide(stats.Hits + stats.BaseOnBalls, stats.AtBats + stats.BaseOnBalls);
-      stats.SluggingPercentage = Divide(stats.TotalBases, stats.AtBats);
+      stats.BattingAverage = MathHelper.Divide(stats.Hits, stats.AtBats);
+      stats.OnBasePercentage = MathHelper.Divide(stats.Hits + stats.BaseOnBalls, stats.AtBats + stats.BaseOnBalls);
+      stats.SluggingPercentage = MathHelper.Divide(stats.TotalBases, stats.AtBats);
       stats.OnBasePlusSlugging = stats.OnBasePercentage + stats.SluggingPercentage;
-      stats.ContractRate = Divide(stats.AtBats - stats.StrikeOuts, stats.AtBats);
-      stats.Power = Divide(statsList.Select(s => s.AtBats * s.Power).Sum(), stats.AtBats);
-      stats.WalkRate = Divide(stats.BaseOnBalls, stats.AtBats + stats.BaseOnBalls);
-      stats.Speed = Divide(statsList.Select(s => s.AtBats * s.Speed).Sum(), stats.AtBats);
+      stats.ContractRate = MathHelper.Divide(stats.AtBats - stats.StrikeOuts, stats.AtBats);
+      stats.Power = MathHelper.Divide(statsList.Select(s => s.AtBats * s.Power).Sum(), stats.AtBats);
+      stats.WalkRate = MathHelper.Divide(stats.BaseOnBalls, stats.AtBats + stats.BaseOnBalls);
+      stats.Speed = MathHelper.Divide(statsList.Select(s => s.AtBats * s.Speed).Sum(), stats.AtBats);
       stats.BasePerformanceValue = stats.AtBats + stats.BaseOnBalls > 0
         ? (stats.WalkRate - MinimumWalkRate) * WeightWalkRate
           + (stats.ContractRate - MinimumContractRate) * WeightContractRate
@@ -68,8 +69,6 @@ namespace FantasyBaseball.PlayerService.Models.Builders
         : 0;
       return stats;
     }
-
-    private static double Divide(double dividend, double divisor) => divisor == 0 || dividend == 0 ? 0 : dividend / divisor;
 
     private BattingStats Sum() =>
       new()

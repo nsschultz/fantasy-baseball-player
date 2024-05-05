@@ -32,16 +32,16 @@ namespace FantasyBaseball.PlayerService.Maps
       ReplaceBattingStats(player.BattingStats, StatsType.YTD);
       ReplaceBattingStats(player.BattingStats, StatsType.PROJ);
       ReplaceBattingStats(player.BattingStats, StatsType.CMBD, new BattingStatsBuilder()
-        .AddStats(player.BattingStats.FirstOrDefault(b => b.StatsType == StatsType.YTD))
-        .AddStats(player.BattingStats.FirstOrDefault(b => b.StatsType == StatsType.PROJ))
+        .AddStats(player.BattingStats.Find(b => b.StatsType == StatsType.YTD))
+        .AddStats(player.BattingStats.Find(b => b.StatsType == StatsType.PROJ))
         .SetStatsType(StatsType.CMBD)
         .Build());
       player.BattingStats = [.. player.BattingStats.OrderBy(p => p.StatsType)];
       ReplacePitchingStats(player.PitchingStats, StatsType.YTD);
       ReplacePitchingStats(player.PitchingStats, StatsType.PROJ);
       ReplacePitchingStats(player.PitchingStats, StatsType.CMBD, new PitchingStatsBuilder()
-        .AddStats(player.PitchingStats.FirstOrDefault(p => p.StatsType == StatsType.YTD))
-        .AddStats(player.PitchingStats.FirstOrDefault(p => p.StatsType == StatsType.PROJ))
+        .AddStats(player.PitchingStats.Find(p => p.StatsType == StatsType.YTD))
+        .AddStats(player.PitchingStats.Find(p => p.StatsType == StatsType.PROJ))
         .SetStatsType(StatsType.CMBD)
         .Build());
       player.PitchingStats = [.. player.PitchingStats.OrderBy(p => p.StatsType)];
@@ -58,7 +58,7 @@ namespace FantasyBaseball.PlayerService.Maps
 
     private static void ReplaceStats<T>(List<T> stats, Predicate<T> statsFinder, Func<T, T> builder)
     {
-      var statLine = stats.FirstOrDefault(s => statsFinder(s));
+      var statLine = stats.Find(s => statsFinder(s));
       var index = stats.IndexOf(statLine);
       if (index != -1) stats[index] = builder(statLine);
       else stats.Add(builder(statLine));
