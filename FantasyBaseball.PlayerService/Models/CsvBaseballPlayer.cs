@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Text.Json.Serialization;
 using FantasyBaseball.PlayerService.Models.Enums;
 
@@ -89,14 +88,14 @@ namespace FantasyBaseball.PlayerService.Models
 
     private BattingStats GetBattingStats(StatsType statsType)
     {
-      if (!BattingStats.Any(s => s.StatsType == statsType)) BattingStats.Add(new BattingStats { StatsType = statsType });
-      return BattingStats.FirstOrDefault(s => s.StatsType == statsType);
+      if (!BattingStats.Exists(s => s.StatsType == statsType)) BattingStats.Add(new BattingStats { StatsType = statsType });
+      return BattingStats.Find(s => s.StatsType == statsType);
     }
 
     private PitchingStats GetPitchingStats(StatsType statsType)
     {
-      if (!PitchingStats.Any(s => s.StatsType == statsType)) PitchingStats.Add(new PitchingStats { StatsType = statsType });
-      return PitchingStats.FirstOrDefault(s => s.StatsType == statsType);
+      if (!PitchingStats.Exists(s => s.StatsType == statsType)) PitchingStats.Add(new PitchingStats { StatsType = statsType });
+      return PitchingStats.Find(s => s.StatsType == statsType);
     }
   }
 }

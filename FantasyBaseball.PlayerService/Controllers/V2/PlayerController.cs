@@ -67,7 +67,7 @@ namespace FantasyBaseball.PlayerService.Controllers.V2
     public async Task UpdatePlayer([FromRoute] Guid id, [FromBody] BaseballPlayer player)
     {
       if (player == null) throw new BadRequestException("Player not set");
-      if (id == default) throw new BadRequestException("Invalid player id used");
+      if (id == Guid.Empty) throw new BadRequestException("Invalid player id used");
       if (id != player.Id) throw new BadRequestException("The ids must match");
       await _updateService.UpdatePlayer(player);
     }

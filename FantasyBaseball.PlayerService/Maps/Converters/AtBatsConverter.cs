@@ -2,6 +2,7 @@ using System;
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
+using FantasyBaseball.PlayerService.Utility;
 
 namespace FantasyBaseball.PlayerService.Maps.Converters
 {
@@ -21,7 +22,7 @@ namespace FantasyBaseball.PlayerService.Maps.Converters
       var bb = GetIntValue(row, "BB");
       if (h == 0) return pa - bb;
       var avg = double.TryParse(row.GetField("AVG"), out var d) ? d : 0;
-      if (avg == 0.0 && h > 0) avg = 1.0; // Fix for issue where BHQ has wrong average
+      if (MathHelper.IsEqual(avg, 0) && h > 0) avg = 1.0; // Fix for issue where BHQ has wrong average
       return Convert.ToInt32(Math.Round(h / avg + .5, MidpointRounding.ToZero));
     }
 

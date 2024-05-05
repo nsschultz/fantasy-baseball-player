@@ -13,6 +13,7 @@ namespace FantasyBaseball.PlayerService.Services
   public class GetPositionService : IGetPositionService
   {
     private readonly IAppCache _cache;
+    private readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true };
     private readonly string _url;
 
     /// <summary>Creates a new instance of the service.</summary>
@@ -29,8 +30,7 @@ namespace FantasyBaseball.PlayerService.Services
     {
       var response = await new HttpClient().GetAsync(_url);
       if (!response.IsSuccessStatusCode) throw new ServiceException($"Unable to get {_url}");
-      return await JsonSerializer.DeserializeAsync<List<BaseballPosition>>(
-        await response.Content.ReadAsStreamAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+      return await JsonSerializer.DeserializeAsync<List<BaseballPosition>>(await response.Content.ReadAsStreamAsync(), _options);
     }
   }
 }

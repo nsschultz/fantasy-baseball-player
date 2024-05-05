@@ -132,7 +132,7 @@ namespace FantasyBaseball.PlayerService.Database.Repositories
       var existingPlayers = new List<PlayerEntity>();
       entities.ToList().ForEach(p =>
       {
-        if (p.Id == default) newPlayers.Add(p);
+        if (p.Id == Guid.Empty) newPlayers.Add(p);
         else existingPlayers.Add(p);
       });
       return (newPlayers, existingPlayers);
