@@ -13,11 +13,11 @@ ENV DOTNET_ROLL_FORWARD=Major
 
 FROM dev AS build
 COPY FantasyBaseball.PlayerService/FantasyBaseball.PlayerService.csproj .
-RUN dotnet restore -a $"TARGETARCH"
+RUN dotnet restore -a "$TARGETARCH"
 COPY FantasyBaseball.PlayerService/ .
 RUN dotnet publish -c Release -a "$TARGETARCH" --no-restore -o /app/out -v minimal
 
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0.2
+FROM mcr.microsoft.com/dotnet/aspnet:8.0.2
 RUN apt-get update && \
     apt-get install -y --no-install-recommends curl && \
     rm -rf /var/lib/apt/lists/*
