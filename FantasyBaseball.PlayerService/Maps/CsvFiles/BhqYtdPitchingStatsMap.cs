@@ -20,9 +20,6 @@ namespace FantasyBaseball.PlayerService.Maps.CsvMaps
       Map(m => m.FullName).Name("Player");
       Map(m => m.Age).Name("Age").TypeConverter<DefaultIntConverter>();
       Map(m => m.Team).Name("Team").TypeConverter<BaseballTeamConverter>();
-      Map(m => m.AverageDraftPick).Name("ADP").TypeConverter<DefaultDoubleConverter>();
-      Map(m => m.AverageDraftPickMin).Name("Min ADP").TypeConverter<DefaultIntConverter>();
-      Map(m => m.AverageDraftPickMax).Name("Max ADP").TypeConverter<DefaultIntConverter>();
       // Skipped stat fields:	G,GS,SV%,ERA,xERA,WHIP,BF/G,Vel,BB%,K/9,K%,SwK%,K-BB%,H%,S%,LD %,HR/9,HR/FB,xHR/FB,OBA,RAR,REff%,LI,BPX,Dom%,Dis%,R$,5x5$
       Map(m => m.YearToDatePitchingStats.InningsPitched).Name("IP").TypeConverter<DefaultDoubleConverter>();
       Map(m => m.YearToDatePitchingStats.QualityStarts).Name("QS").TypeConverter<DefaultIntConverter>();
