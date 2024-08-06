@@ -19,7 +19,7 @@ namespace FantasyBaseball.PlayerService.Services.UnitTets
     ];
     private static readonly List<string> BATTER_YTD_RESULTS =
     [
-      "HQID,MLBAMID,Player,Age,Bats,Pos,Team,LG,ADP,\"Min ADP\",\"Max ADP\",PA,R,H,2B,3B,HR,RBI,BB,K,SB,CS,AVG,OBP,SLG,OPS,\"BB %\",Ct%,Eye,H%,HctX,xBA,\"GB %\",\"LD %\",\"FB %\",PX,xPX,SPD,RSPD,RCG,RAR,BPV,C,1B,2B,3B,SS,OF,DH",
+      "HQID,MLBAMID,Player,Age,Bats,Pos,Team,LG,ADP,\"Min ADP\",\"Max ADP\",AB,R,H,2B,3B,HR,RBI,BB,K,SB,CS,AVG,OBP,SLG,OPS,\"BB %\",Ct%,Eye,H%,HctX,xBA,\"GB %\",\"LD %\",\"FB %\",PX,xPX,SPD,RSPD,RCG,RAR,BPV,C,1B,2B,3B,SS,OF,DH",
       "6791,682928,\"Abrams, CJ\",23,L,SS,WSH,NL,38.95,15,68,28,5,8,,1,2,5,3,8,3,,.333,.407,.667,1.074,10.7%,66.7%,0.38,42.86%,125,.258,31.2%,18.8%,50.0%,198,118,140,93,11.46,4.50,91,,,,,6,,",
       "2024-04-01 05:30:31"
     ];

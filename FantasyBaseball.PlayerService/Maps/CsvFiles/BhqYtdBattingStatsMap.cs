@@ -20,7 +20,7 @@ namespace FantasyBaseball.PlayerService.Maps.CsvMaps
       Map(m => m.Age).Name("Age").TypeConverter<DefaultIntConverter>();
       Map(m => m.Team).Name("Team").TypeConverter<BaseballTeamConverter>();
       // Skipped stat fields:	PA,OBP,SLG,OPS,BB%,Ct%,Eye,H%,HctX,xBA,GB %,LD %,FB %,xPX,SPD,RCG,RAR,BPV,C,1B,2B,3B,SS,OF,DH
-      Map(m => m.YearToDateBattingStats.AtBats).Name("AB").TypeConverter<AtBatsConverter>();
+      Map(m => m.YearToDateBattingStats.AtBats).Name("AB").TypeConverter<DefaultIntConverter>();
       Map(m => m.YearToDateBattingStats.Runs).Name("R").TypeConverter<DefaultIntConverter>();
       Map(m => m.YearToDateBattingStats.Hits).Name("H").TypeConverter<DefaultIntConverter>();
       Map(m => m.YearToDateBattingStats.Doubles).Name("2B").TypeConverter<DefaultIntConverter>();

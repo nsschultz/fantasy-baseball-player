@@ -85,7 +85,7 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
       entity.AverageDraftPickMin = 234;
       entity.BattingStats.Clear();
       entity.PitchingStats.Clear();
-      ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, player, entity));
+      ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, player, entity), 345, 654, 234);
     }
 
     private static BattingStats BuildBattingStats(StatsType statsType) =>
