@@ -69,6 +69,25 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
       ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, player, entity));
     }
 
+    [Fact]
+    public void MergePlayerMatchDraftTest()
+    {
+      var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+      var player = BuildPlayer(true);
+      var entity = new BhqPlayerMerger().MergePlayer(mapper, player, null);
+      entity.MlbAmId = 1231243;
+      entity.Age = 34563453;
+      entity.Team = "xyasasdfasdf";
+      entity.Reliability = 6745674567465;
+      entity.MayberryMethod = 53451;
+      entity.AverageDraftPick = 345;
+      entity.AverageDraftPickMax = 654;
+      entity.AverageDraftPickMin = 234;
+      entity.BattingStats.Clear();
+      entity.PitchingStats.Clear();
+      ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, player, entity));
+    }
+
     private static BattingStats BuildBattingStats(StatsType statsType) =>
       new()
       {
@@ -108,7 +127,7 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
         GroundBallRate = 0.31
       };
 
-    private static BaseballPlayer BuildPlayer() =>
+    private static BaseballPlayer BuildPlayer(bool maxDraft = false) =>
       new()
       {
         MlbAmId = 123,
@@ -119,9 +138,9 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
         Positions = BuildPositionList(["OF", "1B"]),
         Team = new BaseballTeam { Code = "MIL" },
         Status = PlayerStatus.XX,
-        AverageDraftPick = 2,
-        AverageDraftPickMin = 1,
-        AverageDraftPickMax = 4,
+        AverageDraftPick = maxDraft ? 9999 : 2,
+        AverageDraftPickMin = maxDraft ? 9999 : 1,
+        AverageDraftPickMax = maxDraft ? 9999 : 4,
         MayberryMethod = 5,
         Reliability = 6,
         League1 = LeagueStatus.R,
@@ -142,7 +161,7 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
         .OrderBy(p => p.SortOrder)
         .Select(p => p.Code));
 
-    private static void ValidatePlayer(BaseballPlayer expected, PlayerEntity actual)
+    private static void ValidatePlayer(BaseballPlayer expected, PlayerEntity actual, double adp = 0, int maxPick = 0, int minPick = 0)
     {
       Assert.Equal(expected.MlbAmId, actual.MlbAmId);
       Assert.Equal(expected.FirstName, actual.FirstName);
@@ -152,9 +171,9 @@ namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
       Assert.Equal(BuildPositionString(expected.Positions), BuildPositionString(actual.Positions));
       Assert.Equal(expected.Team.Code, actual.Team);
       Assert.Equal(expected.Status, actual.Status);
-      Assert.Equal(expected.AverageDraftPick, actual.AverageDraftPick);
-      Assert.Equal(expected.AverageDraftPickMax, actual.AverageDraftPickMax);
-      Assert.Equal(expected.AverageDraftPickMin, actual.AverageDraftPickMin);
+      Assert.Equal(adp > 0 && expected.AverageDraftPick == 9999 ? adp : expected.AverageDraftPick, actual.AverageDraftPick);
+      Assert.Equal(maxPick > 0 && expected.AverageDraftPickMax == 9999 ? maxPick : expected.AverageDraftPickMax, actual.AverageDraftPickMax);
+      Assert.Equal(minPick > 0 && expected.AverageDraftPickMin == 9999 ? minPick : expected.AverageDraftPickMin, actual.AverageDraftPickMin);
       Assert.Equal(expected.MayberryMethod, actual.MayberryMethod);
       Assert.Equal(expected.Reliability, actual.Reliability);
       Assert.Equal(expected.League1, actual.LeagueStatuses.First(l => l.LeagueId == 1).LeagueStatus);
