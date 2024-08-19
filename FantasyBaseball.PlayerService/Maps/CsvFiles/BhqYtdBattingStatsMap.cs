@@ -23,8 +23,8 @@ namespace FantasyBaseball.PlayerService.Maps.CsvMaps
       Map(m => m.YearToDateBattingStats.AtBats).Name("AB").TypeConverter<DefaultIntConverter>();
       Map(m => m.YearToDateBattingStats.Runs).Name("R").TypeConverter<DefaultIntConverter>();
       Map(m => m.YearToDateBattingStats.Hits).Name("H").TypeConverter<DefaultIntConverter>();
-      Map(m => m.YearToDateBattingStats.Doubles).Name("2B").TypeConverter<DefaultIntConverter>();
-      Map(m => m.YearToDateBattingStats.Triples).Name("3B").TypeConverter<DefaultIntConverter>();
+      Map(m => m.YearToDateBattingStats.Doubles).Name("2B").NameIndex(1).TypeConverter<DefaultIntConverter>();
+      Map(m => m.YearToDateBattingStats.Triples).Name("3B").NameIndex(1).TypeConverter<DefaultIntConverter>();
       Map(m => m.YearToDateBattingStats.HomeRuns).Name("HR").TypeConverter<DefaultIntConverter>();
       Map(m => m.YearToDateBattingStats.RunsBattedIn).Name("RBI").TypeConverter<DefaultIntConverter>();
       Map(m => m.YearToDateBattingStats.BaseOnBalls).Name("BB").TypeConverter<DefaultIntConverter>();
