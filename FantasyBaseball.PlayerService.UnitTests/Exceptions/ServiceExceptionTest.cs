@@ -1,7 +1,8 @@
 using System;
+using FantasyBaseball.PlayerService.Exceptions;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Exceptions.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Exceptions
 {
   public class ServiceExceptionTest
   {

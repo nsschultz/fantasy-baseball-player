@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using FantasyBaseball.PlayerService.Maps.Converters;
 using FantasyBaseball.PlayerService.Models;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Maps.Converters.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Maps.Converters
 {
   public class BaseballTeamConverterTest
   {

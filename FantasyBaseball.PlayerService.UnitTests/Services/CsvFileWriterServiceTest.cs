@@ -5,9 +5,10 @@ using AutoMapper;
 using FantasyBaseball.PlayerService.Maps;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.PlayerService.Services;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Services.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Services
 {
   public class CsvFileWriterServiceTest
   {

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using FantasyBaseball.PlayerService.Controllers.V2;
 using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.Exceptions;
 using FantasyBaseball.PlayerService.Models;
@@ -7,7 +8,7 @@ using FantasyBaseball.PlayerService.Services;
 using Moq;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Controllers.V2
 {
   public class PlayerControllerTest
   {

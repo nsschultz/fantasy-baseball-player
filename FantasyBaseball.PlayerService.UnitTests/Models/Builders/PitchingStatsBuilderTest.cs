@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.PlayerService.Models.Builders;
 using FantasyBaseball.PlayerService.Models.Enums;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Models.Builders.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Models.Builders
 {
   public class PitchingStatsBuilderTest
   {

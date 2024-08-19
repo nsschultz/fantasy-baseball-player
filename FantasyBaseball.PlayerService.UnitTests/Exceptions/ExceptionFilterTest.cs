@@ -1,4 +1,5 @@
 using System;
+using FantasyBaseball.PlayerService.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Exceptions.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Exceptions
 {
   public class ExceptionFilterTest
   {

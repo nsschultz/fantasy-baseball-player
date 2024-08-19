@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.PlayerService.Services;
 using LazyCache;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Services.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Services
 {
   public class GetPositionServiceTest
   {

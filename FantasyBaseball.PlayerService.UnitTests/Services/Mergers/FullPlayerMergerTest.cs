@@ -5,9 +5,10 @@ using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Maps;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.PlayerService.Services.Mergers;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Services.Mergers.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Services.Mergers
 {
   public class FullPlayerMergerTest
   {

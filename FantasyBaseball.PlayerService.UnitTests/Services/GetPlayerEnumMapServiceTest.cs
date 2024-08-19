@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using FantasyBaseball.PlayerService.Services;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Services.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Services
 {
   public class GetPlayerEnumMapServiceTest
   {

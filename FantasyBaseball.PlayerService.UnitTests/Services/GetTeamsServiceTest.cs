@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Database.Repositories;
+using FantasyBaseball.PlayerService.Services;
 using LazyCache;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Services.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Services
 {
   public class GetTeamsServiceTest
   {
