@@ -1,6 +1,7 @@
+using FantasyBaseball.PlayerService.Utility;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Utility.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Utility
 {
   public class MathHelperTests
   {

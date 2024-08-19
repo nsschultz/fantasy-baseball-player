@@ -1,6 +1,7 @@
+using FantasyBaseball.PlayerService.Maps.Converters;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Maps.Converters.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Maps.Converters
 {
   public class ReliabilityConverterTest
   {

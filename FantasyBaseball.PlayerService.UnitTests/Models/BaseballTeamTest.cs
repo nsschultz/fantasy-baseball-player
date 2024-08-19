@@ -1,6 +1,7 @@
+using FantasyBaseball.PlayerService.Models;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Models.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Models
 {
   public class BaseballTeamTest
   {

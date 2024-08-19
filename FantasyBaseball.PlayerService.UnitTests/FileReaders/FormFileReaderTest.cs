@@ -1,10 +1,11 @@
 using System.Threading.Tasks;
 using FantasyBaseball.PlayerService.Exceptions;
+using FantasyBaseball.PlayerService.FileReaders;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.FileReaders
+namespace FantasyBaseball.PlayerService.UnitTests.FileReaders
 {
   public class FormFileReaderTest
   {

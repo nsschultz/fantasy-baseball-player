@@ -1,8 +1,9 @@
 using System;
+using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Models.Enums;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Models.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Models
 {
   public class CsvBaseballPlayerTest
   {

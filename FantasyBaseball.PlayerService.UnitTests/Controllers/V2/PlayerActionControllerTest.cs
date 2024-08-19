@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using FantasyBaseball.PlayerService.Controllers.V2;
 using FantasyBaseball.PlayerService.Exceptions;
 using FantasyBaseball.PlayerService.FileReaders;
 using FantasyBaseball.PlayerService.Models;
@@ -12,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Controllers.V2.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Controllers.V2
 {
   public class PlayerActionControllerTest
   {

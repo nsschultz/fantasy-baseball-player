@@ -1,6 +1,7 @@
+using FantasyBaseball.PlayerService.Database.Entities;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Database.Entities.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Database.Entities
 {
   public class PlayerPositionEntityTest
   {

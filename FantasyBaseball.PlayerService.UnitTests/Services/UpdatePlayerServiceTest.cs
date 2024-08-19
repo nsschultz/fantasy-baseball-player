@@ -5,11 +5,12 @@ using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.Exceptions;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.PlayerService.Services;
 using FantasyBaseball.PlayerService.Services.Mergers;
 using Moq;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Services.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Services
 {
   public class UpdatePlayerServiceTest
   {

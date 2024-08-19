@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using FantasyBaseball.PlayerService.Database.Entities;
+using FantasyBaseball.PlayerService.Maps;
 using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Models.Enums;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.Maps.UnitTests
+namespace FantasyBaseball.PlayerService.UnitTests.Maps
 {
   public class BaseballPlayerProfileTest
   {
