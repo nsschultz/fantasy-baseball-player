@@ -14,6 +14,12 @@ namespace FantasyBaseball.PlayerService.Maps.CsvMaps
       // Constants
       Map(m => m.Type).Constant(PlayerType.B);
       Map(m => m.Status).Constant(PlayerStatus.NE);
+      // Other Constants for missing fields
+      Map(m => m.AverageDraftPick).Constant(-1);
+      Map(m => m.AverageDraftPickMax).Constant(-1);
+      Map(m => m.AverageDraftPickMin).Constant(-1);
+      Map(m => m.MayberryMethod).Constant(-1);
+      Map(m => m.Reliability).Constant(-1);
       // Skipped player fields: Bats,Pos,LG
       Map(m => m.MlbAmId).Name("MLBAMID").TypeConverter<DefaultIntConverter>();
       Map(m => m.FullName).Name("Player");

@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +14,6 @@ namespace FantasyBaseball.PlayerService.Controllers.V3
   public class PlayerDeleteController(IDeletePlayerService deleteService) : ControllerBase
   {
     private readonly IDeletePlayerService _deleteService = deleteService;
-    private readonly IPlayerRepository _playerRepo;
 
     /// <summary>Deletes the given player.</summary>
     /// <param name="id">The id of the player to change.</param>
