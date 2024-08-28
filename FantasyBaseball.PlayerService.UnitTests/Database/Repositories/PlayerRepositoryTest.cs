@@ -14,8 +14,8 @@ namespace FantasyBaseball.PlayerService.UnitTests.Database.Repositories
 {
   public class PlayerRepositoryTest : IDisposable
   {
-    private readonly Guid PlayerMatchingId = Guid.NewGuid();
-    private readonly Guid PlayerMissingId = Guid.NewGuid();
+    private static readonly Guid PlayerMatchingId = Guid.NewGuid();
+    private static readonly Guid PlayerMissingId = Guid.NewGuid();
     private readonly PlayerContext _context;
 
     public PlayerRepositoryTest() => _context = CreateContext().Result;
@@ -168,7 +168,7 @@ namespace FantasyBaseball.PlayerService.UnitTests.Database.Repositories
       _context.Dispose();
     }
 
-    private async Task<PlayerContext> CreateContext()
+    private static async Task<PlayerContext> CreateContext()
     {
       var options = new DbContextOptionsBuilder<PlayerContext>()
         .UseInMemoryDatabase(databaseName: "GetPlayersTest")
