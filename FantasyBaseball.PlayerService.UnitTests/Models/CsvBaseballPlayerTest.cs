@@ -23,9 +23,9 @@ namespace FantasyBaseball.PlayerService.UnitTests.Models
       Assert.Equal(PlayerStatus.XX, obj.Status);
       Assert.Equal(LeagueStatus.A, obj.League1);
       Assert.Equal(LeagueStatus.A, obj.League2);
-      Assert.Equal(9999, obj.AverageDraftPick);
-      Assert.Equal(9999, obj.AverageDraftPickMax);
-      Assert.Equal(9999, obj.AverageDraftPickMin);
+      Assert.Equal(0, obj.AverageDraftPick);
+      Assert.Equal(0, obj.AverageDraftPickMax);
+      Assert.Equal(0, obj.AverageDraftPickMin);
       Assert.Equal(0, obj.Reliability);
       Assert.Equal(0, obj.MayberryMethod);
       Assert.Empty(obj.BattingStats);

@@ -7,9 +7,6 @@ namespace FantasyBaseball.PlayerService.Models
   /// <summary>All of the information that makes up a baseball player.</summary>
   public class BaseballPlayer
   {
-    /// <summary>Max value for draft pick attributes.</summary>
-    private const int MaxDraftPick = 9999;
-
     /// <summary>The player's ID.</summary>
     public Guid Id { get; set; }
 
@@ -35,19 +32,19 @@ namespace FantasyBaseball.PlayerService.Models
     public PlayerStatus Status { get; set; }
 
     /// <summary>The rank of this player in the draft.</summary>
-    [Obsolete("Use AvererageDraftPickMin instead.")] public int DraftRank { get; set; } = MaxDraftPick;
+    [Obsolete("Use AvererageDraftPickMin instead.")] public int DraftRank { get; set; }
 
     /// <summary>The average draft position (ADP) for this player.</summary>
-    public double AverageDraftPick { get; set; } = MaxDraftPick;
+    public double AverageDraftPick { get; set; }
 
     /// <summary>The earliest pick used on this player.</summary>
-    public int AverageDraftPickMin { get; set; } = MaxDraftPick;
+    public int AverageDraftPickMin { get; set; }
 
     /// <summary>The latest pick used on this player.</summary>
-    public int AverageDraftPickMax { get; set; } = MaxDraftPick;
+    public int AverageDraftPickMax { get; set; }
 
     /// <summary>The highest pick that was used on this player.</summary>
-    [Obsolete("Use AvererageDraftPickMin instead.")] public int HighestPick { get; set; } = MaxDraftPick;
+    [Obsolete("Use AvererageDraftPickMin instead.")] public int HighestPick { get; set; }
 
     /// <summary>The percentage of time that this player was drafted.</summary>
     [Obsolete("Not being used anymore.")] public double DraftedPercentage { get; set; }
