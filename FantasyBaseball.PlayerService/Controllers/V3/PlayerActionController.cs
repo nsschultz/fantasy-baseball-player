@@ -45,17 +45,11 @@ namespace FantasyBaseball.PlayerService.Controllers.V3
     [HttpPost("upload/stats")]
     public async Task<int> UploadStats(PlayerType player, StatsType stats)
     {
-      if (player == PlayerType.U) throw new BadRequestException("Invalid player type");
-      if (stats == StatsType.UNKN) throw new BadRequestException("Invalid stats type");
-      return await UploadFile(player, stats);
-    }
-
-    private async Task<int> UploadFile(PlayerType player, StatsType stats)
-    {
       try
       {
-        var fileReader = new FormFileReader(Request);
-        return await _mergeService.MergeStats(fileReader, player, stats);
+        if (player == PlayerType.U) throw new BadRequestException("Invalid player type");
+        if (stats == StatsType.UNKN) throw new BadRequestException("Invalid stats type");
+        return await _mergeService.MergeStats(new FormFileReader(Request), player, stats);
       }
       catch (Exception e)
       {
