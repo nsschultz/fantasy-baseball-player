@@ -8,17 +8,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyBaseball.PlayerService.Controllers.V3
 {
-  /// <summary>Endpoint for taking actions on the player objects.</summary>
+  /// <summary>Endpoint for uploading new stats for players.</summary>
+  /// <remarks>Creates a new instance of the <see cref="PlayerUploadStatsController"/> class.</remarks>
+  /// <param name="mergeService">Service for merging the CSV file into the existing data store.</param>
   [Route("api/v2/action/upload/stats")]
   [Route("api/v3/action/upload/stats")]
   [ApiController]
-  public class PlayerUploadStatsController : ControllerBase
+  public class PlayerUploadStatsController(IMergeStatsService mergeService) : ControllerBase
   {
-    private readonly IMergeStatsService _mergeService;
-
-    /// <summary>Creates a new instance of the <see cref="PlayerUploadStatsController"/> class.</summary>
-    /// <param name="mergeService">Service for merging the CSV file into the existing data store.</param>
-    public PlayerUploadStatsController(IMergeStatsService mergeService) => (_mergeService) = (mergeService);
+    private readonly IMergeStatsService _mergeService = mergeService;
 
     /// <summary>Uploads player statistics from a file.</summary>
     /// <param name="player">The type of player.</param>
