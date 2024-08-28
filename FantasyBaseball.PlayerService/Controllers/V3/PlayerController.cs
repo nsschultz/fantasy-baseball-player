@@ -7,10 +7,11 @@ using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FantasyBaseball.PlayerService.Controllers.V2
+namespace FantasyBaseball.PlayerService.Controllers.V3
 {
   /// <summary>Endpoint for retrieving player data.</summary>
   [Route("api/v2/player")]
+  [Route("api/v3/player")]
   [ApiController]
   public class PlayerController : ControllerBase
   {

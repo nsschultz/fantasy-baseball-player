@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using FantasyBaseball.PlayerService.Controllers.V2;
+using FantasyBaseball.PlayerService.Controllers.V3;
 using FantasyBaseball.PlayerService.Services;
 using Moq;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.UnitTests.Controllers.V2
+namespace FantasyBaseball.PlayerService.UnitTests.Controllers.V3
 {
   public class PlayerEnumControllerTest
   {
