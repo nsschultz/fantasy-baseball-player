@@ -49,11 +49,12 @@ namespace FantasyBaseball.PlayerService.Services.Mergers
       existing.Reliability = incoming.Reliability < 0 ? existing.Reliability : incoming.Reliability;
     }
 
-    private static double GetAdp(double newAdp, double oldAdp) =>
-      newAdp < 0 ? oldAdp : newAdp == 0 ? MathHelper.MaxDraftPick : Math.Min(newAdp, MathHelper.MaxDraftPick);
+    private static double GetAdp(double newAdp) => MathHelper.IsEqual(newAdp, 0) ? MathHelper.MaxDraftPick : Math.Min(newAdp, MathHelper.MaxDraftPick);
 
-    private static int GetAdp(int newAdp, int oldAdp) =>
-      newAdp < 0 ? oldAdp : newAdp == 0 ? MathHelper.MaxDraftPick : Math.Min(newAdp, MathHelper.MaxDraftPick);
+    private static double GetAdp(double newAdp, double oldAdp) => newAdp < 0 ? oldAdp : GetAdp(newAdp);
 
+    private static int GetAdp(int newAdp) => newAdp == 0 ? MathHelper.MaxDraftPick : Math.Min(newAdp, MathHelper.MaxDraftPick);
+
+    private static int GetAdp(int newAdp, int oldAdp) => newAdp < 0 ? oldAdp : GetAdp(newAdp);
   }
 }

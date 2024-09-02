@@ -114,6 +114,6 @@ app.UseSwaggerUI(c =>
 });
 // Migrate Database on Startup
 using var scope = app.Services.CreateScope();
-scope.ServiceProvider.GetRequiredService<PlayerContext>().Database.Migrate();
+await scope.ServiceProvider.GetRequiredService<PlayerContext>().Database.MigrateAsync();
 // Start the App
-app.Run();
+await app.RunAsync();
