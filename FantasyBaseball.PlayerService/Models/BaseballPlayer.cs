@@ -14,9 +14,6 @@ namespace FantasyBaseball.PlayerService.Models
     /// <summary>The player's MLB BAM ID.</summary>
     [JsonRequired] public int MlbAmId { get; set; }
 
-    /// <summary>The player's BHQ ID.</summary>
-    [Obsolete("Use MlbAmId instead.")] public int BhqId { get; set; }
-
     /// <summary>The player's type (B for Batter or P for Pitcher).</summary>
     [JsonRequired] public PlayerType Type { get; set; }
 
@@ -32,9 +29,6 @@ namespace FantasyBaseball.PlayerService.Models
     /// <summary>The player's status.</summary>
     [JsonRequired] public PlayerStatus Status { get; set; }
 
-    /// <summary>The rank of this player in the draft.</summary>
-    [Obsolete("Use AvererageDraftPickMin instead.")] public int DraftRank { get; set; }
-
     /// <summary>The average draft position (ADP) for this player.</summary>
     [JsonRequired] public double AverageDraftPick { get; set; }
 
@@ -43,12 +37,6 @@ namespace FantasyBaseball.PlayerService.Models
 
     /// <summary>The latest pick used on this player.</summary>
     [JsonRequired] public int AverageDraftPickMax { get; set; }
-
-    /// <summary>The highest pick that was used on this player.</summary>
-    [Obsolete("Use AvererageDraftPickMin instead.")] public int HighestPick { get; set; }
-
-    /// <summary>The percentage of time that this player was drafted.</summary>
-    [Obsolete("Not being used anymore.")] public double DraftedPercentage { get; set; }
 
     /// <summary>The player's projected reliability.</summary>
     [JsonRequired] public double Reliability { get; set; }

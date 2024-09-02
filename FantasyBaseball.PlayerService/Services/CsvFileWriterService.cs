@@ -24,7 +24,7 @@ namespace FantasyBaseball.PlayerService.Services
     public byte[] WriteCsvData(List<BaseballPlayer> players)
     {
       players ??= [];
-      var csvPlayers = players.Select(p => _mapper.Map<CsvBaseballPlayer>(p));
+      var csvPlayers = players.Select(_mapper.Map<CsvBaseballPlayer>);
       using var stream = new MemoryStream();
       using var writer = new StreamWriter(stream);
       using var csv = new CsvWriter(writer, _configuration);

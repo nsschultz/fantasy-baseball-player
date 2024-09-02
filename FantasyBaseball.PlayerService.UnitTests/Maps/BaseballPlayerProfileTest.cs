@@ -98,7 +98,6 @@ namespace FantasyBaseball.PlayerService.UnitTests.Maps
     {
       Assert.Equal(expected.Id, actual.Id);
       Assert.Equal(expected.MlbAmId, actual.MlbAmId);
-      Assert.Equal(expected.MlbAmId, actual.BhqId);
       Assert.Equal(expected.FirstName, actual.FirstName);
       Assert.Equal(expected.LastName, actual.LastName);
       Assert.Equal(expected.Age, actual.Age);

@@ -93,7 +93,7 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services
       playerRepo.Setup(o => o.GetPlayerById(It.Is<Guid>((i) => i == id))).ReturnsAsync(PLAYERS[0]);
       var player = await new GetPlayerService(mapper, playerRepo.Object, positionService.Object).GetPlayer(id);
       Assert.Equal("MIL", player.Team.Code);
-      Assert.Equal(player.BhqId, player.BattingStats.First(p => p.StatsType == StatsType.CMBD).AtBats);
+      Assert.Equal(player.MlbAmId, player.BattingStats.First(p => p.StatsType == StatsType.CMBD).AtBats);
       Assert.Equal(LeagueStatus.R, player.League1);
       Assert.Equal(LeagueStatus.A, player.League2);
     }
@@ -110,12 +110,12 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services
       Assert.Equal(3, players.Count);
       players.ForEach(player =>
       {
-        Assert.Equal(player.BhqId < 3 ? "MIL" : "TB", player.Team.Code);
-        Assert.Equal(player.BhqId, player.Type == PlayerType.B
+        Assert.Equal(player.MlbAmId < 3 ? "MIL" : "TB", player.Team.Code);
+        Assert.Equal(player.MlbAmId, player.Type == PlayerType.B
           ? player.BattingStats.First(p => p.StatsType == StatsType.CMBD).AtBats
           : player.PitchingStats.First(p => p.StatsType == StatsType.CMBD).InningsPitched);
-        Assert.Equal(player.BhqId % 2 == 0 ? LeagueStatus.A : LeagueStatus.R, player.League1);
-        Assert.Equal(player.BhqId % 2 == 0 ? LeagueStatus.R : LeagueStatus.A, player.League2);
+        Assert.Equal(player.MlbAmId % 2 == 0 ? LeagueStatus.A : LeagueStatus.R, player.League1);
+        Assert.Equal(player.MlbAmId % 2 == 0 ? LeagueStatus.R : LeagueStatus.A, player.League2);
       });
     }
   }

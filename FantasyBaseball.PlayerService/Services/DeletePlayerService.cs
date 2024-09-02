@@ -19,8 +19,7 @@ namespace FantasyBaseball.PlayerService.Services
     /// <param name="id">The guid of the player to delete.</param>
     public async Task DeletePlayer(Guid id)
     {
-      var existingPlayer = await _playerRepo.GetPlayerById(id);
-      if (existingPlayer == null) throw new BadRequestException("This player does not exist");
+      var existingPlayer = await _playerRepo.GetPlayerById(id) ?? throw new BadRequestException("This player does not exist");
       await _playerRepo.DeletePlayer(existingPlayer);
     }
   }

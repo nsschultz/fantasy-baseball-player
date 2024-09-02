@@ -18,7 +18,6 @@ namespace FantasyBaseball.PlayerService.Maps
       CreateMap<BattingStatsEntity, BattingStats>();
       CreateMap<PitchingStatsEntity, PitchingStats>();
       CreateMap<PlayerEntity, BaseballPlayer>()
-        .ForMember(dest => dest.BhqId, opt => opt.MapFrom(src => src.MlbAmId))
         .ForMember(dest => dest.League1, opt => opt.MapFrom(src => GetLeagueStatus(src, 1)))
         .ForMember(dest => dest.League2, opt => opt.MapFrom(src => GetLeagueStatus(src, 2)))
         .ForMember(dest => dest.Positions, opt => opt.Ignore())

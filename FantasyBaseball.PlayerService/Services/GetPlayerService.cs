@@ -47,7 +47,7 @@ namespace FantasyBaseball.PlayerService.Services
     }
 
     private static List<BaseballPosition> BuildBaseballPositions(PlayerEntity player, List<BaseballPosition> positions) =>
-      player.Positions.SelectMany(p => positions.Where(pp => pp.Code == p.PositionCode)).OrderBy(p => p.SortOrder).ToList();
+      [.. player.Positions.SelectMany(p => positions.Where(pp => pp.Code == p.PositionCode)).OrderBy(p => p.SortOrder)];
 
     private static List<BaseballPlayer> SortPlayers(List<BaseballPlayer> players) =>
       [.. players

@@ -13,7 +13,6 @@ namespace FantasyBaseball.PlayerService.UnitTests.Models
       var obj = new BaseballPlayer();
       Assert.Equal(Guid.Empty, obj.Id);
       Assert.Equal(0, obj.MlbAmId);
-      Assert.Equal(0, obj.BhqId);
       Assert.Null(obj.FirstName);
       Assert.Null(obj.LastName);
       Assert.Equal(0, obj.Age);
