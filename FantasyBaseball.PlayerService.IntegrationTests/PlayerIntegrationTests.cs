@@ -17,6 +17,10 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
     [InlineData("/api/v2/enum-map?enumType=PlayerStatus", 4)]
     [InlineData("/api/v2/enum-map?enumType=PlayerType", 3)]
     [InlineData("/api/v2/enum-map?enumType=StatsType", 4)]
+    [InlineData("/api/v3/enum-map?enumType=LeagueStatus", 4)]
+    [InlineData("/api/v3/enum-map?enumType=PlayerStatus", 4)]
+    [InlineData("/api/v3/enum-map?enumType=PlayerType", 3)]
+    [InlineData("/api/v3/enum-map?enumType=StatsType", 4)]
     public async void GetEnumTest(string url, int count)
     {
       var repsonse = await _fixture.Client.GetAsync(url);
@@ -26,16 +30,20 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
       Assert.Equal(count, values.Count);
     }
 
-    [Fact]
-    public async void GetPlayersV2Test()
+    [Theory]
+    [InlineData("/api/v2/player")]
+    [InlineData("/api/v3/player")]
+    public async void GetPlayersTest(string url)
     {
-      var players = await GetCountTest<BaseballPlayer>("/api/v2/player", 87);
+      var players = await GetCountTest<BaseballPlayer>(url, 87);
       ValidatePlayerStats(players);
     }
+
 
     [Theory]
     [InlineData("/api/health")]
     [InlineData("/api/v2/action/export")]
+    [InlineData("/api/v3/action/export")]
     [InlineData("/api/swagger/index.html")]
     public async void GetSimpleTests(string url)
     {
@@ -43,7 +51,10 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
       Assert.Equal(HttpStatusCode.OK, httpResponse.StatusCode);
     }
 
-    [Fact] public async void GetTeams2Test() => await GetCountTest<BaseballTeam>("/api/v2/team", 31);
+    [Theory]
+    [InlineData("/api/v2/team")]
+    [InlineData("/api/v3/team")]
+    public async void GetTeamsTest(string url) => await GetCountTest<BaseballTeam>(url, 31);
 
     private async Task<List<T>> GetCountTest<T>(string url, int count)
     {

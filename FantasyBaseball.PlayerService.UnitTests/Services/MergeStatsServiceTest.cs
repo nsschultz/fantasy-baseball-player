@@ -38,9 +38,9 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services
       playerRepo.Setup(o => o.UpsertPlayers(It.Is<List<PlayerEntity>>(i => i.Count == 5))).Returns(Task.FromResult(0));
       var newPlayers = new List<CsvBaseballPlayer>
       {
-        new() { BhqId = 123, Type = PlayerType.B },
-        new() { BhqId = 456, Type = PlayerType.P },
-        new() { BhqId = 789, Type = PlayerType.U }
+        new() { MlbAmId = 123, Type = PlayerType.B },
+        new() { MlbAmId = 456, Type = PlayerType.P },
+        new() { MlbAmId = 789, Type = PlayerType.U }
       };
       var fileService = new Mock<ICsvFileReaderService>();
       fileService.Setup(o => o.ReadCsvData(It.IsAny<ClassMap>(), It.IsAny<IFileReader>())).ReturnsAsync(newPlayers);
@@ -69,9 +69,9 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services
       playerRepo.Setup(o => o.UpsertPlayers(It.Is<List<PlayerEntity>>(i => i.Count == 5))).Returns(Task.FromResult(0));
       var newPlayers = new List<CsvBaseballPlayer>
       {
-        new() { BhqId = 123, Type = PlayerType.B },
-        new() { BhqId = 456, Type = PlayerType.P },
-        new() { BhqId = 789, Type = PlayerType.U }
+        new() { MlbAmId = 123, Type = PlayerType.B },
+        new() { MlbAmId = 456, Type = PlayerType.P },
+        new() { MlbAmId = 789, Type = PlayerType.U }
       };
       var fileService = new Mock<ICsvFileReaderService>();
       fileService.Setup(o => o.ReadCsvData(It.IsAny<ClassMap>(), It.IsAny<IFileReader>())).ReturnsAsync(newPlayers);

@@ -5,6 +5,9 @@ namespace FantasyBaseball.PlayerService.Utility
   /// <summary>Provides mathematical helper methods.</summary>
   public static class MathHelper
   {
+    /// <summary>Max value for draft pick attributes.</summary>
+    public static readonly int MaxDraftPick = 9999;
+
     private static readonly double epsilon = 0.0001d;
 
     /// <summary>Divides two numbers. Returns zero instead of throwing error if divisor is zero.</summary>

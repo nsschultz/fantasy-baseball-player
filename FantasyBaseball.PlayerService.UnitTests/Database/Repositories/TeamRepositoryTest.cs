@@ -29,7 +29,7 @@ namespace FantasyBaseball.PlayerService.UnitTests.Database.Repositories
       _context.Dispose();
     }
 
-    private async Task<PlayerContext> CreateContext()
+    private static async Task<PlayerContext> CreateContext()
     {
       var options = new DbContextOptionsBuilder<PlayerContext>()
         .UseInMemoryDatabase(databaseName: "GetTeamsTest")

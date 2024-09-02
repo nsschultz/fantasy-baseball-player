@@ -17,7 +17,7 @@ using Microsoft.OpenApi.Models;
 var BaseballSpecificOrigins = "_BaseballSpecificOrigins";
 var SwaggerBasePath = "api";
 var SwaggerTitle = "FantasyBaseball.PlayerService";
-var SwaggerVersion = "v2";
+var SwaggerVersion = "v3";
 
 // Build the App Config
 var builder = WebApplication.CreateBuilder(args);
@@ -114,6 +114,6 @@ app.UseSwaggerUI(c =>
 });
 // Migrate Database on Startup
 using var scope = app.Services.CreateScope();
-scope.ServiceProvider.GetRequiredService<PlayerContext>().Database.Migrate();
+await scope.ServiceProvider.GetRequiredService<PlayerContext>().Database.MigrateAsync();
 // Start the App
-app.Run();
+await app.RunAsync();

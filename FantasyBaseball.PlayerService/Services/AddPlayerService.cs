@@ -24,8 +24,6 @@ namespace FantasyBaseball.PlayerService.Services
     /// <returns>The id of the newly created object.</returns>
     public async Task<Guid> AddPlayer(BaseballPlayer player)
     {
-      // Temporary solution to handle the fact that the player object has a mix of BHQ and MLBAM ids
-      if (player.MlbAmId == 0) player.MlbAmId = player.BhqId;
       var existingPlayer = await _playerRepo.GetPlayerByMlbAmId(player.MlbAmId, player.Type);
       if (existingPlayer != null) throw new BadRequestException("This player already exists");
       var entity = _mapper.Map<PlayerEntity>(player);

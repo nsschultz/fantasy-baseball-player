@@ -3,7 +3,6 @@ using System;
 namespace FantasyBaseball.PlayerService.Exceptions
 {
   /// <summary>Exception that is thrown when there is problem with a csv file.</summary>
-  [Serializable]
   public class ServiceException : Exception
   {
     // <summary>Initializes a new instance of the exception class with the default error message.</summary>

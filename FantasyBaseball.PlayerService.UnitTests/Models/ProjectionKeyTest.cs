@@ -6,7 +6,7 @@ namespace FantasyBaseball.PlayerService.UnitTests.Models
 {
   public class ProjectionKeyTest
   {
-    private static readonly ProjectionKey BaseTestObj = new ProjectionKey(10, PlayerType.B);
+    private static readonly ProjectionKey BaseTestObj = new(10, PlayerType.B);
 
     [Fact] public void EqualsDifferentIdTest() => Assert.False(BaseTestObj.Equals(new ProjectionKey(100, PlayerType.B)));
 
