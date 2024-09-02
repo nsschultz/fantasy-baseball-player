@@ -39,7 +39,20 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services.Mergers
     {
       var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
       var player = BuildPlayer();
-      ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, player, null));
+      ValidatePlayer(new BhqPlayerMerger().MergePlayer(mapper, player, null));
+    }
+
+    [Fact]
+    public void MergePlayerNoExistingEmptyAdpTest()
+    {
+      var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+      var player = BuildPlayer();
+      player.AverageDraftPick = -1;
+      player.AverageDraftPickMin = -1;
+      player.AverageDraftPickMax = -1;
+      player.MayberryMethod = -1;
+      player.Reliability = -1;
+      ValidatePlayer(new BhqPlayerMerger().MergePlayer(mapper, player, null), true, true);
     }
 
     [Fact]
@@ -48,7 +61,7 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services.Mergers
       var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
       var player = BuildPlayer();
       var entity = new BhqPlayerMerger().MergePlayer(mapper, player, null);
-      ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, new BaseballPlayer(), entity));
+      ValidatePlayer(new BhqPlayerMerger().MergePlayer(mapper, new BaseballPlayer(), entity));
     }
 
     [Fact]
@@ -67,26 +80,53 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services.Mergers
       entity.AverageDraftPickMin = 234;
       entity.BattingStats.Clear();
       entity.PitchingStats.Clear();
-      ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, player, entity));
+      ValidatePlayer(new BhqPlayerMerger().MergePlayer(mapper, player, entity));
     }
 
     [Fact]
-    public void MergePlayerMatchDraftTest()
+    public void MergePlayerMatchBhqTest()
     {
       var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
-      var player = BuildPlayer(true);
+      var player = BuildPlayer();
+      player.AverageDraftPick = -1;
+      player.AverageDraftPickMin = -1;
+      player.AverageDraftPickMax = -1;
+      player.MayberryMethod = -1;
+      player.Reliability = -1;
       var entity = new BhqPlayerMerger().MergePlayer(mapper, player, null);
       entity.MlbAmId = 1231243;
       entity.Age = 34563453;
       entity.Team = "xyasasdfasdf";
-      entity.Reliability = 6745674567465;
-      entity.MayberryMethod = 53451;
-      entity.AverageDraftPick = 345;
-      entity.AverageDraftPickMax = 654;
-      entity.AverageDraftPickMin = 234;
+      entity.AverageDraftPick = 2;
+      entity.AverageDraftPickMin = 1;
+      entity.AverageDraftPickMax = 4;
+      entity.MayberryMethod = 5;
+      entity.Reliability = 6;
       entity.BattingStats.Clear();
       entity.PitchingStats.Clear();
-      ValidatePlayer(player, new BhqPlayerMerger().MergePlayer(mapper, player, entity), 345, 654, 234);
+      ValidatePlayer(new BhqPlayerMerger().MergePlayer(mapper, player, entity));
+    }
+
+    [Fact]
+    public void MergePlayerMatcEmptyAdpTest()
+    {
+      var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+      var player = BuildPlayer();
+      player.AverageDraftPick = 0;
+      player.AverageDraftPickMin = 0;
+      player.AverageDraftPickMax = 0;
+      var entity = new BhqPlayerMerger().MergePlayer(mapper, player, null);
+      entity.MlbAmId = 1231243;
+      entity.Age = 34563453;
+      entity.Team = "xyasasdfasdf";
+      entity.AverageDraftPick = 2;
+      entity.AverageDraftPickMin = 1;
+      entity.AverageDraftPickMax = 4;
+      entity.MayberryMethod = 5;
+      entity.Reliability = 6;
+      entity.BattingStats.Clear();
+      entity.PitchingStats.Clear();
+      ValidatePlayer(new BhqPlayerMerger().MergePlayer(mapper, player, entity), true);
     }
 
     private static BattingStats BuildBattingStats(StatsType statsType) =>
@@ -128,7 +168,7 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services.Mergers
         GroundBallRate = 0.31
       };
 
-    private static BaseballPlayer BuildPlayer(bool maxDraft = false) =>
+    private static BaseballPlayer BuildPlayer() =>
       new()
       {
         MlbAmId = 123,
@@ -139,9 +179,9 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services.Mergers
         Positions = BuildPositionList(["OF", "1B"]),
         Team = new BaseballTeam { Code = "MIL" },
         Status = PlayerStatus.XX,
-        AverageDraftPick = maxDraft ? 9999 : 2,
-        AverageDraftPickMin = maxDraft ? 9999 : 1,
-        AverageDraftPickMax = maxDraft ? 9999 : 4,
+        AverageDraftPick = 2,
+        AverageDraftPickMin = 1,
+        AverageDraftPickMax = 4,
         MayberryMethod = 5,
         Reliability = 6,
         League1 = LeagueStatus.R,
@@ -153,79 +193,70 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services.Mergers
     private static List<BaseballPosition> BuildPositionList(string[] positions) =>
       positions.SelectMany(p => POSITIONS.Where(pp => pp.Code == p)).ToList();
 
-    private static string BuildPositionString(List<BaseballPosition> positions) =>
-      string.Join("-", positions.OrderBy(p => p.SortOrder).Select(p => p.Code));
-
     private static string BuildPositionString(List<PlayerPositionEntity> positions) =>
       string.Join("-", positions
         .SelectMany(p => POSITIONS.Where(pp => pp.Code == p.PositionCode))
         .OrderBy(p => p.SortOrder)
         .Select(p => p.Code));
 
-    private static void ValidatePlayer(BaseballPlayer expected, PlayerEntity actual, double adp = 0, int maxPick = 0, int minPick = 0)
+    private static void ValidatePlayer(PlayerEntity actual, bool noAdp = false, bool noMM = false)
     {
-      Assert.Equal(expected.MlbAmId, actual.MlbAmId);
-      Assert.Equal(expected.FirstName, actual.FirstName);
-      Assert.Equal(expected.LastName, actual.LastName);
-      Assert.Equal(expected.Age, actual.Age);
-      Assert.Equal(expected.Type, actual.Type);
-      Assert.Equal(BuildPositionString(expected.Positions), BuildPositionString(actual.Positions));
-      Assert.Equal(expected.Team.Code, actual.Team);
-      Assert.Equal(expected.Status, actual.Status);
-      Assert.Equal(adp > 0 && expected.AverageDraftPick == 9999 ? adp : expected.AverageDraftPick, actual.AverageDraftPick);
-      Assert.Equal(maxPick > 0 && expected.AverageDraftPickMax == 9999 ? maxPick : expected.AverageDraftPickMax, actual.AverageDraftPickMax);
-      Assert.Equal(minPick > 0 && expected.AverageDraftPickMin == 9999 ? minPick : expected.AverageDraftPickMin, actual.AverageDraftPickMin);
-      Assert.Equal(expected.MayberryMethod, actual.MayberryMethod);
-      Assert.Equal(expected.Reliability, actual.Reliability);
-      Assert.Equal(expected.League1, actual.LeagueStatuses.First(l => l.LeagueId == 1).LeagueStatus);
-      Assert.Equal(expected.League2, actual.LeagueStatuses.First(l => l.LeagueId == 2).LeagueStatus);
-      Assert.Equal(expected.BattingStats.Count, actual.BattingStats.Count);
-      if (expected.BattingStats.Count != 0)
-      {
-        ValidatePlayerBattingStats(expected.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD), actual.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD));
-        ValidatePlayerBattingStats(expected.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ), actual.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ));
-      }
-      Assert.Equal(expected.PitchingStats.Count, actual.PitchingStats.Count);
-      if (expected.PitchingStats.Count != 0)
-      {
-        ValidatePlayerPitchingStats(expected.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD), actual.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD));
-        ValidatePlayerPitchingStats(expected.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ), actual.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ));
-      }
+      Assert.Equal(123, actual.MlbAmId);
+      Assert.Equal("First", actual.FirstName);
+      Assert.Equal("Last", actual.LastName);
+      Assert.Equal(36, actual.Age);
+      Assert.Equal(PlayerType.U, actual.Type);
+      Assert.Equal("1B-OF", BuildPositionString(actual.Positions));
+      Assert.Equal("MIL", actual.Team);
+      Assert.Equal(PlayerStatus.XX, actual.Status);
+      Assert.Equal(noAdp ? 9999 : 2, actual.AverageDraftPick);
+      Assert.Equal(noAdp ? 9999 : 4, actual.AverageDraftPickMax);
+      Assert.Equal(noAdp ? 9999 : 1, actual.AverageDraftPickMin);
+      Assert.Equal(noMM ? 0 : 5, actual.MayberryMethod);
+      Assert.Equal(noMM ? 0 : 6, actual.Reliability);
+      Assert.Equal(LeagueStatus.R, actual.LeagueStatuses.First(l => l.LeagueId == 1).LeagueStatus);
+      Assert.Equal(LeagueStatus.X, actual.LeagueStatuses.First(l => l.LeagueId == 2).LeagueStatus);
+      Assert.Equal(2, actual.BattingStats.Count);
+      ValidatePlayerBattingStats(actual.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD));
+      ValidatePlayerBattingStats(actual.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ));
+      Assert.Equal(2, actual.PitchingStats.Count);
+      ValidatePlayerPitchingStats(actual.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD));
+      ValidatePlayerPitchingStats(actual.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ));
     }
 
-    private static void ValidatePlayerBattingStats(BattingStats expected, BattingStatsEntity actual)
+    private static void ValidatePlayerBattingStats(BattingStatsEntity actual)
     {
-      Assert.Equal(expected.AtBats, actual.AtBats);
-      Assert.Equal(expected.Runs, actual.Runs);
-      Assert.Equal(expected.Hits, actual.Hits);
-      Assert.Equal(expected.Doubles, actual.Doubles);
-      Assert.Equal(expected.Triples, actual.Triples);
-      Assert.Equal(expected.HomeRuns, actual.HomeRuns);
-      Assert.Equal(expected.RunsBattedIn, actual.RunsBattedIn);
-      Assert.Equal(expected.BaseOnBalls, actual.BaseOnBalls);
-      Assert.Equal(expected.StrikeOuts, actual.StrikeOuts);
-      Assert.Equal(expected.StolenBases, actual.StolenBases);
-      Assert.Equal(expected.CaughtStealing, actual.CaughtStealing);
-      Assert.Equal(expected.Power, actual.Power);
-      Assert.Equal(expected.Speed, actual.Speed);
+      Assert.Equal(300, actual.AtBats);
+      Assert.Equal(75, actual.Runs);
+      Assert.Equal(96, actual.Hits);
+      Assert.Equal(24, actual.Doubles);
+      Assert.Equal(6, actual.Triples);
+      Assert.Equal(12, actual.HomeRuns);
+      Assert.Equal(48, actual.RunsBattedIn);
+      Assert.Equal(30, actual.BaseOnBalls);
+      Assert.Equal(60, actual.StrikeOuts);
+      Assert.Equal(9, actual.StolenBases);
+      Assert.Equal(3, actual.CaughtStealing);
+      Assert.Equal(100, actual.Power);
+      Assert.Equal(61, actual.Speed);
     }
 
-    private static void ValidatePlayerPitchingStats(PitchingStats expected, PitchingStatsEntity actual)
+    private static void ValidatePlayerPitchingStats(PitchingStatsEntity actual)
     {
-      Assert.Equal(expected.Wins, actual.Wins);
-      Assert.Equal(expected.Losses, actual.Losses);
-      Assert.Equal(expected.QualityStarts, actual.QualityStarts);
-      Assert.Equal(expected.Saves, actual.Saves);
-      Assert.Equal(expected.BlownSaves, actual.BlownSaves);
-      Assert.Equal(expected.Holds, actual.Holds);
-      Assert.Equal(expected.InningsPitched, actual.InningsPitched);
-      Assert.Equal(expected.HitsAllowed, actual.HitsAllowed);
-      Assert.Equal(expected.EarnedRuns, actual.EarnedRuns);
-      Assert.Equal(expected.HomeRunsAllowed, actual.HomeRunsAllowed);
-      Assert.Equal(expected.BaseOnBallsAllowed, actual.BaseOnBallsAllowed);
-      Assert.Equal(expected.StrikeOuts, actual.StrikeOuts);
-      Assert.Equal(expected.FlyBallRate, actual.FlyBallRate);
-      Assert.Equal(expected.GroundBallRate, actual.GroundBallRate);
+      Assert.Equal(12, actual.Wins);
+      Assert.Equal(6, actual.Losses);
+      Assert.Equal(18, actual.QualityStarts);
+      Assert.Equal(9, actual.Saves);
+      Assert.Equal(3, actual.BlownSaves);
+      Assert.Equal(15, actual.Holds);
+      Assert.Equal(60, actual.InningsPitched);
+      Assert.Equal(45, actual.HitsAllowed);
+      Assert.Equal(24, actual.EarnedRuns);
+      Assert.Equal(1, actual.HomeRunsAllowed);
+      Assert.Equal(30, actual.BaseOnBallsAllowed);
+      Assert.Equal(120, actual.StrikeOuts);
+      Assert.Equal(0.2, actual.FlyBallRate);
+      Assert.Equal(0.31, actual.GroundBallRate);
     }
   }
 }

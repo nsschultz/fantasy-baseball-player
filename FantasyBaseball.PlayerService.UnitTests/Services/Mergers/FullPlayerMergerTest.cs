@@ -91,7 +91,7 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services.Mergers
     private static BaseballPlayer BuildPlayer() =>
       new()
       {
-        BhqId = 123,
+        MlbAmId = 123,
         FirstName = "First",
         LastName = "Last",
         Age = 36,
