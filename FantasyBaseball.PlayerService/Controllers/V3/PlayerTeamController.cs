@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace FantasyBaseball.PlayerService.Controllers.V3
 {
   /// <summary>Endpoint for retrieving team data.</summary>
-  [Route("api/v2/team")]
   [Route("api/v3/team")]
   [ApiController]
   public class PlayerTeamController : ControllerBase

@@ -13,10 +13,6 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
     private readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true };
 
     [Theory]
-    [InlineData("/api/v2/enum-map?enumType=LeagueStatus", 4)]
-    [InlineData("/api/v2/enum-map?enumType=PlayerStatus", 4)]
-    [InlineData("/api/v2/enum-map?enumType=PlayerType", 3)]
-    [InlineData("/api/v2/enum-map?enumType=StatsType", 4)]
     [InlineData("/api/v3/enum-map?enumType=LeagueStatus", 4)]
     [InlineData("/api/v3/enum-map?enumType=PlayerStatus", 4)]
     [InlineData("/api/v3/enum-map?enumType=PlayerType", 3)]
@@ -31,7 +27,6 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
     }
 
     [Theory]
-    [InlineData("/api/v2/player")]
     [InlineData("/api/v3/player")]
     public async void GetPlayersTest(string url)
     {
@@ -42,7 +37,6 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
 
     [Theory]
     [InlineData("/api/health")]
-    [InlineData("/api/v2/action/export")]
     [InlineData("/api/v3/action/export")]
     [InlineData("/api/swagger/index.html")]
     public async void GetSimpleTests(string url)
@@ -52,7 +46,6 @@ namespace FantasyBaseball.PlayerService.IntegrationTests
     }
 
     [Theory]
-    [InlineData("/api/v2/team")]
     [InlineData("/api/v3/team")]
     public async void GetTeamsTest(string url) => await GetCountTest<BaseballTeam>(url, 31);
 

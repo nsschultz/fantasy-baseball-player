@@ -7,7 +7,6 @@ namespace FantasyBaseball.PlayerService.Controllers.V3
   /// <summary>Endpoint for retrieving enum data relevant to players.</summary>
   /// <remarks>Creates a new instance of the controller.</remarks>
   /// <param name="getEnumMapService">Service for getting the enums as a dictionary.</param>
-  [Route("api/v2/enum-map")]
   [Route("api/v3/enum-map")]
   [ApiController]
   public class PlayerEnumController(IGetPlayerEnumMapService getEnumMapService) : ControllerBase

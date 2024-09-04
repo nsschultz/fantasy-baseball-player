@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace FantasyBaseball.PlayerService.Controllers.V3
 {
   /// <summary>Endpoint for taking actions on the player objects.</summary>
-  [Route("api/v2/action/export")]
   [Route("api/v3/action/export")]
   [ApiController]
   public class PlayerExportController : ControllerBase
