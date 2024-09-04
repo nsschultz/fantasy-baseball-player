@@ -10,7 +10,6 @@ namespace FantasyBaseball.PlayerService.Controllers.V3
   /// <summary>Endpoint for updating a player's data.</summary>
   /// <remarks>Creates a new instance of the controller.</remarks>
   /// <param name="updateService">Service for updating a player.</param>
-  [Route("api/v2/player")]
   [Route("api/v3/player")]
   [ApiController]
   public class PlayerUpdateController(IUpdatePlayerService updateService) : ControllerBase

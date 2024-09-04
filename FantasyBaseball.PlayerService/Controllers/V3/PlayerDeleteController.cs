@@ -8,7 +8,6 @@ namespace FantasyBaseball.PlayerService.Controllers.V3
   /// <summary>Endpoint for deleting player data.</summary>
   /// <remarks>Creates a new instance of the controller.</remarks>
   /// <param name="deleteService">Service for deleting a player.</param>
-  [Route("api/v2/player")]
   [Route("api/v3/player")]
   [ApiController]
   public class PlayerDeleteController(IDeletePlayerService deleteService) : ControllerBase
