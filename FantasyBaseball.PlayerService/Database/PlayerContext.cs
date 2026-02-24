@@ -90,7 +90,7 @@ namespace FantasyBaseball.PlayerService.Database
         new TeamEntity { Code = "MIN", LeagueId = "AL", City = "Minnesota", Nickname = "Twins" },
         new TeamEntity { Code = "HOU", LeagueId = "AL", City = "Houston", Nickname = "Astros" },
         new TeamEntity { Code = "LAA", LeagueId = "AL", City = "Los Angeles", Nickname = "Angels" },
-        new TeamEntity { Code = "OAK", LeagueId = "AL", City = "Oakland", Nickname = "Athletics" },
+        new TeamEntity { Code = "ATH", LeagueId = "AL", City = "", Nickname = "Athletics" },
         new TeamEntity { Code = "SEA", LeagueId = "AL", City = "Seattle", Nickname = "Mariners" },
         new TeamEntity { Code = "TEX", LeagueId = "AL", City = "Texas", Nickname = "Rangers" },
         new TeamEntity { Code = "ATL", LeagueId = "NL", City = "Atlanta", Nickname = "Braves" },
