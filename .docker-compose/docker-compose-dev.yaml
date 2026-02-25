@@ -32,7 +32,7 @@ services:
       timeout: 30s
       retries: 5
     volumes:
-      - data_volume:/var/lib/postgresql/data
+      - player_data_volume:/var/lib/postgresql/data
   mountebank:
     build: mountebank/
     restart: always
@@ -48,7 +48,7 @@ services:
     ports:
       - "9000:80"
     volumes:
-      - pgadmin_volume:/var/lib/pgadmin
+      - player_pgadmin_volume:/var/lib/pgadmin
 volumes:
-  data_volume:
-  pgadmin_volume:
+  player_data_volume:
+  player_pgadmin_volume:

@@ -10,7 +10,6 @@ namespace FantasyBaseball.PlayerService.Controllers.V3
   /// <summary>Endpoint for retrieving player data.</summary>
   /// <remarks>Creates a new instance of the controller.</remarks>
   /// <param name="getService">Service for getting players.</param>
-  [Route("api/v2/player")]
   [Route("api/v3/player")]
   [ApiController]
   public class PlayerGetController(IGetPlayerService getService) : ControllerBase
