@@ -10,203 +10,202 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.UnitTests.Database.Repositories
+namespace FantasyBaseball.PlayerService.UnitTests.Database.Repositories;
+
+public class PlayerRepositoryTest : IDisposable
 {
-  public class PlayerRepositoryTest : IDisposable
+  private static readonly Guid PlayerMatchingId = Guid.NewGuid();
+  private static readonly Guid PlayerMissingId = Guid.NewGuid();
+  private readonly PlayerContext _context;
+
+  public PlayerRepositoryTest() => _context = CreateContext().Result;
+
+  [Fact]
+  public async Task AddPlayerTesExistingIdException()
   {
-    private static readonly Guid PlayerMatchingId = Guid.NewGuid();
-    private static readonly Guid PlayerMissingId = Guid.NewGuid();
-    private readonly PlayerContext _context;
+    var player = await _context.Players.FindAsync(PlayerMatchingId);
+    await Assert.ThrowsAsync<ArgumentException>(async () => await new PlayerRepository(_context).AddPlayer(player));
+    Assert.Equal(3, await _context.Players.CountAsync());
+  }
 
-    public PlayerRepositoryTest() => _context = CreateContext().Result;
+  [Fact]
+  public async Task AddPlayerTestValid()
+  {
+    var player = new PlayerEntity { MlbAmId = 100, Type = PlayerType.B, Team = "TB" };
+    await new PlayerRepository(_context).AddPlayer(player);
+    Assert.Equal(4, await _context.Players.CountAsync());
+  }
 
-    [Fact]
-    public async void AddPlayerTesExistingIdException()
+  [Fact]
+  public async Task DeleteAllPlayersTestValid()
+  {
+    await new PlayerRepository(_context).DeleteAllPlayers();
+    Assert.Equal(0, await _context.Players.CountAsync());
+    Assert.Equal(0, await _context.LeagueStatuses.CountAsync());
+    Assert.Equal(0, await _context.BattingStats.CountAsync());
+    Assert.Equal(0, await _context.PitchingStats.CountAsync());
+    Assert.Equal(31, await _context.Teams.CountAsync());
+  }
+
+  [Fact]
+  public async Task DeletePlayerTestMissingIdException()
+  {
+    var player = new PlayerEntity { Id = PlayerMissingId, MlbAmId = 1, Type = PlayerType.B, Team = "TB" };
+    await Assert.ThrowsAsync<InvalidOperationException>(async () => await new PlayerRepository(_context).DeletePlayer(player));
+    Assert.Equal(3, await _context.Players.CountAsync());
+  }
+
+  [Fact]
+  public async Task DeletePlayerTestValid()
+  {
+    var player = await _context.Players.FindAsync(PlayerMatchingId);
+    await new PlayerRepository(_context).DeletePlayer(player);
+    Assert.Equal(2, await _context.Players.CountAsync());
+  }
+
+  [Fact] public async Task GetPlayerByBhqIdNull() => Assert.Null(await new PlayerRepository(_context).GetPlayerByMlbAmId(2, PlayerType.B));
+
+  [Fact] public async Task GetPlayerByBhqIdValid() => Assert.Equal(2, (await new PlayerRepository(_context).GetPlayerByMlbAmId(2, PlayerType.P)).MlbAmId);
+
+  [Fact] public async Task GetPlayerByIdNull() => Assert.Null(await new PlayerRepository(_context).GetPlayerById(PlayerMissingId));
+
+  [Fact] public async Task GetPlayerByIdValid() => Assert.Equal(2, (await new PlayerRepository(_context).GetPlayerById(PlayerMatchingId)).MlbAmId);
+
+  [Theory]
+  [InlineData(PlayerType.B, 2)]
+  [InlineData(PlayerType.P, 1)]
+  [InlineData(PlayerType.U, 0)]
+  [InlineData(null, 3)]
+  public async Task GetPlayerEntitiesTest(PlayerType? type, int count)
+  {
+    var players = await new PlayerRepository(_context).GetPlayers(type);
+    Assert.Equal(count, players.Count);
+    players.ForEach(player =>
     {
-      var player = _context.Players.Find(PlayerMatchingId);
-      await Assert.ThrowsAsync<ArgumentException>(async () => await new PlayerRepository(_context).AddPlayer(player));
-      Assert.Equal(3, _context.Players.Count());
-    }
+      Assert.Equal(player.MlbAmId < 3 ? "Brewers" : "Rays", player.PlayerTeam.Nickname);
+      Assert.Equal(player.MlbAmId, player.Type == PlayerType.B ? player.BattingStats[0].AtBats : player.PitchingStats[0].InningsPitched);
+      Assert.Equal(player.MlbAmId, player.LeagueStatuses[0].LeagueId);
+    });
+  }
 
-    [Fact]
-    public async void AddPlayerTestValid()
+  [Fact]
+  public async Task UpdatePlayerTestMissingIdException()
+  {
+    Assert.Equal("MIL", (await _context.Players.FindAsync(PlayerMatchingId)).Team);
+    var player = new PlayerEntity { Id = PlayerMissingId, MlbAmId = 1, Type = PlayerType.B, Team = "TB" };
+    await Assert.ThrowsAsync<InvalidOperationException>(async () => await new PlayerRepository(_context).UpdatePlayer(player));
+    Assert.Equal("MIL", (await _context.Players.FindAsync(PlayerMatchingId)).Team);
+  }
+
+  [Fact]
+  public async Task UpdatePlayerTestValid()
+  {
+    Assert.Equal("MIL", (await _context.Players.FindAsync(PlayerMatchingId)).Team);
+    var player = await _context.Players.FindAsync(PlayerMatchingId);
+    player.Team = "TB";
+    await new PlayerRepository(_context).UpdatePlayer(player);
+    Assert.Equal("TB", (await _context.Players.FindAsync(PlayerMatchingId)).Team);
+  }
+
+  [Fact]
+  public async Task UpsertPlayersTestException()
+  {
+    var values = new List<PlayerEntity>
     {
-      var player = new PlayerEntity { MlbAmId = 100, Type = PlayerType.B, Team = "TB" };
-      await new PlayerRepository(_context).AddPlayer(player);
-      Assert.Equal(4, _context.Players.Count());
-    }
+      new() { MlbAmId = 1, Type = PlayerType.B, Team = "MIL" },
+      new() { MlbAmId = 2, Type = PlayerType.B, Team = "MIL" },
+      new() { MlbAmId = 4, Type = PlayerType.P, Team = "MIL" },
+      new() { Id = PlayerMatchingId, MlbAmId = 5, Type = PlayerType.P, Team = "MIL" },
+      new() { Id = PlayerMissingId, MlbAmId = 1, Type = PlayerType.B, Team = "MIL" },
+    };
+    await Assert.ThrowsAsync<InvalidOperationException>(async () => await new PlayerRepository(_context).UpsertPlayers(values));
+    Assert.Equal(3, await _context.Players.CountAsync());
+    Assert.Equal(3, await _context.LeagueStatuses.CountAsync());
+    Assert.Equal(2, await _context.BattingStats.CountAsync());
+    Assert.Equal(1, await _context.PitchingStats.CountAsync());
+    Assert.Equal(31, await _context.Teams.CountAsync());
+  }
 
-    [Fact]
-    public async void DeleteAllPlayersTestValid()
+  [Fact]
+  public async Task UpsertPlayersTestValid()
+  {
+    var existingPlayer = await _context.Players.FindAsync(PlayerMatchingId);
+    existingPlayer.BattingStats.Add(new BattingStatsEntity { StatsType = StatsType.YTD, AtBats = 2 });
+    var values = new List<PlayerEntity>
     {
-      await new PlayerRepository(_context).DeleteAllPlayers();
-      Assert.Equal(0, _context.Players.Count());
-      Assert.Equal(0, _context.LeagueStatuses.Count());
-      Assert.Equal(0, _context.BattingStats.Count());
-      Assert.Equal(0, _context.PitchingStats.Count());
-      Assert.Equal(31, _context.Teams.Count());
-    }
-
-    [Fact]
-    public async void DeletePlayerTestMissingIdException()
-    {
-      var player = new PlayerEntity { Id = PlayerMissingId, MlbAmId = 1, Type = PlayerType.B, Team = "TB" };
-      await Assert.ThrowsAsync<InvalidOperationException>(async () => await new PlayerRepository(_context).DeletePlayer(player));
-      Assert.Equal(3, _context.Players.Count());
-    }
-
-    [Fact]
-    public async void DeletePlayerTestValid()
-    {
-      var player = _context.Players.Find(PlayerMatchingId);
-      await new PlayerRepository(_context).DeletePlayer(player);
-      Assert.Equal(2, _context.Players.Count());
-    }
-
-    [Fact] public async void GetPlayerByBhqIdNull() => Assert.Null(await new PlayerRepository(_context).GetPlayerByMlbAmId(2, PlayerType.B));
-
-    [Fact] public async void GetPlayerByBhqIdValid() => Assert.Equal(2, (await new PlayerRepository(_context).GetPlayerByMlbAmId(2, PlayerType.P)).MlbAmId);
-
-    [Fact] public async void GetPlayerByIdNull() => Assert.Null(await new PlayerRepository(_context).GetPlayerById(PlayerMissingId));
-
-    [Fact] public async void GetPlayerByIdValid() => Assert.Equal(2, (await new PlayerRepository(_context).GetPlayerById(PlayerMatchingId)).MlbAmId);
-
-    [Theory]
-    [InlineData(PlayerType.B, 2)]
-    [InlineData(PlayerType.P, 1)]
-    [InlineData(PlayerType.U, 0)]
-    [InlineData(null, 3)]
-    public async void GetPlayerEntitiesTest(PlayerType? type, int count)
-    {
-      var players = await new PlayerRepository(_context).GetPlayers(type);
-      Assert.Equal(count, players.Count);
-      players.ForEach(player =>
+      existingPlayer,
+      new()
       {
-        Assert.Equal(player.MlbAmId < 3 ? "Brewers" : "Rays", player.PlayerTeam.Nickname);
-        Assert.Equal(player.MlbAmId, player.Type == PlayerType.B ? player.BattingStats.First().AtBats : player.PitchingStats.First().InningsPitched);
-        Assert.Equal(player.MlbAmId, player.LeagueStatuses.First().LeagueId);
-      });
-    }
+        MlbAmId = 4,
+        Type = PlayerType.P,
+        Team = "MIL",
+        PitchingStats =
+        [
+          new() { StatsType = StatsType.YTD, InningsPitched = 2 },
+          new() { StatsType = StatsType.PROJ, InningsPitched = 4 }
+        ],
+        LeagueStatuses = [new() { LeagueId = 2, LeagueStatus = LeagueStatus.R }]
+      }
+    };
+    await new PlayerRepository(_context).UpsertPlayers(values);
+    Assert.Equal(4, await _context.Players.CountAsync());
+    Assert.Equal(4, await _context.LeagueStatuses.CountAsync());
+    Assert.Equal(3, await _context.BattingStats.CountAsync());
+    Assert.Equal(3, await _context.PitchingStats.CountAsync());
+    Assert.Equal(31, await _context.Teams.CountAsync());
+  }
 
-    [Fact]
-    public async void UpdatePlayerTestMissingIdException()
-    {
-      Assert.Equal("MIL", _context.Players.Find(PlayerMatchingId).Team);
-      var player = new PlayerEntity { Id = PlayerMissingId, MlbAmId = 1, Type = PlayerType.B, Team = "TB" };
-      await Assert.ThrowsAsync<InvalidOperationException>(async () => await new PlayerRepository(_context).UpdatePlayer(player));
-      Assert.Equal("MIL", _context.Players.Find(PlayerMatchingId).Team);
-    }
+  public void Dispose()
+  {
+    Dispose(true);
+    GC.SuppressFinalize(this);
+  }
 
-    [Fact]
-    public async void UpdatePlayerTestValid()
-    {
-      Assert.Equal("MIL", _context.Players.Find(PlayerMatchingId).Team);
-      var player = _context.Players.Find(PlayerMatchingId);
-      player.Team = "TB";
-      await new PlayerRepository(_context).UpdatePlayer(player);
-      Assert.Equal("TB", _context.Players.Find(PlayerMatchingId).Team);
-    }
+  protected virtual void Dispose(bool disposing)
+  {
+    if (!disposing) return;
+    _context.Database.EnsureDeleted();
+    _context.Dispose();
+  }
 
-    [Fact]
-    public async void UpsertPlayersTestException()
-    {
-      var values = new List<PlayerEntity>
+  private static async Task<PlayerContext> CreateContext()
+  {
+    var options = new DbContextOptionsBuilder<PlayerContext>()
+      .UseInMemoryDatabase(databaseName: "GetPlayersTest")
+      .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+      .Options;
+    var context = new PlayerContext(options);
+    await context.Database.EnsureCreatedAsync();
+    Assert.Equal(31, await context.Teams.CountAsync());
+    await context.AddRangeAsync(
+      new PlayerEntity
       {
-        new() { MlbAmId = 1, Type = PlayerType.B, Team = "MIL" },
-        new() { MlbAmId = 2, Type = PlayerType.B, Team = "MIL" },
-        new() { MlbAmId = 4, Type = PlayerType.P, Team = "MIL" },
-        new() { Id = PlayerMatchingId, MlbAmId = 5, Type = PlayerType.P, Team = "MIL" },
-        new() { Id = PlayerMissingId, MlbAmId = 1, Type = PlayerType.B, Team = "MIL" },
-      };
-      await Assert.ThrowsAsync<InvalidOperationException>(async () => await new PlayerRepository(_context).UpsertPlayers(values));
-      Assert.Equal(3, _context.Players.Count());
-      Assert.Equal(3, _context.LeagueStatuses.Count());
-      Assert.Equal(2, _context.BattingStats.Count());
-      Assert.Equal(1, _context.PitchingStats.Count());
-      Assert.Equal(31, _context.Teams.Count());
-    }
-
-    [Fact]
-    public async void UpsertPlayersTestValid()
-    {
-      var existingPlayer = _context.Players.Find(PlayerMatchingId);
-      existingPlayer.BattingStats.Add(new BattingStatsEntity { StatsType = StatsType.YTD, AtBats = 2 });
-      var values = new List<PlayerEntity>
+        MlbAmId = 1,
+        Type = PlayerType.B,
+        Team = "MIL",
+        BattingStats = [new() { StatsType = StatsType.YTD, AtBats = 1 }],
+        LeagueStatuses = [new() { LeagueId = 1, LeagueStatus = LeagueStatus.R }]
+      },
+      new PlayerEntity
       {
-        existingPlayer,
-        new()
-        {
-          MlbAmId = 4,
-          Type = PlayerType.P,
-          Team = "MIL",
-          PitchingStats =
-          [
-            new() { StatsType = StatsType.YTD, InningsPitched = 2 },
-            new() { StatsType = StatsType.PROJ, InningsPitched = 4 }
-          ],
-          LeagueStatuses = [new() { LeagueId = 2, LeagueStatus = LeagueStatus.R }]
-        }
-      };
-      await new PlayerRepository(_context).UpsertPlayers(values);
-      Assert.Equal(4, _context.Players.Count());
-      Assert.Equal(4, _context.LeagueStatuses.Count());
-      Assert.Equal(3, _context.BattingStats.Count());
-      Assert.Equal(3, _context.PitchingStats.Count());
-      Assert.Equal(31, _context.Teams.Count());
-    }
-
-    public void Dispose()
-    {
-      Dispose(true);
-      GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-      if (!disposing) return;
-      _context.Database.EnsureDeleted();
-      _context.Dispose();
-    }
-
-    private static async Task<PlayerContext> CreateContext()
-    {
-      var options = new DbContextOptionsBuilder<PlayerContext>()
-        .UseInMemoryDatabase(databaseName: "GetPlayersTest")
-        .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-        .Options;
-      var context = new PlayerContext(options);
-      context.Database.EnsureCreated();
-      Assert.Equal(31, await context.Teams.CountAsync());
-      await context.AddRangeAsync(
-        new PlayerEntity
-        {
-          MlbAmId = 1,
-          Type = PlayerType.B,
-          Team = "MIL",
-          BattingStats = [new() { StatsType = StatsType.YTD, AtBats = 1 }],
-          LeagueStatuses = [new() { LeagueId = 1, LeagueStatus = LeagueStatus.R }]
-        },
-        new PlayerEntity
-        {
-          Id = PlayerMatchingId,
-          MlbAmId = 2,
-          Type = PlayerType.P,
-          Team = "MIL",
-          PitchingStats = [new() { StatsType = StatsType.YTD, InningsPitched = 2 }],
-          LeagueStatuses = [new() { LeagueId = 2, LeagueStatus = LeagueStatus.R }]
-        },
-        new PlayerEntity
-        {
-          MlbAmId = 3,
-          Type = PlayerType.B,
-          Team = "TB",
-          BattingStats = [new() { StatsType = StatsType.PROJ, AtBats = 3 }],
-          LeagueStatuses = [new() { LeagueId = 3, LeagueStatus = LeagueStatus.R }]
-        }
-      );
-      await context.SaveChangesAsync();
-      Assert.Equal(3, await context.Players.CountAsync());
-      return context;
-    }
+        Id = PlayerMatchingId,
+        MlbAmId = 2,
+        Type = PlayerType.P,
+        Team = "MIL",
+        PitchingStats = [new() { StatsType = StatsType.YTD, InningsPitched = 2 }],
+        LeagueStatuses = [new() { LeagueId = 2, LeagueStatus = LeagueStatus.R }]
+      },
+      new PlayerEntity
+      {
+        MlbAmId = 3,
+        Type = PlayerType.B,
+        Team = "TB",
+        BattingStats = [new() { StatsType = StatsType.PROJ, AtBats = 3 }],
+        LeagueStatuses = [new() { LeagueId = 3, LeagueStatus = LeagueStatus.R }]
+      }
+    );
+    await context.SaveChangesAsync();
+    Assert.Equal(3, await context.Players.CountAsync());
+    return context;
   }
 }

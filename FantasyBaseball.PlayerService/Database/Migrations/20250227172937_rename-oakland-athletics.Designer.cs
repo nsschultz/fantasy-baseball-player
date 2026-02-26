@@ -13,7 +13,7 @@ namespace FantasyBaseball.PlayerService.Database.Migrations
 {
     [DbContext(typeof(PlayerContext))]
     [Migration("20250227172937_rename-oakland-athletics")]
-    partial class renameoaklandathletics
+    partial class RenameOaklandAthletics
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

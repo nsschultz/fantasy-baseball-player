@@ -1,17 +1,17 @@
+using System;
 using FantasyBaseball.PlayerService.Database.Entities;
 using Xunit;
 
-namespace FantasyBaseball.PlayerService.UnitTests.Database.Entities
+namespace FantasyBaseball.PlayerService.UnitTests.Database.Entities;
+
+public class PlayerPositionEntityTest
 {
-  public class PlayerPositionEntityTest
+  [Fact]
+  public void DefaultsSetTest()
   {
-    [Fact]
-    public void DefaultsSetTest()
-    {
-      var obj = new PlayerPositionEntity();
-      Assert.Null(obj.PositionCode);
-      Assert.Equal(default, obj.PlayerId);
-      Assert.Null(obj.Player);
-    }
+    var obj = new PlayerPositionEntity();
+    Assert.Null(obj.PositionCode);
+    Assert.Equal(Guid.Empty, obj.PlayerId);
+    Assert.Null(obj.Player);
   }
 }
