@@ -17,7 +17,7 @@ public abstract class ProjStatsMapping : ClassMap<CsvBaseballPlayer>
     Map(m => m.MlbAmId).Name("MLBAMID").TypeConverter<DefaultIntConverter>();
     Map(m => m.FullName).Name("Player");
     Map(m => m.Age).Name("Age").TypeConverter<DefaultIntConverter>();
-    Map(m => m.Team).Name("Tm").TypeConverter<BaseballTeamConverter>();
+    Map(m => m.Team).Name(type == PlayerType.B ? "Team" : "Tm").TypeConverter<BaseballTeamConverter>();
     Map(m => m.Reliability).Name("MM Code").TypeConverter<ReliabilityConverter>();
     Map(m => m.MayberryMethod).Name("MM").TypeConverter<DefaultIntConverter>();
     Map(m => m.AverageDraftPick).Name("ADP").TypeConverter<DefaultDoubleConverter>();
