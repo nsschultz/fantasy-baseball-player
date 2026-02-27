@@ -11,9 +11,10 @@
         "esbenp.prettier-vscode",
         "ms-azuretools.vscode-docker",
         "github.vscode-github-actions",
-        "GitHub.copilot"
+        "GitHub.copilot",
+        "SonarSource.sonarlint-vscode"
       ]
     }
   },
-  "postCreateCommand": "dotnet tool install --global dotnet-ef --version 8.0.0"
+  "postCreateCommand": "dotnet tool install --global dotnet-ef --version 10.0.0"
 }

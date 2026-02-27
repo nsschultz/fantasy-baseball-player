@@ -5,7 +5,7 @@
 namespace FantasyBaseball.PlayerService.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class renameoaklandathletics : Migration
+    public partial class RenameOaklandAthletics : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
