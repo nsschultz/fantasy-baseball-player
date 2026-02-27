@@ -1,31 +1,17 @@
-using CsvHelper.Configuration;
 using FantasyBaseball.PlayerService.Maps.Converters;
-using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Models.Enums;
 
-namespace FantasyBaseball.PlayerService.Maps.CsvMaps;
+namespace FantasyBaseball.PlayerService.Maps.CsvFiles;
 
 /// <summary>Mapper for BHQ's projected batting file.</summary>
-public class BhqProjBattingsStatsMap : ClassMap<CsvBaseballPlayer>
+public class BhqProjBattingsStatsMap : ProjStatsMapping
 {
   /// <summary>Creates a new instance of the mapper.</summary>
   public BhqProjBattingsStatsMap() => CreateMap();
 
   private void CreateMap()
   {
-    // Constants
-    Map(m => m.Type).Constant(PlayerType.B);
-    Map(m => m.Status).Constant(PlayerStatus.NE);
-    // Skipped player fields: Bats,Lg,Pos,LY5,LY10,LY15,LY20,LIMA,DL,12$,15$
-    Map(m => m.MlbAmId).Name("MLBAMID").TypeConverter<DefaultIntConverter>();
-    Map(m => m.FullName).Name("Player");
-    Map(m => m.Age).Name("Age").TypeConverter<DefaultIntConverter>();
-    Map(m => m.Team).Name("Team").TypeConverter<BaseballTeamConverter>();
-    Map(m => m.Reliability).Name("MM Code").TypeConverter<ReliabilityConverter>();
-    Map(m => m.MayberryMethod).Name("MM").TypeConverter<DefaultIntConverter>();
-    Map(m => m.AverageDraftPick).Name("ADP").TypeConverter<DefaultDoubleConverter>();
-    Map(m => m.AverageDraftPickMin).Name("Min ADP").TypeConverter<DefaultIntConverter>();
-    Map(m => m.AverageDraftPickMax).Name("Max ADP").TypeConverter<DefaultIntConverter>();
+    MapSharedFields(PlayerType.B);
     // Skipped stat fields:	PA,AVG,OBP,SLG,OPS,BB%,ct%,Eye,h%,SPD,G%,L%,F%,xBA,BA,RC/G,RAR,BPX
     Map(m => m.ProjectedBattingStats.AtBats).Name("AB").TypeConverter<DefaultIntConverter>();
     Map(m => m.ProjectedBattingStats.Runs).Name("R").TypeConverter<DefaultIntConverter>();
