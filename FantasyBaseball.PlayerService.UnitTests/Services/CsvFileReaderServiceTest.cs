@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CsvHelper;
 using FantasyBaseball.PlayerService.FileReaders;
-using FantasyBaseball.PlayerService.Maps.CsvMaps;
+using FantasyBaseball.PlayerService.Maps.CsvFiles;
 using FantasyBaseball.PlayerService.Services;
 using Moq;
 using Xunit;
