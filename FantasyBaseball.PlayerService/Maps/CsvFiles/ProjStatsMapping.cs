@@ -22,5 +22,6 @@ public abstract class ProjStatsMapping : ClassMap<CsvBaseballPlayer>
     Map(m => m.MayberryMethod).Name("MM").TypeConverter<DefaultIntConverter>();
     Map(m => m.AverageDraftPick).Name("ADP").TypeConverter<DefaultDoubleConverter>();
     Map(m => m.AverageDraftPickMin).Name("Min ADP").TypeConverter<DefaultIntConverter>();
+    Map(m => m.AverageDraftPickMax).Name("Max ADP").TypeConverter<DefaultIntConverter>();
   }
 }
