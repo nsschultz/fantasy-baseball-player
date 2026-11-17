@@ -2,9 +2,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using FantasyBaseball.Common.Exceptions;
 using FantasyBaseball.PlayerService.Database;
 using FantasyBaseball.PlayerService.Database.Repositories;
-using FantasyBaseball.PlayerService.Exceptions;
+using FantasyBaseball.PlayerService.Maps;
 using FantasyBaseball.PlayerService.Services;
 using FantasyBaseball.PlayerService.Services.HealthChecks;
 using Microsoft.AspNetCore.Builder;
@@ -58,7 +59,7 @@ builder.Services.AddHealthChecks()
   .AddDbContextCheck<PlayerContext>()
   .AddCheck<PositionHealthCheck>("Position");
 // Setup Automapper
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(cfg => { }, typeof(BaseballPlayerProfile), typeof(CsvBaseballPlayerProfile), typeof(PlayerEntityProfile));
 // Setup DI
 builder.Services
   // Config

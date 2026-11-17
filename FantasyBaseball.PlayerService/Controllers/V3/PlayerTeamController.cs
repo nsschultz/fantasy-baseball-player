@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +16,9 @@ public class PlayerTeamController(IMapper mapper, IGetTeamsService getTeamsServi
   /// <summary>Returns the given enum as a dictionary of the value and description.</summary>
   /// <returns>A dictionary of the values and descriptions for the given enum.</returns>
   [HttpGet]
-  public async Task<List<BaseballTeam>> GetTeams()
+  public async Task<List<PlayerTeam>> GetTeams()
   {
     var teams = await getTeamsService.GetTeams();
-    return [.. teams.Select(mapper.Map<BaseballTeam>)];
+    return [.. teams.Select(mapper.Map<PlayerTeam>)];
   }
 }

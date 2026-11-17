@@ -24,6 +24,6 @@ public class CsvFileReaderService : ICsvFileReaderService
     using var stream = new StringReader(string.Join(Environment.NewLine, lines.Take(lines.Count - 1)));
     using var csv = new CsvReader(stream, CultureInfo.InvariantCulture);
     csv.Context.RegisterClassMap(map);
-    return csv.GetRecords<CsvBaseballPlayer>().ToList();
+    return [.. csv.GetRecords<CsvBaseballPlayer>()];
   }
 }

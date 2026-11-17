@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using FantasyBaseball.Common.Exceptions;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Controllers.V3;
-using FantasyBaseball.PlayerService.Exceptions;
-using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Services;
 using Moq;
 using Xunit;
@@ -16,19 +16,19 @@ public class PlayerUpdateControllerTest
   {
     var id = Guid.NewGuid();
     var updateService = new Mock<IUpdatePlayerService>();
-    updateService.Setup(o => o.UpdatePlayer(It.Is<BaseballPlayer>(p => p.Id == id))).Returns(Task.FromResult(0));
-    await new PlayerUpdateController(updateService.Object).UpdatePlayer(id, new BaseballPlayer { Id = id });
+    updateService.Setup(o => o.UpdatePlayer(It.Is<Player>(p => p.Id == id))).Returns(Task.FromResult(0));
+    await new PlayerUpdateController(updateService.Object).UpdatePlayer(id, new Player { Id = id });
     updateService.VerifyAll();
   }
 
   [Fact]
   public async Task UpdatePlayerTestDifferentPlayerIds() =>
     await Assert.ThrowsAsync<BadRequestException>(() =>
-      new PlayerUpdateController(null).UpdatePlayer(Guid.NewGuid(), new BaseballPlayer { Id = Guid.NewGuid() }));
+      new PlayerUpdateController(null).UpdatePlayer(Guid.NewGuid(), new Player { Id = Guid.NewGuid() }));
 
   [Fact]
   public async Task UpdatePlayersTestEmptyPlayerId() =>
-    await Assert.ThrowsAsync<BadRequestException>(() => new PlayerUpdateController(null).UpdatePlayer(Guid.Empty, new BaseballPlayer()));
+    await Assert.ThrowsAsync<BadRequestException>(() => new PlayerUpdateController(null).UpdatePlayer(Guid.Empty, new Player()));
 
   [Fact]
   public async Task UpdatePlayerTestNullPlayer() =>

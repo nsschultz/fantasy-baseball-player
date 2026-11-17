@@ -1,7 +1,8 @@
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
-using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Utility;
 
 namespace FantasyBaseball.PlayerService.Maps.Converters;
 
@@ -15,8 +16,8 @@ public class PlayerTypeConverter : DefaultTypeConverter
   /// <returns>The string representation of the object.</returns>
   public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
   {
-    var fromKey = EnumUtility.GetFromKey<PlayerType>(text?.Trim());
-    var fromDesc = EnumUtility.GetFromDescription<PlayerType>(text?.Trim());
+    var fromKey = EnumHelper.GetFromKey<PlayerType>(text?.Trim());
+    var fromDesc = EnumHelper.GetFromDescription<PlayerType>(text?.Trim());
     return fromKey > fromDesc ? fromKey : fromDesc;
   }
 

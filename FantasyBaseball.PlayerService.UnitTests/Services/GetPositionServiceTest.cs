@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FantasyBaseball.PlayerService.Models;
-using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Services;
 using LazyCache;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +12,7 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services;
 
 public class GetPositionServiceTest
 {
-  private static readonly List<BaseballPosition> POSITIONS =
+  private static readonly List<Position> POSITIONS =
   [
     new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
     new() { Code = "C"   , FullName = "Catcher"          , PlayerType = PlayerType.B, SortOrder = 0            },

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Exceptions;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Database.Repositories;
-using FantasyBaseball.PlayerService.Exceptions;
 using FantasyBaseball.PlayerService.Maps;
-using FantasyBaseball.PlayerService.Models;
-using FantasyBaseball.PlayerService.Models.Enums;
 using FantasyBaseball.PlayerService.Services;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -50,7 +51,7 @@ public class GetPlayerServiceTest
       LeagueStatuses = [new() { LeagueId = 1, LeagueStatus = LeagueStatus.R }]
     }
   ];
-  private static readonly List<BaseballPosition> POSITIONS =
+  private static readonly List<Position> POSITIONS =
   [
     new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
     new() { Code = "C"   , FullName = "Catcher"          , PlayerType = PlayerType.B, SortOrder = 0            },
@@ -87,7 +88,7 @@ public class GetPlayerServiceTest
   public async Task GetPlayerTestValid()
   {
     var id = Guid.NewGuid();
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile())).CreateMapper();
+    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile()), new LoggerFactory()).CreateMapper();
     var positionService = new Mock<IGetPositionService>();
     positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
     var playerRepo = new Mock<IPlayerRepository>();
@@ -102,7 +103,7 @@ public class GetPlayerServiceTest
   [Fact]
   public async Task GetPlayersTest()
   {
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile())).CreateMapper();
+    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile()), new LoggerFactory()).CreateMapper();
     var positionService = new Mock<IGetPositionService>();
     positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
     var playerRepo = new Mock<IPlayerRepository>();

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Utility;
 
 namespace FantasyBaseball.PlayerService.Models.Builders;

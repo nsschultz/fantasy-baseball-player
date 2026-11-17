@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.Common.Models;
 
 namespace FantasyBaseball.PlayerService.Services;
 
@@ -7,7 +7,7 @@ namespace FantasyBaseball.PlayerService.Services;
 public interface ICsvFileWriterService
 {
   /// <summary>Reads in data from the given CSV file.</summary>
-  /// <param name="players">All of the players to to write to the CSV.</param>
+  /// <param name="players">All of the players to write to the CSV.</param>
   /// <returns>A byte array of the file content.</returns>
-  byte[] WriteCsvData(List<BaseballPlayer> players);
+  byte[] WriteCsvData(List<Player> players);
 }

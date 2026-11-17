@@ -1,5 +1,5 @@
 using System;
-using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.Common.Enums;
 
 namespace FantasyBaseball.PlayerService.Database.Entities;
 

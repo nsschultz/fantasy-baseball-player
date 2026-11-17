@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Maps;
-using FantasyBaseball.PlayerService.Models;
-using FantasyBaseball.PlayerService.Models.Enums;
 using FantasyBaseball.PlayerService.Services.Mergers;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.UnitTests.Services.Mergers;
 
 public class FullPlayerMergerTest
 {
-  private static readonly List<BaseballPosition> POSITIONS =
+  private static readonly List<Position> POSITIONS =
   [
     new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
     new() { Code = "C"   , FullName = "Catcher"          , PlayerType = PlayerType.B, SortOrder = 0            },
@@ -44,7 +45,7 @@ public class FullPlayerMergerTest
   [Fact]
   public void MergePlayerValidTest()
   {
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile()), new LoggerFactory()).CreateMapper();
     var player = BuildPlayer();
     ValidatePlayer(player, new FullPlayerMerger().MergePlayer(mapper, player, new PlayerEntity()));
   }
@@ -88,7 +89,7 @@ public class FullPlayerMergerTest
       GroundBallRate = 0.31
     };
 
-  private static BaseballPlayer BuildPlayer() =>
+  private static Player BuildPlayer() =>
     new()
     {
       MlbAmId = 123,
@@ -97,7 +98,7 @@ public class FullPlayerMergerTest
       Age = 36,
       Type = PlayerType.U,
       Positions = BuildPositionList(["OF", "1B"]),
-      Team = new BaseballTeam { Code = "MIL" },
+      Team = new PlayerTeam { Code = "MIL" },
       Status = PlayerStatus.XX,
       AverageDraftPick = 2,
       AverageDraftPickMin = 1,
@@ -110,10 +111,10 @@ public class FullPlayerMergerTest
       PitchingStats = [BuildPitchingStats(StatsType.YTD), BuildPitchingStats(StatsType.PROJ)]
     };
 
-  private static List<BaseballPosition> BuildPositionList(string[] positions) =>
+  private static List<Position> BuildPositionList(string[] positions) =>
     positions.SelectMany(p => POSITIONS.Where(pp => pp.Code == p)).ToList();
 
-  private static string BuildPositionString(List<BaseballPosition> positions) =>
+  private static string BuildPositionString(List<Position> positions) =>
     string.Join("-", positions.OrderBy(p => p.SortOrder).Select(p => p.Code));
 
   private static string BuildPositionString(List<PlayerPositionEntity> positions) =>
@@ -122,7 +123,7 @@ public class FullPlayerMergerTest
       .OrderBy(p => p.SortOrder)
       .Select(p => p.Code));
 
-  private static void ValidatePlayer(BaseballPlayer expected, PlayerEntity actual)
+  private static void ValidatePlayer(Player expected, PlayerEntity actual)
   {
     Assert.Equal(expected.MlbAmId, actual.MlbAmId);
     Assert.Equal(expected.FirstName, actual.FirstName);

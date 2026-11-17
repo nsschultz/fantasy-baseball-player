@@ -5,6 +5,7 @@ using System.Linq;
 using AutoMapper;
 using CsvHelper;
 using CsvHelper.Configuration;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Maps.CsvFiles;
 using FantasyBaseball.PlayerService.Models;
 
@@ -19,7 +20,7 @@ public class CsvFileWriterService(IMapper mapper) : ICsvFileWriterService
   /// <summary>Reads in data from the given CSV file.</summary>
   /// <param name="players">All of the players to to write to the CSV.</param>
   /// <returns>A byte array of the file content.</returns>
-  public byte[] WriteCsvData(List<BaseballPlayer> players)
+  public byte[] WriteCsvData(List<Player> players)
   {
     players ??= [];
     var csvPlayers = players.Select(mapper.Map<CsvBaseballPlayer>);

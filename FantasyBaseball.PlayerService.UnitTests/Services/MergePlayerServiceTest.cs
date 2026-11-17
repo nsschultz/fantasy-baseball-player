@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Maps;
-using FantasyBaseball.PlayerService.Models;
-using FantasyBaseball.PlayerService.Models.Enums;
 using FantasyBaseball.PlayerService.Services;
 using FantasyBaseball.PlayerService.Services.Mergers;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -17,7 +18,7 @@ public class MergePlayerServiceTest
 {
   private static readonly Dictionary<int, string> EXPECTED_TEAMS = new() { { 10, "MIL" }, { 100, "TB" }, { 123, "" } };
   private static readonly IPlayerMerger MERGER = new FullPlayerMerger();
-  private static readonly List<BaseballPosition> POSITIONS =
+  private static readonly List<Position> POSITIONS =
   [
     new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
     new() { Code = "C"   , FullName = "Catcher"          , PlayerType = PlayerType.B, SortOrder = 0            },
@@ -182,7 +183,7 @@ public class MergePlayerServiceTest
       GroundBallRate = 0.31
     };
 
-  private static BaseballPlayer BuildPlayer(int value, PlayerType type, bool bothStats = false) =>
+  private static Player BuildPlayer(int value, PlayerType type, bool bothStats = false) =>
     new()
     {
       MlbAmId = value,
@@ -191,7 +192,7 @@ public class MergePlayerServiceTest
       Age = value,
       Type = type,
       Positions = BuildPositionList(type),
-      Team = new BaseballTeam { Code = GetTeamCode(type) },
+      Team = new PlayerTeam { Code = GetTeamCode(type) },
       Status = value == 10 ? PlayerStatus.XX : PlayerStatus.IL,
       AverageDraftPick = value + 2,
       AverageDraftPickMin = value + 1,
@@ -206,7 +207,7 @@ public class MergePlayerServiceTest
 
   private static MergePlayerService BuildPlayerEntityMergerService()
   {
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile()), new LoggerFactory()).CreateMapper();
     var positionService = new Mock<IGetPositionService>();
     positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
     var teamService = new Mock<IGetTeamsService>();
@@ -214,7 +215,7 @@ public class MergePlayerServiceTest
     return new MergePlayerService(mapper, positionService.Object, teamService.Object);
   }
 
-  private static List<BaseballPosition> BuildPositionList(PlayerType type) =>
+  private static List<Position> BuildPositionList(PlayerType type) =>
     type switch
     {
       PlayerType.B => BuildPositionList(["XX", "OF", "1B"]),
@@ -222,10 +223,10 @@ public class MergePlayerServiceTest
       _ => BuildPositionList(["XX"]),
     };
 
-  private static List<BaseballPosition> BuildPositionList(string[] positions) =>
+  private static List<Position> BuildPositionList(string[] positions) =>
     [.. positions.SelectMany(p => POSITIONS.Where(pp => pp.Code == p))];
 
-  private static string BuildPositionString(List<BaseballPosition> positions) =>
+  private static string BuildPositionString(List<Position> positions) =>
     string.Join("-", positions.OrderBy(p => p.SortOrder).Select(p => p.Code));
 
   private static string BuildPositionString(List<PlayerPositionEntity> positions) =>
@@ -242,7 +243,7 @@ public class MergePlayerServiceTest
       _ => "XX",
     };
 
-  private static void ValidatePlayer(int value, BaseballPlayer expected, PlayerEntity actual)
+  private static void ValidatePlayer(int value, Player expected, PlayerEntity actual)
   {
     Assert.Equal(expected.MlbAmId, actual.MlbAmId);
     Assert.Equal(expected.FirstName, actual.FirstName);

@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using AutoMapper;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
-using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Utility;
 
 namespace FantasyBaseball.PlayerService.Services.Mergers;
@@ -15,7 +15,7 @@ public class BhqPlayerMerger : IPlayerMerger
   /// <param name="incoming">The incoming player values.</param>
   /// <param name="existing">The existing player values.</param>
   /// <returns>An object that can be saved to the database.</returns>
-  public PlayerEntity MergePlayer(IMapper mapper, BaseballPlayer incoming, PlayerEntity existing)
+  public PlayerEntity MergePlayer(IMapper mapper, Player incoming, PlayerEntity existing)
   {
     if (existing == null)
     {
@@ -40,7 +40,7 @@ public class BhqPlayerMerger : IPlayerMerger
     return existing;
   }
 
-  private static void CorrectBhqFields(BaseballPlayer incoming, PlayerEntity existing)
+  private static void CorrectBhqFields(Player incoming, PlayerEntity existing)
   {
     existing.AverageDraftPick = GetAdp(incoming.AverageDraftPick, existing.AverageDraftPick);
     existing.AverageDraftPickMax = GetAdp(incoming.AverageDraftPickMax, existing.AverageDraftPickMax);

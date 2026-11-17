@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using FantasyBaseball.PlayerService.Exceptions;
+using FantasyBaseball.Common.Exceptions;
 using FantasyBaseball.PlayerService.FileReaders;
 using Microsoft.AspNetCore.Http;
 using Moq;

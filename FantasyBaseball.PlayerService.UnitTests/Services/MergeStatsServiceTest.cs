@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CsvHelper.Configuration;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.FileReaders;
 using FantasyBaseball.PlayerService.Models;
-using FantasyBaseball.PlayerService.Models.Enums;
 using FantasyBaseball.PlayerService.Services;
 using FantasyBaseball.PlayerService.Services.Mergers;
 using Moq;
@@ -46,7 +47,7 @@ public class MergeProjectionServiceTest
     fileService.Setup(o => o.ReadCsvData(It.IsAny<ClassMap>(), It.IsAny<IFileReader>())).ReturnsAsync(newPlayers);
     var mergeService = new Mock<IMergePlayerService>();
     mergeService
-      .Setup(o => o.MergePlayer(It.IsAny<BhqPlayerMerger>(), It.IsAny<BaseballPlayer>(), It.IsAny<PlayerEntity>()))
+      .Setup(o => o.MergePlayer(It.IsAny<BhqPlayerMerger>(), It.IsAny<Player>(), It.IsAny<PlayerEntity>()))
       .ReturnsAsync(new PlayerEntity());
     var battingStatsRepo = new Mock<IBattingStatsRepository>();
     battingStatsRepo.Setup(o => o.DeleteAllBattingStats(It.Is<StatsType>(i => i == StatsType.PROJ))).Returns(Task.FromResult(0));
@@ -77,7 +78,7 @@ public class MergeProjectionServiceTest
     fileService.Setup(o => o.ReadCsvData(It.IsAny<ClassMap>(), It.IsAny<IFileReader>())).ReturnsAsync(newPlayers);
     var mergeService = new Mock<IMergePlayerService>();
     mergeService
-      .Setup(o => o.MergePlayer(It.IsAny<BhqPlayerMerger>(), It.IsAny<BaseballPlayer>(), It.IsAny<PlayerEntity>()))
+      .Setup(o => o.MergePlayer(It.IsAny<BhqPlayerMerger>(), It.IsAny<Player>(), It.IsAny<PlayerEntity>()))
       .ReturnsAsync(new PlayerEntity());
     var pitchingStatsRepo = new Mock<IPitchingStatsRepository>();
     pitchingStatsRepo.Setup(o => o.DeleteAllPitchingStats(It.Is<StatsType>(i => i == StatsType.YTD))).Returns(Task.FromResult(0));

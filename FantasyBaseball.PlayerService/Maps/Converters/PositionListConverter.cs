@@ -3,7 +3,7 @@ using System.Linq;
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
-using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.Common.Models;
 
 namespace FantasyBaseball.PlayerService.Maps.Converters;
 
@@ -18,7 +18,7 @@ public class PositionListConverter : DefaultTypeConverter
   public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData) =>
     string.IsNullOrEmpty(text)
       ? []
-      : text.Split("-").Select(p => new BaseballPosition { Code = p.Trim().ToUpper() }).ToList();
+      : text.Split("-").Select(p => new Position { Code = p.Trim().ToUpper() }).ToList();
 
   /// <summary>Converts the string to an object.</summary>
   /// <param name="value">The object to convert to a string.</param>
@@ -27,8 +27,8 @@ public class PositionListConverter : DefaultTypeConverter
   /// <returns>The object created from the string.</returns>
   public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
   {
-    if (value is not List<BaseballPosition>) return "";
-    var positions = (List<BaseballPosition>)value;
+    if (value is not List<Position>) return "";
+    var positions = (List<Position>)value;
     if (positions.Count == 0) return "";
     return string.Join("-", positions.OrderBy(p => p.SortOrder).Select(p => p.Code));
   }

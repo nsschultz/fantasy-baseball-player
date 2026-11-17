@@ -1,5 +1,5 @@
+using FantasyBaseball.Common.Enums;
 using FantasyBaseball.PlayerService.Maps.Converters;
-using FantasyBaseball.PlayerService.Models.Enums;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.UnitTests.Maps.Converters;

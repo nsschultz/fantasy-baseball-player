@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using FantasyBaseball.Common.Exceptions;
 using FantasyBaseball.PlayerService.Database.Repositories;
-using FantasyBaseball.PlayerService.Exceptions;
 
 namespace FantasyBaseball.PlayerService.Services;
 

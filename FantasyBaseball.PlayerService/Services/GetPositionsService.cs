@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using FantasyBaseball.PlayerService.Exceptions;
-using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.Common.Exceptions;
+using FantasyBaseball.Common.Models;
 using LazyCache;
 using Microsoft.Extensions.Configuration;
 
@@ -18,13 +18,13 @@ public class GetPositionService(IConfiguration configuration, IAppCache cache) :
 
   /// <summary>Gets the positions from the underlying source.</summary>
   /// <returns>A list of the positions.</returns>
-  public async Task<List<BaseballPosition>> GetPositions() => await cache.GetOrAddAsync("positions", () => RetrievePositions());
+  public async Task<List<Position>> GetPositions() => await cache.GetOrAddAsync("positions", () => RetrievePositions());
 
-  private async Task<List<BaseballPosition>> RetrievePositions()
+  private async Task<List<Position>> RetrievePositions()
   {
     var url = configuration.GetValue<string>("ServiceUrls:PositionEndpoint");
     var response = await new HttpClient().GetAsync(url);
     if (!response.IsSuccessStatusCode) throw new ServiceException($"Unable to get {url}");
-    return await JsonSerializer.DeserializeAsync<List<BaseballPosition>>(await response.Content.ReadAsStreamAsync(), _options);
+    return await JsonSerializer.DeserializeAsync<List<Position>>(await response.Content.ReadAsStreamAsync(), _options);
   }
 }

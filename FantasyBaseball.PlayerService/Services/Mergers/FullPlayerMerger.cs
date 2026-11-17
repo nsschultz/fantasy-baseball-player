@@ -1,6 +1,6 @@
 using AutoMapper;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
-using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Services.Mergers;
 
@@ -12,6 +12,6 @@ public class FullPlayerMerger : IPlayerMerger
   /// <param name="incoming">The incoming player values.</param>
   /// <param name="existing">The existing player values.</param>
   /// <returns>An object that can be saved to the database.</returns>
-  public PlayerEntity MergePlayer(IMapper mapper, BaseballPlayer incoming, PlayerEntity existing) =>
+  public PlayerEntity MergePlayer(IMapper mapper, Player incoming, PlayerEntity existing) =>
     incoming != null ? mapper.Map(incoming, existing) : existing;
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.Common.Models;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.IntegrationTests;
@@ -30,7 +30,7 @@ public class PlayerIntegrationTests(HttpClientFixture fixture) : IClassFixture<H
   [InlineData("/api/v3/player")]
   public async Task GetPlayersTest(string url)
   {
-    var players = await GetCountTest<BaseballPlayer>(url, 87);
+    var players = await GetCountTest<Player>(url, 87);
     ValidatePlayerStats(players);
   }
 
@@ -47,7 +47,7 @@ public class PlayerIntegrationTests(HttpClientFixture fixture) : IClassFixture<H
 
   [Theory]
   [InlineData("/api/v3/team")]
-  public async Task GetTeamsTest(string url) => await GetCountTest<BaseballTeam>(url, 31);
+  public async Task GetTeamsTest(string url) => await GetCountTest<PlayerTeam>(url, 31);
 
   private async Task<List<T>> GetCountTest<T>(string url, int count)
   {
@@ -59,7 +59,7 @@ public class PlayerIntegrationTests(HttpClientFixture fixture) : IClassFixture<H
     return values;
   }
 
-  private static void ValidatePlayerStats<T>(List<T> players) where T : BaseballPlayer =>
+  private static void ValidatePlayerStats<T>(List<T> players) where T : Player =>
     players.ForEach(p =>
     {
       Assert.Equal(3, p.BattingStats.Count);

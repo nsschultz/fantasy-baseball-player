@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using FantasyBaseball.PlayerService.Exceptions;
-using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.Common.Exceptions;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +17,7 @@ public class PlayerAddController(IAddPlayerService addService) : ControllerBase
   /// <param name="player">The object containing all of the player's data (non-changed data must be included as well).</param>
   /// <returns>The id of the newly created object.</returns>
   [HttpPost]
-  public async Task<Guid> AddPlayer([FromBody] BaseballPlayer player)
+  public async Task<Guid> AddPlayer([FromBody] Player player)
   {
     if (player == null) throw new BadRequestException("Player not set");
     if (player.Id != Guid.Empty) throw new BadRequestException("The id should not be set");

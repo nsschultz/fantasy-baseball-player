@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
-using FantasyBaseball.PlayerService.Models;
-using FantasyBaseball.PlayerService.Models.Enums;
 using FantasyBaseball.PlayerService.Services.Mergers;
 
 namespace FantasyBaseball.PlayerService.Services;
 
-/// <summary>Service for converting a BaseballPlayer to a PlayerEntity.</summary>
+/// <summary>Service for converting a Player to a PlayerEntity.</summary>
 /// <param name="mapper">Instance of the auto mapper.</param>
 /// <param name="positionsService">Service for getting players.</param>
 /// <param name="teamsService">Service for getting teams.</param>
@@ -17,12 +17,12 @@ public class MergePlayerService(IMapper mapper, IGetPositionService positionsSer
 {
   private static readonly List<StatsType> ExpectedStats = [StatsType.YTD, StatsType.PROJ];
 
-  /// <summary>Merges a BaseballPlayer into a PlayerEntity.</summary>
+  /// <summary>Merges a Player into a PlayerEntity.</summary>
   /// <param name="merger">Function for merging</param>
   /// <param name="incoming">The incoming player values.</param>
   /// <param name="existing">The existing player values.</param>
   /// <returns>An object that can be saved to the database.</returns>
-  public async Task<PlayerEntity> MergePlayer(IPlayerMerger merger, BaseballPlayer incoming, PlayerEntity existing)
+  public async Task<PlayerEntity> MergePlayer(IPlayerMerger merger, Player incoming, PlayerEntity existing)
   {
     var positions = await positionsService.GetPositions();
     var teams = await teamsService.GetTeams();
@@ -33,13 +33,13 @@ public class MergePlayerService(IMapper mapper, IGetPositionService positionsSer
     return entity;
   }
 
-  private static PlayerPositionEntity FindDefaultPosition(List<BaseballPosition> positions, PlayerEntity existing)
+  private static PlayerPositionEntity FindDefaultPosition(List<Position> positions, PlayerEntity existing)
   {
     var max = positions.Where(p => p.PlayerType == existing.Type).Max(p => p.SortOrder);
     return new PlayerPositionEntity { PositionCode = positions.First(p => p.SortOrder == max).Code };
   }
 
-  private static void ValidatePositions(List<BaseballPosition> positions, PlayerEntity entity)
+  private static void ValidatePositions(List<Position> positions, PlayerEntity entity)
   {
     if (positions == null) return;
     var positionSet = positions.Select(p => p.Code).ToHashSet();

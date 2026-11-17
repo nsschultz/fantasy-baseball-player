@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Maps;
-using FantasyBaseball.PlayerService.Models;
-using FantasyBaseball.PlayerService.Models.Enums;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.UnitTests.Maps;
@@ -14,9 +15,9 @@ public class BaseballPlayerProfileTest
 {
   private readonly IMapper _mapper;
 
-  public BaseballPlayerProfileTest() => _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile())).CreateMapper();
+  public BaseballPlayerProfileTest() => _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile()), new LoggerFactory()).CreateMapper();
 
-  [Fact] public void ConvertBaseballPlayerNullTest() => Assert.Null(_mapper.Map<BaseballPlayer>(null));
+  [Fact] public void ConvertBaseballPlayerNullTest() => Assert.Null(_mapper.Map<Player>(null));
 
   [Theory]
   [InlineData(10, PlayerType.B)]
@@ -24,7 +25,7 @@ public class BaseballPlayerProfileTest
   public void ConvertBaseballPlayerValidTest(int value, PlayerType type)
   {
     var player = BuildPlayer(value, type);
-    ValidatePlayer(value, player, _mapper.Map<BaseballPlayer>(player));
+    ValidatePlayer(value, player, _mapper.Map<Player>(player));
   }
 
   private static PlayerEntity BuildPlayer(int value, PlayerType type) =>
@@ -94,7 +95,7 @@ public class BaseballPlayerProfileTest
   private static List<PlayerPositionEntity> BuildPositionList(string[] positions) =>
     positions.Select(p => new PlayerPositionEntity { PositionCode = p }).ToList();
 
-  private static void ValidatePlayer(int value, PlayerEntity expected, BaseballPlayer actual)
+  private static void ValidatePlayer(int value, PlayerEntity expected, Player actual)
   {
     Assert.Equal(expected.Id, actual.Id);
     Assert.Equal(expected.MlbAmId, actual.MlbAmId);

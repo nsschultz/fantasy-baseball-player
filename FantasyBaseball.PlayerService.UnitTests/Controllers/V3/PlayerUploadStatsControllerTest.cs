@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Exceptions;
 using FantasyBaseball.PlayerService.Controllers.V3;
-using FantasyBaseball.PlayerService.Exceptions;
 using FantasyBaseball.PlayerService.FileReaders;
-using FantasyBaseball.PlayerService.Models.Enums;
 using FantasyBaseball.PlayerService.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

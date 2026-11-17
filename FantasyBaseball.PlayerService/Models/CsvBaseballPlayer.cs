@@ -1,10 +1,11 @@
 using System.Text.Json.Serialization;
-using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Models;
 
 namespace FantasyBaseball.PlayerService.Models;
 
 /// <summary>A marker object for breaking up the mappers.</summary>
-public class CsvBaseballPlayer : BaseballPlayer
+public class CsvBaseballPlayer : Player
 {
   /// <summary>The fullname of the player.</summary>
   [JsonIgnore(Condition = JsonIgnoreCondition.Always)]

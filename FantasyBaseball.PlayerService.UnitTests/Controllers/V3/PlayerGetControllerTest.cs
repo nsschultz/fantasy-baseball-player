@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Controllers.V3;
-using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Services;
 using Moq;
 using Xunit;
@@ -15,7 +15,7 @@ public class PlayerGetControllerTest
   {
     var id = Guid.NewGuid();
     var getService = new Mock<IGetPlayerService>();
-    getService.Setup(o => o.GetPlayer(It.Is<Guid>(i => i == id))).ReturnsAsync(new BaseballPlayer { Id = id });
+    getService.Setup(o => o.GetPlayer(It.Is<Guid>(i => i == id))).ReturnsAsync(new Player { Id = id });
     var player = await new PlayerGetController(getService.Object).GetPlayer(id);
     Assert.Equal(id, player.Id);
   }
@@ -24,7 +24,7 @@ public class PlayerGetControllerTest
   public async Task GetPlayersTest()
   {
     var getService = new Mock<IGetPlayerService>();
-    getService.Setup(o => o.GetPlayers()).ReturnsAsync([new BaseballPlayer()]);
+    getService.Setup(o => o.GetPlayers()).ReturnsAsync([new Player()]);
     Assert.NotEmpty(await new PlayerGetController(getService.Object).GetPlayers());
   }
 }

@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Maps.Converters;
-using FantasyBaseball.PlayerService.Models;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.UnitTests.Maps.Converters;
 
 public class BaseballTeamConverterTest
 {
-  private static readonly List<BaseballTeam> TEAMS =
+  private static readonly List<PlayerTeam> TEAMS =
   [
     new() { Code = ""   , LeagueId = ""  , City = "Free Agent"   , Nickname = "Free Agent"                            },
     new() { Code = "BAL", LeagueId = "AL", City = "Baltimore"    , Nickname = "Orioles"                               },
@@ -58,7 +58,7 @@ public class BaseballTeamConverterTest
   public void ConvertToStringTest(string value, string expected) =>
     Assert.Equal(expected, new BaseballTeamConverter().ConvertToString(BuildBaseballTeam(value), null, null));
 
-  private static string BuildBaseballTeamString(object team) => ((BaseballTeam)team).Code;
+  private static string BuildBaseballTeamString(object team) => ((PlayerTeam)team).Code;
 
-  private static BaseballTeam BuildBaseballTeam(string team) => TEAMS.FirstOrDefault(t => t.Code == team);
+  private static PlayerTeam BuildBaseballTeam(string team) => TEAMS.FirstOrDefault(t => t.Code == team);
 }

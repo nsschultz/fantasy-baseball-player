@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Controllers.V3;
-using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,7 @@ public class PlayerExportControllerTest
     var getService = new Mock<IGetPlayerService>();
     getService.Setup(o => o.GetPlayers()).ReturnsAsync([new()]);
     var writer = new Mock<ICsvFileWriterService>();
-    writer.Setup(o => o.WriteCsvData(It.Is<List<BaseballPlayer>>(p => p.Count == 1))).Returns(fileContent);
+    writer.Setup(o => o.WriteCsvData(It.Is<List<Player>>(p => p.Count == 1))).Returns(fileContent);
     var controller = new PlayerExportController(getService.Object, writer.Object);
     var headerDictionary = new HeaderDictionary();
     var response = new Mock<HttpResponse>();

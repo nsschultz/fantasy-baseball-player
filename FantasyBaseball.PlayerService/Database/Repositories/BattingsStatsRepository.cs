@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.Common.Enums;
 
 namespace FantasyBaseball.PlayerService.Database.Repositories;
 

@@ -1,6 +1,6 @@
 using System;
+using FantasyBaseball.Common.Enums;
 using FantasyBaseball.PlayerService.Database.Entities;
-using FantasyBaseball.PlayerService.Models.Enums;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.UnitTests.Database.Entities;

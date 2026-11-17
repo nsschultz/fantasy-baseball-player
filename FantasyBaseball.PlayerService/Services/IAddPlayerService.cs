@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using FantasyBaseball.PlayerService.Models;
+using FantasyBaseball.Common.Models;
 
 namespace FantasyBaseball.PlayerService.Services;
 
@@ -10,5 +10,5 @@ public interface IAddPlayerService
   /// <summary>Adds the given player.</summary>
   /// <param name="player">The player to add.</param>
   /// <returns>The id of the newly created object.</returns>
-  public Task<Guid> AddPlayer(BaseballPlayer player);
+  public Task<Guid> AddPlayer(Player player);
 }

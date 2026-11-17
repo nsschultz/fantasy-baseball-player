@@ -1,0 +1,5 @@
+﻿<Solution>
+  <Project Path="FantasyBaseball.PlayerService/FantasyBaseball.PlayerService.csproj" />
+  <Project Path="FantasyBaseball.PlayerService.IntegrationTests/FantasyBaseball.PlayerService.IntegrationTests.csproj" />
+  <Project Path="FantasyBaseball.PlayerService.UnitTests/FantasyBaseball.PlayerService.UnitTests.csproj" />
+</Solution>

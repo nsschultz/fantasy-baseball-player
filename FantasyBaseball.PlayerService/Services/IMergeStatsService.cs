@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
+using FantasyBaseball.Common.Enums;
 using FantasyBaseball.PlayerService.FileReaders;
-using FantasyBaseball.PlayerService.Models.Enums;
 
 namespace FantasyBaseball.PlayerService.Services;
 

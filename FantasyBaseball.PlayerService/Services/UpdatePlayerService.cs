@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
+using FantasyBaseball.Common.Exceptions;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Repositories;
-using FantasyBaseball.PlayerService.Exceptions;
-using FantasyBaseball.PlayerService.Models;
 using FantasyBaseball.PlayerService.Services.Mergers;
 
 namespace FantasyBaseball.PlayerService.Services;
@@ -15,7 +15,7 @@ public class UpdatePlayerService(IPlayerRepository playerRepo, IMergePlayerServi
 
   /// <summary>Updates the given player.</summary>
   /// <param name="player">The player to update.</param>
-  public async Task UpdatePlayer(BaseballPlayer player)
+  public async Task UpdatePlayer(Player player)
   {
     var existingPlayer = await playerRepo.GetPlayerById(player.Id) ?? throw new BadRequestException("This player does not exist");
     if (existingPlayer.Type != player.Type) throw new BadRequestException("The player type cannot be changed");

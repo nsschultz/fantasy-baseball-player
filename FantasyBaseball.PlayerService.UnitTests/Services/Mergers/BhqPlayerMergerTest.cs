@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Maps;
-using FantasyBaseball.PlayerService.Models;
-using FantasyBaseball.PlayerService.Models.Enums;
 using FantasyBaseball.PlayerService.Services.Mergers;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.UnitTests.Services.Mergers;
 
 public class BhqPlayerMergerTest
 {
-  private static readonly List<BaseballPosition> POSITIONS =
+  private static readonly List<Position> POSITIONS =
   [
     new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
     new() { Code = "C"   , FullName = "Catcher"          , PlayerType = PlayerType.B, SortOrder = 0            },
@@ -37,7 +38,7 @@ public class BhqPlayerMergerTest
   [Fact]
   public void MergePlayerNoExistingTest()
   {
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile()), new LoggerFactory()).CreateMapper();
     var player = BuildPlayer();
     ValidatePlayer(new BhqPlayerMerger().MergePlayer(mapper, player, null));
   }
@@ -45,7 +46,7 @@ public class BhqPlayerMergerTest
   [Fact]
   public void MergePlayerNoExistingEmptyAdpTest()
   {
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile()), new LoggerFactory()).CreateMapper();
     var player = BuildPlayer();
     player.AverageDraftPick = -1;
     player.AverageDraftPickMin = -1;
@@ -58,16 +59,16 @@ public class BhqPlayerMergerTest
   [Fact]
   public void MergePlayerNoIncomingTest()
   {
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile()), new LoggerFactory()).CreateMapper();
     var player = BuildPlayer();
     var entity = new BhqPlayerMerger().MergePlayer(mapper, player, null);
-    ValidatePlayer(new BhqPlayerMerger().MergePlayer(mapper, new BaseballPlayer(), entity));
+    ValidatePlayer(new BhqPlayerMerger().MergePlayer(mapper, new Player(), entity));
   }
 
   [Fact]
   public void MergePlayerMatchTest()
   {
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile()), new LoggerFactory()).CreateMapper();
     var player = BuildPlayer();
     var entity = new BhqPlayerMerger().MergePlayer(mapper, player, null);
     entity.MlbAmId = 1231243;
@@ -86,7 +87,7 @@ public class BhqPlayerMergerTest
   [Fact]
   public void MergePlayerMatchBhqTest()
   {
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile()), new LoggerFactory()).CreateMapper();
     var player = BuildPlayer();
     player.AverageDraftPick = -1;
     player.AverageDraftPickMin = -1;
@@ -110,7 +111,7 @@ public class BhqPlayerMergerTest
   [Fact]
   public void MergePlayerMatcEmptyAdpTest()
   {
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
+    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile()), new LoggerFactory()).CreateMapper();
     var player = BuildPlayer();
     player.AverageDraftPick = 0;
     player.AverageDraftPickMin = 0;
@@ -168,7 +169,7 @@ public class BhqPlayerMergerTest
       GroundBallRate = 0.31
     };
 
-  private static BaseballPlayer BuildPlayer() =>
+  private static Player BuildPlayer() =>
     new()
     {
       MlbAmId = 123,
@@ -177,7 +178,7 @@ public class BhqPlayerMergerTest
       Age = 36,
       Type = PlayerType.U,
       Positions = BuildPositionList(["OF", "1B"]),
-      Team = new BaseballTeam { Code = "MIL" },
+      Team = new PlayerTeam { Code = "MIL" },
       Status = PlayerStatus.XX,
       AverageDraftPick = 2,
       AverageDraftPickMin = 1,
@@ -190,8 +191,8 @@ public class BhqPlayerMergerTest
       PitchingStats = [BuildPitchingStats(StatsType.YTD), BuildPitchingStats(StatsType.PROJ)]
     };
 
-  private static List<BaseballPosition> BuildPositionList(string[] positions) =>
-    positions.SelectMany(p => POSITIONS.Where(pp => pp.Code == p)).ToList();
+  private static List<Position> BuildPositionList(string[] positions) =>
+    [.. positions.SelectMany(p => POSITIONS.Where(pp => pp.Code == p))];
 
   private static string BuildPositionString(List<PlayerPositionEntity> positions) =>
     string.Join("-", positions

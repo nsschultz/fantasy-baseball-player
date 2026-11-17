@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using AutoMapper;
+using FantasyBaseball.Common.Exceptions;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Database.Repositories;
-using FantasyBaseball.PlayerService.Exceptions;
-using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Services;
 
@@ -16,7 +16,7 @@ public class AddPlayerService(IMapper mapper, IPlayerRepository playerRepo) : IA
   /// <summary>Adds the given player.</summary>
   /// <param name="player">The player to add.</param>
   /// <returns>The id of the newly created object.</returns>
-  public async Task<Guid> AddPlayer(BaseballPlayer player)
+  public async Task<Guid> AddPlayer(Player player)
   {
     var existingPlayer = await playerRepo.GetPlayerByMlbAmId(player.MlbAmId, player.Type);
     if (existingPlayer != null) throw new BadRequestException("This player already exists");

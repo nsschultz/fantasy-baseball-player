@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Utility;
 
 namespace FantasyBaseball.PlayerService.Services;
 
@@ -12,10 +13,10 @@ public class GetPlayerEnumMapService : IGetPlayerEnumMapService
   public Dictionary<int, string> GetPlayerEnumMap(string enumType) =>
     enumType?.ToUpperInvariant() switch
     {
-      "LEAGUESTATUS" => EnumUtility.GetValuesAsDictionary<LeagueStatus>(),
-      "PLAYERSTATUS" => EnumUtility.GetValuesAsDictionary<PlayerStatus>(),
-      "PLAYERTYPE" => EnumUtility.GetValuesAsDictionary<PlayerType>(),
-      "STATSTYPE" => EnumUtility.GetValuesAsDictionary<StatsType>(),
+      "LEAGUESTATUS" => EnumHelper.GetValuesAsDictionary<LeagueStatus>(),
+      "PLAYERSTATUS" => EnumHelper.GetValuesAsDictionary<PlayerStatus>(),
+      "PLAYERTYPE" => EnumHelper.GetValuesAsDictionary<PlayerType>(),
+      "STATSTYPE" => EnumHelper.GetValuesAsDictionary<StatsType>(),
       _ => []
     };
 }

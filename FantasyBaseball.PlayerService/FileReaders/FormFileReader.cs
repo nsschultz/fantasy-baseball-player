@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using FantasyBaseball.PlayerService.Exceptions;
+using FantasyBaseball.Common.Exceptions;
 using Microsoft.AspNetCore.Http;
 
 namespace FantasyBaseball.PlayerService.FileReaders;

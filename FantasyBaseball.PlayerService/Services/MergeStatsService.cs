@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CsvHelper.Configuration;
+using FantasyBaseball.Common.Enums;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Database.Repositories;
 using FantasyBaseball.PlayerService.FileReaders;
 using FantasyBaseball.PlayerService.Maps.CsvFiles;
 using FantasyBaseball.PlayerService.Models;
-using FantasyBaseball.PlayerService.Models.Enums;
 using FantasyBaseball.PlayerService.Services.Mergers;
 
 namespace FantasyBaseball.PlayerService.Services;

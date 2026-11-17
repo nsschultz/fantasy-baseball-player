@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Exceptions;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Database.Repositories;
-using FantasyBaseball.PlayerService.Exceptions;
-using FantasyBaseball.PlayerService.Models.Enums;
 using FantasyBaseball.PlayerService.Services;
 using Moq;
 using Xunit;

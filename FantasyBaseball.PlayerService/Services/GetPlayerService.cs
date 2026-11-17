@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FantasyBaseball.Common.Exceptions;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Database.Repositories;
-using FantasyBaseball.PlayerService.Exceptions;
-using FantasyBaseball.PlayerService.Models;
 
 namespace FantasyBaseball.PlayerService.Services;
 
@@ -19,28 +19,28 @@ public class GetPlayerService(IMapper mapper, IPlayerRepository playerRepo, IGet
   /// <summary>Gets the players from the underlying source.</summary>
   /// <param name="id">The guid of the player to return.</param>
   /// <returns>The player matching the given id.</returns>
-  public async Task<BaseballPlayer> GetPlayer(Guid id)
+  public async Task<Player> GetPlayer(Guid id)
   {
     var positions = await positionsService.GetPositions();
     var player = await playerRepo.GetPlayerById(id) ?? throw new BadRequestException("This player does not exist");
-    return mapper.Map<PlayerEntity, BaseballPlayer>(player, opt => opt.AfterMap((src, dest) => dest.Positions = BuildBaseballPositions(src, positions)));
+    return mapper.Map<PlayerEntity, Player>(player, opt => opt.AfterMap((src, dest) => dest.Positions = BuildBaseballPositions(src, positions)));
   }
 
   /// <summary>Gets the players from the underlying source.</summary>
   /// <returns>A list of the players.</returns>
-  public async Task<List<BaseballPlayer>> GetPlayers()
+  public async Task<List<Player>> GetPlayers()
   {
     var positions = await positionsService.GetPositions();
     var players = await playerRepo.GetPlayers();
-    var baseballPlayers = players.Select(player => mapper.Map<PlayerEntity, BaseballPlayer>(player, opt =>
+    var baseballPlayers = players.Select(player => mapper.Map<PlayerEntity, Player>(player, opt =>
       opt.AfterMap((src, dest) => dest.Positions = BuildBaseballPositions(src, positions))));
     return SortPlayers([.. baseballPlayers]);
   }
 
-  private static List<BaseballPosition> BuildBaseballPositions(PlayerEntity player, List<BaseballPosition> positions) =>
+  private static List<Position> BuildBaseballPositions(PlayerEntity player, List<Position> positions) =>
     [.. player.Positions.SelectMany(p => positions.Where(pp => pp.Code == p.PositionCode)).OrderBy(p => p.SortOrder)];
 
-  private static List<BaseballPlayer> SortPlayers(List<BaseballPlayer> players) =>
+  private static List<Player> SortPlayers(List<Player> players) =>
     [.. players
       .OrderBy(p => p.Type)
       .ThenBy(p => p.LastName.ToUpper())
