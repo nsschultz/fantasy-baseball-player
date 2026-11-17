@@ -15,51 +15,51 @@ namespace FantasyBaseball.PlayerService.Services;
 /// <param name="teamsService">Service for getting teams.</param>
 public class MergePlayerService(IMapper mapper, IGetPositionService positionsService, IGetTeamsService teamsService) : IMergePlayerService
 {
-  private static readonly List<StatsType> ExpectedStats = [StatsType.YTD, StatsType.PROJ];
+    private static readonly List<StatsType> ExpectedStats = [StatsType.YTD, StatsType.PROJ];
 
-  /// <summary>Merges a Player into a PlayerEntity.</summary>
-  /// <param name="merger">Function for merging</param>
-  /// <param name="incoming">The incoming player values.</param>
-  /// <param name="existing">The existing player values.</param>
-  /// <returns>An object that can be saved to the database.</returns>
-  public async Task<PlayerEntity> MergePlayer(IPlayerMerger merger, Player incoming, PlayerEntity existing)
-  {
-    var positions = await positionsService.GetPositions();
-    var teams = await teamsService.GetTeams();
-    var entity = merger.MergePlayer(mapper, incoming, existing);
-    ValidateStats(entity);
-    ValidatePositions(positions, entity);
-    ValidateTeam(teams, entity);
-    return entity;
-  }
+    /// <summary>Merges a Player into a PlayerEntity.</summary>
+    /// <param name="merger">Function for merging</param>
+    /// <param name="incoming">The incoming player values.</param>
+    /// <param name="existing">The existing player values.</param>
+    /// <returns>An object that can be saved to the database.</returns>
+    public async Task<PlayerEntity> MergePlayer(IPlayerMerger merger, Player incoming, PlayerEntity existing)
+    {
+        var positions = await positionsService.GetPositions();
+        var teams = await teamsService.GetTeams();
+        var entity = merger.MergePlayer(mapper, incoming, existing);
+        ValidateStats(entity);
+        ValidatePositions(positions, entity);
+        ValidateTeam(teams, entity);
+        return entity;
+    }
 
-  private static PlayerPositionEntity FindDefaultPosition(List<Position> positions, PlayerEntity existing)
-  {
-    var max = positions.Where(p => p.PlayerType == existing.Type).Max(p => p.SortOrder);
-    return new PlayerPositionEntity { PositionCode = positions.First(p => p.SortOrder == max).Code };
-  }
+    private static PlayerPositionEntity FindDefaultPosition(List<Position> positions, PlayerEntity existing)
+    {
+        var max = positions.Where(p => p.PlayerType == existing.Type).Max(p => p.SortOrder);
+        return new PlayerPositionEntity { PositionCode = positions.First(p => p.SortOrder == max).Code };
+    }
 
-  private static void ValidatePositions(List<Position> positions, PlayerEntity entity)
-  {
-    if (positions == null) return;
-    var positionSet = positions.Select(p => p.Code).ToHashSet();
-    entity.Positions = [.. entity.Positions.Where(p => positionSet.Contains(p.PositionCode.Trim().ToUpper()))];
-    if (entity.Positions.Count == 0) entity.Positions.Add(FindDefaultPosition(positions, entity));
-  }
+    private static void ValidatePositions(List<Position> positions, PlayerEntity entity)
+    {
+        if (positions == null) return;
+        var positionSet = positions.Select(p => p.Code).ToHashSet();
+        entity.Positions = [.. entity.Positions.Where(p => positionSet.Contains(p.PositionCode.Trim().ToUpper()))];
+        if (entity.Positions.Count == 0) entity.Positions.Add(FindDefaultPosition(positions, entity));
+    }
 
-  private static void ValidateStats(PlayerEntity entity)
-  {
-    entity.BattingStats = entity.BattingStats != null ? [.. entity.BattingStats.Where(b => ExpectedStats.Contains(b.StatsType))] : [];
-    entity.PitchingStats = entity.PitchingStats != null ? [.. entity.PitchingStats.Where(b => ExpectedStats.Contains(b.StatsType))] : [];
-  }
+    private static void ValidateStats(PlayerEntity entity)
+    {
+        entity.BattingStats = entity.BattingStats != null ? [.. entity.BattingStats.Where(b => ExpectedStats.Contains(b.StatsType))] : [];
+        entity.PitchingStats = entity.PitchingStats != null ? [.. entity.PitchingStats.Where(b => ExpectedStats.Contains(b.StatsType))] : [];
+    }
 
-  private static void ValidateTeam(List<TeamEntity> teams, PlayerEntity entity)
-  {
-    if (teams == null) return;
-    var teamCode = string.IsNullOrWhiteSpace(entity.Team) ? string.Empty : entity.Team.Trim().ToUpper();
-    var team = teams.Find(t => t.Code == teamCode || (!string.IsNullOrWhiteSpace(t.AlternativeCode) && t.AlternativeCode == teamCode));
-    team ??= teams.Find(t => t.Code == string.Empty);
-    // This should never be null, but just in case
-    if (team != null) entity.Team = team.Code;
-  }
+    private static void ValidateTeam(List<TeamEntity> teams, PlayerEntity entity)
+    {
+        if (teams == null) return;
+        var teamCode = string.IsNullOrWhiteSpace(entity.Team) ? string.Empty : entity.Team.Trim().ToUpper();
+        var team = teams.Find(t => t.Code == teamCode || (!string.IsNullOrWhiteSpace(t.AlternativeCode) && t.AlternativeCode == teamCode));
+        team ??= teams.Find(t => t.Code == string.Empty);
+        // This should never be null, but just in case
+        if (team != null) entity.Team = team.Code;
+    }
 }

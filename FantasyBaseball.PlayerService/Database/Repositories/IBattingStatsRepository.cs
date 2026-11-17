@@ -7,7 +7,7 @@ namespace FantasyBaseball.PlayerService.Database.Repositories;
 public interface IBattingStatsRepository
 {
 
-  /// <summary>Removes all of the stats of a given type from the database.</summary>
-  /// <param name="statsType">The type of stats to remove.</param>
-  Task DeleteAllBattingStats(StatsType statsType);
+    /// <summary>Removes all of the stats of a given type from the database.</summary>
+    /// <param name="statsType">The type of stats to remove.</param>
+    Task DeleteAllBattingStats(StatsType statsType);
 }

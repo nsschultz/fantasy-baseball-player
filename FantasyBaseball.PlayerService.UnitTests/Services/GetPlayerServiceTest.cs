@@ -18,9 +18,9 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services;
 
 public class GetPlayerServiceTest
 {
-  private static readonly List<PlayerEntity> PLAYERS =
-  [
-    new()
+    private static readonly List<PlayerEntity> PLAYERS =
+    [
+      new()
     {
       MlbAmId = 1,
       FirstName = "Christian",
@@ -50,10 +50,10 @@ public class GetPlayerServiceTest
       BattingStats = [new() { StatsType = StatsType.PROJ, AtBats = 3 },new() { StatsType = StatsType.CMBD, AtBats = 13 }],
       LeagueStatuses = [new() { LeagueId = 1, LeagueStatus = LeagueStatus.R }]
     }
-  ];
-  private static readonly List<Position> POSITIONS =
-  [
-    new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
+    ];
+    private static readonly List<Position> POSITIONS =
+    [
+      new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
     new() { Code = "C"   , FullName = "Catcher"          , PlayerType = PlayerType.B, SortOrder = 0            },
     new() { Code = "1B"  , FullName = "First Baseman"    , PlayerType = PlayerType.B, SortOrder = 1            },
     new() { Code = "2B"  , FullName = "Second Baseman"   , PlayerType = PlayerType.B, SortOrder = 2            },
@@ -71,53 +71,53 @@ public class GetPlayerServiceTest
     new() { Code = "SP"  , FullName = "Starting Pitcher" , PlayerType = PlayerType.P, SortOrder = 100          },
     new() { Code = "RP"  , FullName = "Relief Pitcher"   , PlayerType = PlayerType.P, SortOrder = 101          },
     new() { Code = "P"   , FullName = "Pitcher"          , PlayerType = PlayerType.P, SortOrder = 102          }
-  ];
+    ];
 
-  [Fact]
-  public async Task GetPlayerTestMissingIdException()
-  {
-    var positionService = new Mock<IGetPositionService>();
-    positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
-    var playerRepo = new Mock<IPlayerRepository>();
-    playerRepo.Setup(o => o.GetPlayerById(It.IsAny<Guid>())).ReturnsAsync((PlayerEntity)null);
-    await Assert.ThrowsAsync<BadRequestException>(async () =>
-      await new GetPlayerService(null, playerRepo.Object, positionService.Object).GetPlayer(Guid.NewGuid()));
-  }
-
-  [Fact]
-  public async Task GetPlayerTestValid()
-  {
-    var id = Guid.NewGuid();
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile()), new LoggerFactory()).CreateMapper();
-    var positionService = new Mock<IGetPositionService>();
-    positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
-    var playerRepo = new Mock<IPlayerRepository>();
-    playerRepo.Setup(o => o.GetPlayerById(It.Is<Guid>((i) => i == id))).ReturnsAsync(PLAYERS[0]);
-    var player = await new GetPlayerService(mapper, playerRepo.Object, positionService.Object).GetPlayer(id);
-    Assert.Equal("MIL", player.Team.Code);
-    Assert.Equal(player.MlbAmId, player.BattingStats.First(p => p.StatsType == StatsType.CMBD).AtBats);
-    Assert.Equal(LeagueStatus.R, player.League1);
-    Assert.Equal(LeagueStatus.A, player.League2);
-  }
-
-  [Fact]
-  public async Task GetPlayersTest()
-  {
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile()), new LoggerFactory()).CreateMapper();
-    var positionService = new Mock<IGetPositionService>();
-    positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
-    var playerRepo = new Mock<IPlayerRepository>();
-    playerRepo.Setup(o => o.GetPlayers(It.IsAny<PlayerType?>())).ReturnsAsync(PLAYERS);
-    var players = await new GetPlayerService(mapper, playerRepo.Object, positionService.Object).GetPlayers();
-    Assert.Equal(3, players.Count);
-    players.ForEach(player =>
+    [Fact]
+    public async Task GetPlayerTestMissingIdException()
     {
-      Assert.Equal(player.MlbAmId < 3 ? "MIL" : "TB", player.Team.Code);
-      Assert.Equal(player.MlbAmId, player.Type == PlayerType.B
-        ? player.BattingStats.First(p => p.StatsType == StatsType.CMBD).AtBats
-        : player.PitchingStats.First(p => p.StatsType == StatsType.CMBD).InningsPitched);
-      Assert.Equal(player.MlbAmId % 2 == 0 ? LeagueStatus.A : LeagueStatus.R, player.League1);
-      Assert.Equal(player.MlbAmId % 2 == 0 ? LeagueStatus.R : LeagueStatus.A, player.League2);
-    });
-  }
+        var positionService = new Mock<IGetPositionService>();
+        positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
+        var playerRepo = new Mock<IPlayerRepository>();
+        playerRepo.Setup(o => o.GetPlayerById(It.IsAny<Guid>())).ReturnsAsync((PlayerEntity)null);
+        await Assert.ThrowsAsync<BadRequestException>(async () =>
+          await new GetPlayerService(null, playerRepo.Object, positionService.Object).GetPlayer(Guid.NewGuid()));
+    }
+
+    [Fact]
+    public async Task GetPlayerTestValid()
+    {
+        var id = Guid.NewGuid();
+        var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile()), new LoggerFactory()).CreateMapper();
+        var positionService = new Mock<IGetPositionService>();
+        positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
+        var playerRepo = new Mock<IPlayerRepository>();
+        playerRepo.Setup(o => o.GetPlayerById(It.Is<Guid>((i) => i == id))).ReturnsAsync(PLAYERS[0]);
+        var player = await new GetPlayerService(mapper, playerRepo.Object, positionService.Object).GetPlayer(id);
+        Assert.Equal("MIL", player.Team.Code);
+        Assert.Equal(player.MlbAmId, player.BattingStats.First(p => p.StatsType == StatsType.CMBD).AtBats);
+        Assert.Equal(LeagueStatus.R, player.League1);
+        Assert.Equal(LeagueStatus.A, player.League2);
+    }
+
+    [Fact]
+    public async Task GetPlayersTest()
+    {
+        var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new BaseballPlayerProfile()), new LoggerFactory()).CreateMapper();
+        var positionService = new Mock<IGetPositionService>();
+        positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
+        var playerRepo = new Mock<IPlayerRepository>();
+        playerRepo.Setup(o => o.GetPlayers(It.IsAny<PlayerType?>())).ReturnsAsync(PLAYERS);
+        var players = await new GetPlayerService(mapper, playerRepo.Object, positionService.Object).GetPlayers();
+        Assert.Equal(3, players.Count);
+        players.ForEach(player =>
+        {
+            Assert.Equal(player.MlbAmId < 3 ? "MIL" : "TB", player.Team.Code);
+            Assert.Equal(player.MlbAmId, player.Type == PlayerType.B
+          ? player.BattingStats.First(p => p.StatsType == StatsType.CMBD).AtBats
+          : player.PitchingStats.First(p => p.StatsType == StatsType.CMBD).InningsPitched);
+            Assert.Equal(player.MlbAmId % 2 == 0 ? LeagueStatus.A : LeagueStatus.R, player.League1);
+            Assert.Equal(player.MlbAmId % 2 == 0 ? LeagueStatus.R : LeagueStatus.A, player.League2);
+        });
+    }
 }

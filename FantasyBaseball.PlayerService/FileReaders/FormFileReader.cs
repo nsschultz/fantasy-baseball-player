@@ -10,21 +10,21 @@ namespace FantasyBaseball.PlayerService.FileReaders;
 /// <param name="request">The incoming web request.</param>
 public class FormFileReader(HttpRequest request) : IFileReader
 {
-  /// <summary>Reads in all of the lines from the file.</summary>
-  /// <returns>All of the lines from the files.</returns>
-  public async Task<List<string>> ReadLines()
-  {
-    var result = new List<string>();
-    var file = await GetFileFromRequest();
-    using var reader = new StreamReader(file.OpenReadStream());
-    while (reader.Peek() >= 0) result.Add(await reader.ReadLineAsync());
-    return result;
-  }
+    /// <summary>Reads in all of the lines from the file.</summary>
+    /// <returns>All of the lines from the files.</returns>
+    public async Task<List<string>> ReadLines()
+    {
+        var result = new List<string>();
+        var file = await GetFileFromRequest();
+        using var reader = new StreamReader(file.OpenReadStream());
+        while (reader.Peek() >= 0) result.Add(await reader.ReadLineAsync());
+        return result;
+    }
 
-  private async Task<IFormFile> GetFileFromRequest()
-  {
-    var files = (await request.ReadFormAsync()).Files;
-    if (files.Count == 0) throw new BadRequestException("There are no files attached.");
-    return files[0];
-  }
+    private async Task<IFormFile> GetFileFromRequest()
+    {
+        var files = (await request.ReadFormAsync()).Files;
+        if (files.Count == 0) throw new BadRequestException("There are no files attached.");
+        return files[0];
+    }
 }

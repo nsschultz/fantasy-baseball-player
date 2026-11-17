@@ -13,12 +13,12 @@ namespace FantasyBaseball.PlayerService.Controllers.V3;
 [ApiController]
 public class PlayerTeamController(IMapper mapper, IGetTeamsService getTeamsService) : ControllerBase
 {
-  /// <summary>Returns the given enum as a dictionary of the value and description.</summary>
-  /// <returns>A dictionary of the values and descriptions for the given enum.</returns>
-  [HttpGet]
-  public async Task<List<PlayerTeam>> GetTeams()
-  {
-    var teams = await getTeamsService.GetTeams();
-    return [.. teams.Select(mapper.Map<PlayerTeam>)];
-  }
+    /// <summary>Returns the given enum as a dictionary of the value and description.</summary>
+    /// <returns>A dictionary of the values and descriptions for the given enum.</returns>
+    [HttpGet]
+    public async Task<List<PlayerTeam>> GetTeams()
+    {
+        var teams = await getTeamsService.GetTeams();
+        return [.. teams.Select(mapper.Map<PlayerTeam>)];
+    }
 }

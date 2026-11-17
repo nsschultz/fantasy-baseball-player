@@ -8,36 +8,29 @@ using Xunit;
 
 namespace FantasyBaseball.PlayerService.UnitTests.Database.Repositories;
 
-public class TeamRepositoryTest : IDisposable
+public class TeamRepositoryTest : IAsyncLifetime
 {
-  private readonly PlayerContext _context;
+    private PlayerContext _context = null!;
 
-  public TeamRepositoryTest() => _context = CreateContext().Result;
+    public async Task InitializeAsync() => _context = await CreateContext();
 
-  [Fact] public async Task GetAllTeamsTest() => Assert.Equal(31, (await new TeamRepository(_context).GetAllTeams()).Count);
+    public async Task DisposeAsync()
+    {
+        await _context.Database.EnsureDeletedAsync();
+        await _context.DisposeAsync();
+    }
 
-  public void Dispose()
-  {
-    Dispose(true);
-    GC.SuppressFinalize(this);
-  }
+    [Fact] public async Task GetAllTeamsTest() => Assert.Equal(31, (await new TeamRepository(_context).GetAllTeams()).Count);
 
-  protected virtual void Dispose(bool disposing)
-  {
-    if (!disposing) return;
-    _context.Database.EnsureDeleted();
-    _context.Dispose();
-  }
-
-  private static async Task<PlayerContext> CreateContext()
-  {
-    var options = new DbContextOptionsBuilder<PlayerContext>()
-      .UseInMemoryDatabase(databaseName: "GetTeamsTest")
-      .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-      .Options;
-    var context = new PlayerContext(options);
-    await context.Database.EnsureCreatedAsync();
-    Assert.Equal(31, await context.Teams.CountAsync());
-    return context;
-  }
+    private static async Task<PlayerContext> CreateContext()
+    {
+        var options = new DbContextOptionsBuilder<PlayerContext>()
+          .UseInMemoryDatabase(databaseName: "GetTeamsTest")
+          .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+          .Options;
+        var context = new PlayerContext(options);
+        await context.Database.EnsureCreatedAsync();
+        Assert.Equal(31, await context.Teams.CountAsync());
+        return context;
+    }
 }

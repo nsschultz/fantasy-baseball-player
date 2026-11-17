@@ -12,9 +12,9 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services;
 
 public class GetTeamsServiceTest
 {
-  private static readonly List<TeamEntity> TEAMS =
-  [
-    new() { Code = ""   , LeagueId = ""  , City = "Free Agent"   , Nickname = "Free Agent"                            },
+    private static readonly List<TeamEntity> TEAMS =
+    [
+      new() { Code = ""   , LeagueId = ""  , City = "Free Agent"   , Nickname = "Free Agent"                            },
     new() { Code = "BAL", LeagueId = "AL", City = "Baltimore"    , Nickname = "Orioles"                               },
     new() { Code = "BOS", LeagueId = "AL", City = "Boston"       , Nickname = "Red Sox"                               },
     new() { Code = "NYY", LeagueId = "AL", City = "New York"     , Nickname = "Yankees"                               },
@@ -45,20 +45,20 @@ public class GetTeamsServiceTest
     new() { Code = "LAD", LeagueId = "NL", City = "Los Angeles"  , Nickname = "Dodgers"     , AlternativeCode = "LA"  },
     new() { Code = "SD" , LeagueId = "NL", City = "San Diego"    , Nickname = "Padres"                                },
     new() { Code = "SF" , LeagueId = "NL", City = "San Francisco", Nickname = "Giants"                                }
-  ];
+    ];
 
-  [Fact]
-  public async Task GetTeamsCacheTest()
-  {
-    var services = new ServiceCollection();
-    services.AddLazyCache();
-    var serviceProvider = services.BuildServiceProvider();
-    var memoryCache = serviceProvider.GetService<IAppCache>();
-    var teamRepo = new Mock<ITeamRepository>();
-    teamRepo.Setup(o => o.GetAllTeams()).ReturnsAsync(TEAMS);
-    var service = new GetTeamsService(memoryCache, teamRepo.Object);
-    Assert.Equal(31, (await service.GetTeams()).Count);
-    Assert.Equal(31, (await service.GetTeams()).Count);
-    teamRepo.Verify(x => x.GetAllTeams(), Times.Once);
-  }
+    [Fact]
+    public async Task GetTeamsCacheTest()
+    {
+        var services = new ServiceCollection();
+        services.AddLazyCache();
+        var serviceProvider = services.BuildServiceProvider();
+        var memoryCache = serviceProvider.GetService<IAppCache>();
+        var teamRepo = new Mock<ITeamRepository>();
+        teamRepo.Setup(o => o.GetAllTeams()).ReturnsAsync(TEAMS);
+        var service = new GetTeamsService(memoryCache, teamRepo.Object);
+        Assert.Equal(31, (await service.GetTeams()).Count);
+        Assert.Equal(31, (await service.GetTeams()).Count);
+        teamRepo.Verify(x => x.GetAllTeams(), Times.Once);
+    }
 }
