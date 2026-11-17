@@ -7,12 +7,12 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services;
 public class GetPlayerEnumMapServiceTest
 {
     private static readonly Dictionary<string, Dictionary<int, string>> VALUES = new()
-  {
-    { "LEAGUESTATUS", new Dictionary<int, string>() { { 0, "Available" }, { 1, "Rostered" }, { 2, "Unavailable" }, { 3, "Scouted" } } },
-    { "PLAYERSTATUS", new Dictionary<int, string>() { { 0, "" }, { 1, "Injured List" }, { 2, "Not Available" }, { 3, "New Entry" } } },
-    { "PLAYERTYPE", new Dictionary<int, string>() { { 0, "Unknown" }, { 1, "Batter" }, { 2, "Pitcher" } } },
-    { "STATSTYPE", new Dictionary<int, string>() { { 0, "Unknown" }, { 1, "Year to Date" }, { 2, "Projected" }, { 3, "Combined" } } },
-  };
+    {
+        { "LEAGUESTATUS", new() { { 0, "Available" }, { 1, "Rostered" }, { 2, "Unavailable" }, { 3, "Scouted" } } },
+        { "PLAYERSTATUS", new() { { 0, "" }, { 1, "Injured List" }, { 2, "Not Available" }, { 3, "New Entry" } } },
+        { "PLAYERTYPE", new() { { 0, "Unknown" }, { 1, "Batter" }, { 2, "Pitcher" } } },
+        { "STATSTYPE", new() { { 0, "Unknown" }, { 1, "Year to Date" }, { 2, "Projected" }, { 3, "Combined" } } },
+    };
 
     [Theory]
     [InlineData("LeagueStatus")]
