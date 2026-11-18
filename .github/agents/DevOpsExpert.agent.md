@@ -103,12 +103,20 @@ Each phase feeds insights into the next, creating a continuous improvement cycle
 
 **Pre-Commit Checks**:
 
-Automated via GitHub Actions PR validation workflow (`.github/workflows/pr-validation.yml`):
+Local pre-commit hooks (`.githooks/pre-commit`) enforce quality before pushing:
 - 🔒 Check for secrets/credentials in code (passwords, tokens, API keys)
 - 🎨 Run `dotnet format --verify-no-changes` to enforce code style
-- 📦 Compile code and verify no errors
-- ✅ Run `dotnet test` to verify all tests pass
-- 📊 Check code coverage via SonarCloud
+- 📦 Check file sizes (prevent large binary files > 5MB)
+- 🔨 Optional: Run build check to verify compilation
+- ✅ Optional: Run tests to verify functionality
+
+Configure pre-commit hooks with: `git config core.hooksPath .githooks`
+
+Automated via GitHub Actions PR validation workflow (`.github/workflows/pr-validation.yml`):
+- Full build and test suite execution
+- Code format verification
+- Security scanning with Trivy
+- Code quality analysis via SonarCloud
 
 Manual verification:
 - Verify code coverage remains ≥ 80% (SonarCloud dashboard)
@@ -134,10 +142,13 @@ Manual verification:
 
 **Key Files**:
 
+- `CONTRIBUTING.md` - Developer setup and contribution workflow
 - `FantasyBaseball.PlayerService/Controllers/` - API endpoints
 - `FantasyBaseball.PlayerService/Services/` - Business logic
 - `FantasyBaseball.PlayerService.UnitTests/` - Unit tests
 - `FantasyBaseball.PlayerService.IntegrationTests/` - Integration tests
+- `.githooks/pre-commit` - Local quality enforcement
+- `.github/pull_request_template.md` - PR submission format
 - `C# Expert agent documentation` - Coding standards
 
 ## Phase 3: Build
@@ -768,6 +779,9 @@ DORA Metrics → Process Improvements
 
 - [x] **Version Control**: All code and configuration in Git
 - [x] **CI/CD**: Automated pipelines for build, test, release, deploy
+- [x] **Pre-Commit Hooks**: Local quality enforcement with `.githooks/pre-commit`
+- [x] **Pull Request Template**: Standardized PR submissions with `.github/pull_request_template.md`
+- [x] **Developer Guide**: Comprehensive CONTRIBUTING.md for setup and workflow
 - [x] **Multi-Platform**: Docker builds for amd64 and arm64
 - [x] **Monitoring**: SonarCloud, GitHub Actions, health checks
 - [x] **Testing**: Comprehensive test suites (unit and integration) with ≥ 80% coverage
@@ -801,10 +815,12 @@ This project includes comprehensive DevOps documentation:
 | Document | Purpose | Audience |
 |----------|---------|----------|
 | [README.md](../../README.md) | Project overview and quick start | All |
+| [CONTRIBUTING.md](../../CONTRIBUTING.md) | Developer setup and contribution workflow | Developers |
 | [DEPLOYMENT.md](../../DEPLOYMENT.md) | Complete release procedures | Release engineers |
 | [DEVOPS_RUNBOOK.md](../../DEVOPS_RUNBOOK.md) | Quick reference for operations | On-call engineers |
 | [SLO_SLA.md](../../SLO_SLA.md) | Service level objectives and agreements | All |
 | [CHANGELOG.md](../../CHANGELOG.md) | Release notes and version history | Release engineers, consumers |
+| [.github/pull_request_template.md](../../.github/pull_request_template.md) | PR submission template | Developers |
 | [.env.example](../../.env.example) | Environment variable template | Developers |
 | [C# Expert agent documentation](./CSharpExpert.agent.md) | C# coding standards | Developers |
 

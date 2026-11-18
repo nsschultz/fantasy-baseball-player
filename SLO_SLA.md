@@ -312,9 +312,10 @@ Questions? Contact: platform-engineering@company.com
 ## Related Documentation
 
 - **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Deployment procedures and strategies
+- **[README.md](./README.md)** - Project overview
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** - Developer setup and contribution workflow
 - **[DEVOPS_RUNBOOK.md](./DEVOPS_RUNBOOK.md)** - Quick reference for operations
 - **[CHANGELOG.md](./CHANGELOG.md)** - Release history and version information
-- **[README.md](./README.md)** - Project overview
 - **[DevOps Expert Agent](/.github/agents/DevOpsExpert.agent.md)** - DevOps principles and practices
 
 ## Support and Contact

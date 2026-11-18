@@ -567,9 +567,10 @@ docker compose -f .docker-compose/docker-compose-runtime.yaml \
 ## Related Documentation
 
 - **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Full deployment procedures
+- **[README.md](./README.md)** - Project overview
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** - Developer setup and contribution workflow
 - **[SLO_SLA.md](./SLO_SLA.md)** - Service level definitions
 - **[CHANGELOG.md](./CHANGELOG.md)** - Release history
-- **[README.md](./README.md)** - Project overview
 - **[DevOps Expert Agent](/.github/agents/DevOpsExpert.agent.md)** - DevOps principles
 
 ---

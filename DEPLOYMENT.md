@@ -452,6 +452,7 @@ curl -v http://localhost:8080/api/health
 ## Related Documentation
 
 - **[README.md](./README.md)** - Project overview and quick start
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** - Developer setup and contribution workflow
 - **[DEVOPS_RUNBOOK.md](./DEVOPS_RUNBOOK.md)** - Quick reference for operations
 - **[SLO_SLA.md](./SLO_SLA.md)** - Service level objectives and agreements
 - **[CHANGELOG.md](./CHANGELOG.md)** - Version history and release notes
