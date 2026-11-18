@@ -29,4 +29,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: nschultz/fantasy-baseball-player:${{ env.VERSION }}
+          tags: |
+            nschultz/fantasy-baseball-player:${{ env.VERSION }}
+            nschultz/fantasy-baseball-player:latest
+

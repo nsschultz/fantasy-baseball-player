@@ -27,4 +27,6 @@ ENV ASPNETCORE_URLS=http://+:8080
 USER service-user:service-user
 WORKDIR /app
 COPY --from=build /app/out ./
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/api/health || exit 1
 ENTRYPOINT ["dotnet", "FantasyBaseball.PlayerService.dll"]
