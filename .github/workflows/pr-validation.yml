@@ -4,115 +4,21 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+concurrency:
+  group: pr-validation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
-  packages: read
 
 jobs:
-  build-and-test:
+  build-test-and-sonar:
     permissions:
       checks: write
       contents: read
       pull-requests: write
-      packages: read
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_DB: player_database
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-      mountebank:
-        image: bbyars/mountebank:latest
-        options: >-
-          --health-cmd "wget --quiet --tries=1 --spider http://localhost:2525/api/config || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5555:5555
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Mountebank Imposters
-        run: |
-          # Create the imposters configuration
-          curl -X POST http://localhost:2525/imposters \
-            -H "Content-Type: application/json" \
-            -d '{
-              "port": 5555,
-              "protocol": "http",
-              "name": "positions",
-              "stubs": [
-                {
-                  "responses": [{"is": {"statusCode": 200, "body": "Healthy"}}],
-                  "predicates": [{"equals": {"method": "GET", "path": "/api/health"}}]
-                },
-                {
-                  "responses": [{"is": {
-                    "statusCode": 200,
-                    "headers": {"Content-Type": "application/json"},
-                    "body": "[{\"code\":\"C\",\"fullName\":\"Catcher\",\"playerType\":1,\"sortOrder\":0,\"additionalPositions\":[]},{\"code\":\"1B\",\"fullName\":\"First Baseman\",\"playerType\":1,\"sortOrder\":1,\"additionalPositions\":[]},{\"code\":\"2B\",\"fullName\":\"Second Baseman\",\"playerType\":1,\"sortOrder\":2,\"additionalPositions\":[]},{\"code\":\"3B\",\"fullName\":\"Third Baseman\",\"playerType\":1,\"sortOrder\":3,\"additionalPositions\":[]},{\"code\":\"SS\",\"fullName\":\"Shortstop\",\"playerType\":1,\"sortOrder\":4,\"additionalPositions\":[]},{\"code\":\"OF\",\"fullName\":\"Outfielder\",\"playerType\":1,\"sortOrder\":11,\"additionalPositions\":[]},{\"code\":\"DH\",\"fullName\":\"Designated Hitter\",\"playerType\":1,\"sortOrder\":12,\"additionalPositions\":[]},{\"code\":\"P\",\"fullName\":\"Pitcher\",\"playerType\":2,\"sortOrder\":102,\"additionalPositions\":[]}]"
-                  }}],
-                  "predicates": [{"equals": {"method": "GET", "path": "/api/v1/position"}}]
-                }
-              ]
-            }'
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 10.0.x
-          source-url: https://nuget.pkg.github.com/nsschultz/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Run Tests
-        env:
-          PLAYER_DATABASE_HOST: localhost
-          PLAYER_DATABASE: player_database
-          PLAYER_DATABASE_USER: postgres
-          PLAYER_DATABASE_PASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}
-          POSITION_SERVICE_HOST: localhost:5555
-          POSITION_SERVICE_VERSION: v1
-        run: dotnet test --configuration Release --no-restore --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
-
-      - name: Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: "**/TestResults/"
-
-      - name: Publish Test Results
-        if: always()
-        uses: EnricoMi/publish-unit-test-result-action@da5b7be67623cd59bbbd1a0ce4f022050a55605f
-        with:
-          files: "**/test-results.trx"
-          check_name: "Test Results"
-
-  sonar-quality-gate:
-    permissions:
-      contents: read
-      packages: read
-    runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -127,11 +33,23 @@ jobs:
       - name: Build, Test, & Scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_USERNAME: "nsschultz"
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           VERSION: ${{ env.VERSION }}
-        run: |
-          sh .docker-compose/ci.sh
+        run: sh .docker-compose/ci.sh
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ".docker-compose/test-results/"
+
+      - name: Publish Test Results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@da5b7be67623cd59bbbd1a0ce4f022050a55605f
+        with:
+          files: ".docker-compose/test-results/**/*.trx"
+          check_name: "Test Results"
 
   code-format:
     permissions:
