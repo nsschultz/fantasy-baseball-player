@@ -24,7 +24,7 @@ public class BhqYtdBattingsStatsMap : YtdStatsMapping
         Map(m => m.YearToDateBattingStats.StrikeOuts).Name("K").TypeConverter<DefaultIntConverter>();
         Map(m => m.YearToDateBattingStats.StolenBases).Name("SB").TypeConverter<DefaultIntConverter>();
         Map(m => m.YearToDateBattingStats.CaughtStealing).Name("CS").TypeConverter<DefaultIntConverter>();
-        Map(m => m.YearToDateBattingStats.ContractRate).Name("Ct%").TypeConverter<RateConverter>();
+        Map(m => m.YearToDateBattingStats.ContactRate).Name("Ct%").TypeConverter<RateConverter>();
         Map(m => m.YearToDateBattingStats.Power).Name("PX").TypeConverter<DefaultDoubleConverter>();
         Map(m => m.YearToDateBattingStats.Speed).Name("RSPD").TypeConverter<DefaultDoubleConverter>();
     }

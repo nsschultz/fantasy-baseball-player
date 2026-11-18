@@ -43,7 +43,7 @@ public class ExportedPlayerMap : ClassMap<CsvBaseballPlayer>
         Map(m => m.YearToDateBattingStats.OnBasePercentage).Index(28).Name("B.YTD.OBP");
         Map(m => m.YearToDateBattingStats.SluggingPercentage).Index(29).Name("B.YTD.SLG");
         Map(m => m.YearToDateBattingStats.OnBasePlusSlugging).Index(30).Name("B.YTD.OPS");
-        Map(m => m.YearToDateBattingStats.ContractRate).Index(31).Name("B.YTD.CT%");
+        Map(m => m.YearToDateBattingStats.ContactRate).Index(31).Name("B.YTD.CT%");
         Map(m => m.YearToDateBattingStats.Power).Index(32).Name("B.YTD.PX");
         Map(m => m.YearToDateBattingStats.WalkRate).Index(33).Name("B.YTD.BB%");
         Map(m => m.YearToDateBattingStats.Speed).Index(34).Name("B.YTD.SPD");
@@ -87,7 +87,7 @@ public class ExportedPlayerMap : ClassMap<CsvBaseballPlayer>
         Map(m => m.ProjectedBattingStats.OnBasePercentage).Index(72).Name("B.PROJ.OBP");
         Map(m => m.ProjectedBattingStats.SluggingPercentage).Index(73).Name("B.PROJ.SLG");
         Map(m => m.ProjectedBattingStats.OnBasePlusSlugging).Index(74).Name("B.PROJ.OPS");
-        Map(m => m.ProjectedBattingStats.ContractRate).Index(75).Name("B.PROJ.CT%");
+        Map(m => m.ProjectedBattingStats.ContactRate).Index(75).Name("B.PROJ.CT%");
         Map(m => m.ProjectedBattingStats.Power).Index(76).Name("B.PROJ.PX");
         Map(m => m.ProjectedBattingStats.WalkRate).Index(77).Name("B.PROJ.BB%");
         Map(m => m.ProjectedBattingStats.Speed).Index(78).Name("B.PROJ.SPD");
@@ -131,7 +131,7 @@ public class ExportedPlayerMap : ClassMap<CsvBaseballPlayer>
         Map(m => m.CombinedBattingStats.OnBasePercentage).Index(116).Name("B..OBP");
         Map(m => m.CombinedBattingStats.SluggingPercentage).Index(117).Name("B..SLG");
         Map(m => m.CombinedBattingStats.OnBasePlusSlugging).Index(118).Name("B..OPS");
-        Map(m => m.CombinedBattingStats.ContractRate).Index(119).Name("B..CT%");
+        Map(m => m.CombinedBattingStats.ContactRate).Index(119).Name("B..CT%");
         Map(m => m.CombinedBattingStats.Power).Index(120).Name("B..PX");
         Map(m => m.CombinedBattingStats.WalkRate).Index(121).Name("B..BB%");
         Map(m => m.CombinedBattingStats.Speed).Index(122).Name("B..SPD");

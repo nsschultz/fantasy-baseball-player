@@ -9,10 +9,10 @@ namespace FantasyBaseball.PlayerService.Models.Builders;
 /// <summary>Builds a new instance of a <c>BattingStats</c> from one or more instances.</summary>
 public class BattingStatsBuilder
 {
-    private static readonly double MinimumContractRate = .75;
+    private static readonly double MinimumContactRate = .75;
     private static readonly int MinimumPowerAndSpeed = 80;
     private static readonly double MinimumWalkRate = .05;
-    private static readonly int WeightContractRate = 400;
+    private static readonly int WeightContactRate = 400;
     private static readonly double WeightPower = .8;
     private static readonly double WeightSpeed = .3;
     private static readonly int WeightWalkRate = 200;
@@ -58,13 +58,13 @@ public class BattingStatsBuilder
         stats.OnBasePercentage = MathHelper.Divide(stats.Hits + stats.BaseOnBalls, stats.AtBats + stats.BaseOnBalls);
         stats.SluggingPercentage = MathHelper.Divide(stats.TotalBases, stats.AtBats);
         stats.OnBasePlusSlugging = stats.OnBasePercentage + stats.SluggingPercentage;
-        stats.ContractRate = MathHelper.Divide(stats.AtBats - stats.StrikeOuts, stats.AtBats);
+        stats.ContactRate = MathHelper.Divide(stats.AtBats - stats.StrikeOuts, stats.AtBats);
         stats.Power = MathHelper.Divide(statsList.Sum(s => s.AtBats * s.Power), stats.AtBats);
         stats.WalkRate = MathHelper.Divide(stats.BaseOnBalls, stats.AtBats + stats.BaseOnBalls);
         stats.Speed = MathHelper.Divide(statsList.Sum(s => s.AtBats * s.Speed), stats.AtBats);
         stats.BasePerformanceValue = stats.AtBats + stats.BaseOnBalls > 0
           ? (stats.WalkRate - MinimumWalkRate) * WeightWalkRate
-            + (stats.ContractRate - MinimumContractRate) * WeightContractRate
+            + (stats.ContactRate - MinimumContactRate) * WeightContactRate
             + (stats.Power - MinimumPowerAndSpeed) * WeightPower
             + (stats.Speed - MinimumPowerAndSpeed) * WeightSpeed
           : 0;

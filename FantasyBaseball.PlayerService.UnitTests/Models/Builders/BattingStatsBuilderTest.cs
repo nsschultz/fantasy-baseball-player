@@ -71,7 +71,7 @@ public class BattingStatsBuilderTest
             OnBasePercentage = 210d / 550,
             SluggingPercentage = 0.56,
             OnBasePlusSlugging = 210d / 550 + .56,
-            ContractRate = 0.8,
+            ContactRate = 0.8,
             Power = 150,
             WalkRate = 50d / 550,
             Speed = 75,
@@ -133,7 +133,7 @@ public class BattingStatsBuilderTest
             OnBasePercentage = 210d / 550,
             SluggingPercentage = 0.56,
             OnBasePlusSlugging = 210d / 550 + .56,
-            ContractRate = 0.8,
+            ContactRate = 0.8,
             Power = 150,
             WalkRate = 50d / 550,
             Speed = 75,
@@ -196,7 +196,7 @@ public class BattingStatsBuilderTest
             OnBasePercentage = 210d / 550,
             SluggingPercentage = 0.56,
             OnBasePlusSlugging = 210d / 550 + .56,
-            ContractRate = 0.8,
+            ContactRate = 0.8,
             Power = 150,
             WalkRate = 50d / 550,
             Speed = 75,
@@ -224,7 +224,7 @@ public class BattingStatsBuilderTest
         Assert.Equal(expected.OnBasePercentage, actual.OnBasePercentage);
         Assert.Equal(expected.SluggingPercentage, actual.SluggingPercentage);
         Assert.Equal(expected.OnBasePlusSlugging, actual.OnBasePlusSlugging);
-        Assert.Equal(expected.ContractRate, actual.ContractRate);
+        Assert.Equal(expected.ContactRate, actual.ContactRate);
         Assert.Equal(expected.Power, actual.Power);
         Assert.Equal(expected.WalkRate, actual.WalkRate);
         Assert.Equal(expected.Speed, actual.Speed);
