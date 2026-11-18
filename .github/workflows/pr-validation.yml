@@ -30,11 +30,45 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
+      mountebank:
+        image: bbyars/mountebank:latest
+        options: >-
+          --health-cmd "wget --quiet --tries=1 --spider http://localhost:2525/api/config || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5555:5555
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Setup Mountebank Imposters
+        run: |
+          # Create the imposters configuration
+          curl -X POST http://localhost:2525/imposters \
+            -H "Content-Type: application/json" \
+            -d '{
+              "port": 5555,
+              "protocol": "http",
+              "name": "positions",
+              "stubs": [
+                {
+                  "responses": [{"is": {"statusCode": 200, "body": "Healthy"}}],
+                  "predicates": [{"equals": {"method": "GET", "path": "/api/health"}}]
+                },
+                {
+                  "responses": [{"is": {
+                    "statusCode": 200,
+                    "headers": {"Content-Type": "application/json"},
+                    "body": "[{\"code\":\"C\",\"fullName\":\"Catcher\",\"playerType\":1,\"sortOrder\":0,\"additionalPositions\":[]},{\"code\":\"1B\",\"fullName\":\"First Baseman\",\"playerType\":1,\"sortOrder\":1,\"additionalPositions\":[]},{\"code\":\"2B\",\"fullName\":\"Second Baseman\",\"playerType\":1,\"sortOrder\":2,\"additionalPositions\":[]},{\"code\":\"3B\",\"fullName\":\"Third Baseman\",\"playerType\":1,\"sortOrder\":3,\"additionalPositions\":[]},{\"code\":\"SS\",\"fullName\":\"Shortstop\",\"playerType\":1,\"sortOrder\":4,\"additionalPositions\":[]},{\"code\":\"OF\",\"fullName\":\"Outfielder\",\"playerType\":1,\"sortOrder\":11,\"additionalPositions\":[]},{\"code\":\"DH\",\"fullName\":\"Designated Hitter\",\"playerType\":1,\"sortOrder\":12,\"additionalPositions\":[]},{\"code\":\"P\",\"fullName\":\"Pitcher\",\"playerType\":2,\"sortOrder\":102,\"additionalPositions\":[]}]"
+                  }}],
+                  "predicates": [{"equals": {"method": "GET", "path": "/api/v1/position"}}]
+                }
+              ]
+            }'
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -56,6 +90,8 @@ jobs:
           PLAYER_DATABASE: player_database
           PLAYER_DATABASE_USER: postgres
           PLAYER_DATABASE_PASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}
+          POSITION_SERVICE_HOST: localhost:5555
+          POSITION_SERVICE_VERSION: v1
         run: dotnet test --configuration Release --no-restore --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload Test Results
