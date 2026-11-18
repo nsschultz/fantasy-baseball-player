@@ -5,6 +5,9 @@ services:
       context: ../
       dockerfile: Dockerfile
       target: ci
+      args:
+        - GITHUB_USERNAME=${GITHUB_USERNAME}
+        - GITHUB_TOKEN=${GITHUB_TOKEN}
     command: sh /scripts/scan.sh
     depends_on:
       database:
