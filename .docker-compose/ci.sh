@@ -7,6 +7,7 @@ TEST_RESULTS_DIR=".docker-compose/test-results"
 rm -rf "$TEST_RESULTS_DIR"
 mkdir -p "$TEST_RESULTS_DIR"
 
+export DOCKER_BUILDKIT=0
 docker compose -f "$COMPOSE_FILE" -p "$PROJECT_NAME" up --build --exit-code-from api || EXIT_CODE=$?
 
 CONTAINER_ID=$(docker compose -f "$COMPOSE_FILE" -p "$PROJECT_NAME" ps -aq api)

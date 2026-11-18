@@ -44,7 +44,7 @@ services:
     build: mountebank/
     restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:2525/api/config"]
+      test: ["CMD-SHELL", "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/localhost/2525'"]
       interval: 10s
       timeout: 5s
       retries: 5
