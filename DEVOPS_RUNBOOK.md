@@ -130,10 +130,10 @@ docker compose -f .docker-compose/docker-compose-runtime.yaml \
 curl -v http://localhost:8080/api/health
 
 # List all players
-curl http://localhost:8080/api/v1/player
+curl http://localhost:8080/api/v3/player
 
 # Get single player
-curl http://localhost:8080/api/v1/player/1
+curl http://localhost:8080/api/v3/player/{id}
 
 # View Swagger documentation
 # Access: http://localhost:8080/api/swagger/index.html

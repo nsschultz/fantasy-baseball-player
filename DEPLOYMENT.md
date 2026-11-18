@@ -75,13 +75,13 @@ Update the semantic version in `version.txt` following [Semantic Versioning](htt
 
 ```bash
 # Determine version bump based on changes
-# MAJOR: Breaking API changes (e.g., 1.0.0 -> 2.0.0)
-# MINOR: Backward-compatible new features (e.g., 1.0.0 -> 1.1.0)
-# PATCH: Bug fixes and patches (e.g., 1.0.0 -> 1.0.1)
+# MAJOR: Breaking API changes (e.g., 3.0.0 -> 4.0.0)
+# MINOR: Backward-compatible new features (e.g., 3.3.0 -> 3.4.0)
+# PATCH: Bug fixes and patches (e.g., 3.3.0 -> 3.3.1)
 
-echo "1.2.4" > version.txt
+echo "3.3.1" > version.txt
 git add version.txt
-git commit -m "Bump version to 1.2.4"
+git commit -m "Bump version to 3.3.1"
 ```
 
 ### Step 2: Update CHANGELOG
@@ -89,18 +89,16 @@ git commit -m "Bump version to 1.2.4"
 Document changes in `CHANGELOG.md` following the format:
 
 ```markdown
-## [1.2.4] - 2024-11-18
+## [3.3.1] - 2024-11-18
 
 ### Added
-- New CSV export filtering options
-- Health check improvements
+- TODO: Document new features
 
 ### Fixed
-- Database connection pool exhaustion
-- Swagger documentation accuracy
+- TODO: Document bug fixes
 
 ### Changed
-- Improved error handling for missing positions
+- TODO: Document behavior changes
 
 ### Breaking Changes
 - None
@@ -142,8 +140,8 @@ docker compose -f .docker-compose/docker-compose-ci.yaml -p fantasy-baseball-pla
 Create an annotated tag for the release:
 
 ```bash
-git tag -a v1.2.4 -m "Release v1.2.4: Player Service improvements"
-git push origin v1.2.4
+git tag -a v3.3.1 -m "Release v3.3.1: Player Service improvements"
+git push origin v3.3.1
 ```
 
 This triggers the automated Docker image build workflow.
@@ -157,10 +155,10 @@ After tagging, verify the image was built and pushed to Docker Hub:
 # Check: https://github.com/nsschultz/fantasy-baseball-player/actions
 
 # Verify image exists
-docker pull nschultz/fantasy-baseball-player:1.2.4
+docker pull nschultz/fantasy-baseball-player:3.3.1
 
 # Verify multi-platform support
-docker buildx imagetools inspect nschultz/fantasy-baseball-player:1.2.4
+docker buildx imagetools inspect nschultz/fantasy-baseball-player:3.3.1
 ```
 
 ### Step 6: Create GitHub Release
@@ -179,13 +177,13 @@ Create a release notes entry on GitHub:
 **Example Release Notes Template:**
 
 ```markdown
-# Release v1.2.4 - Player Service Improvements
+# Release v3.3.1 - Player Service Improvements
 
 ## Overview
-This release includes CSV export improvements, better error handling, and bug fixes.
+This release includes improvements and bug fixes.
 
 ## What's Changed
-See [CHANGELOG.md](./CHANGELOG.md#124---2024-11-18) for detailed changes.
+See [CHANGELOG.md](./CHANGELOG.md#331---2024-11-18) for detailed changes.
 
 ## Breaking Changes
 ⚠️ None in this release.
@@ -212,8 +210,8 @@ Before deploying to production, verify:
 curl http://localhost:8080/api/health
 
 # 2. API endpoints responding
-curl http://localhost:8080/api/v1/player/health
-curl http://localhost:8080/api/v1/player
+curl http://localhost:8080/api/v3/player
+curl http://localhost:8080/api/v3/player/{id}
 
 # 3. Database connectivity
 # (included in health check)
@@ -229,7 +227,7 @@ curl http://localhost:8080/api/swagger/index.html
 
 1. **Pull the latest image:**
    ```bash
-   docker pull nschultz/fantasy-baseball-player:1.2.4
+   docker pull nschultz/fantasy-baseball-player:3.3.1
    ```
 
 2. **Update environment variables** in `.docker-compose/docker-compose-runtime.yaml`:
@@ -265,8 +263,8 @@ curl http://localhost:8080/api/swagger/index.html
 7. **Run smoke tests:**
    ```bash
    # Test basic endpoints
-   curl http://localhost:8080/api/v1/player
-   curl http://localhost:8080/api/v1/player/health
+   curl http://localhost:8080/api/v3/player
+   curl http://localhost:8080/api/health
    ```
 
 ### Post-Deployment Verification
@@ -286,8 +284,8 @@ docker compose -f .docker-compose/docker-compose-runtime.yaml \
   -p fantasy-baseball-player logs api | grep -i error
 
 # 4. Test API functionality
-curl http://localhost:8080/api/v1/player
-curl http://localhost:8080/api/v1/player/health
+curl http://localhost:8080/api/v3/player
+curl http://localhost:8080/api/health
 
 # 5. Verify Swagger documentation
 # Access: http://localhost:8080/api/swagger/index.html

@@ -47,11 +47,11 @@ Service Level Objectives are targets we commit to meet. These drive operational 
 
 | Operation | Target P95 | Target P99 | Notes |
 |-----------|-----------|-----------|-------|
-| GET /api/v1/player (list) | < 200ms | < 500ms | Most common operation |
-| GET /api/v1/player/{id} | < 100ms | < 300ms | Single record lookup |
-| POST /api/v1/player (create) | < 300ms | < 800ms | Includes database write |
-| PUT /api/v1/player/{id} (update) | < 300ms | < 800ms | Includes database write |
-| DELETE /api/v1/player/{id} | < 300ms | < 800ms | Includes database write |
+| GET /api/v3/player (list) | < 200ms | < 500ms | Most common operation |
+| GET /api/v3/player/{id} | < 100ms | < 300ms | Single record lookup |
+| POST /api/v3/player (create) | < 300ms | < 800ms | Includes database write |
+| PUT /api/v3/player/{id} (update) | < 300ms | < 800ms | Includes database write |
+| DELETE /api/v3/player/{id} | < 300ms | < 800ms | Includes database write |
 | GET /api/health | < 50ms | < 100ms | Health check must be fast |
 | GET /api/swagger/index.html | < 500ms | < 1000ms | Documentation only |
 
