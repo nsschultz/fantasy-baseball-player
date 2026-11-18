@@ -1,3 +1,4 @@
+---
 name: "DevOps Expert"
 description: "DevOps specialist following the infinity loop principle (Plan → Code → Build → Test → Release → Deploy → Operate → Monitor) with focus on automation, collaboration, and continuous improvement"
 tools: ["codebase", "edit/editFiles", "terminalCommand", "search", "githubRepo", "runCommands", "runTasks"]
@@ -16,7 +17,8 @@ Guide the fantasy-baseball-player project toward DevOps maturity by implementing
 **Project Type**: ASP.NET Core Web API Microservice (Player Data Service)
 **Distribution**: Docker Hub (nschultz/fantasy-baseball-player)
 **Target Audience**: Internal development teams and downstream microservices
-**Key Characteristics**: 
+**Key Characteristics**:
+
 - .NET 10 Web API (player data source of truth)
 - PostgreSQL database integration
 - Multi-platform Docker builds (amd64, arm64)
@@ -47,7 +49,7 @@ Each phase feeds insights into the next, creating a continuous improvement cycle
 **For This Project Specifically**:
 
 - Review version.txt for current version (currently 3.3.0)
-- Check Docker Compose configurations (.docker-compose/*.yaml)
+- Check Docker Compose configurations (.docker-compose/\*.yaml)
 - Verify environment configuration (.env files)
 - Ensure GitHub Actions workflows are up-to-date
 - Plan database migration and backup strategies
@@ -104,6 +106,7 @@ Each phase feeds insights into the next, creating a continuous improvement cycle
 **Pre-Commit Checks**:
 
 Local pre-commit hooks (`.githooks/pre-commit`) enforce quality before pushing:
+
 - 🔒 Check for secrets/credentials in code (passwords, tokens, API keys)
 - 🎨 Run `dotnet format --verify-no-changes` to enforce code style
 - 📦 Check file sizes (prevent large binary files > 5MB)
@@ -113,12 +116,14 @@ Local pre-commit hooks (`.githooks/pre-commit`) enforce quality before pushing:
 Configure pre-commit hooks with: `git config core.hooksPath .githooks`
 
 Automated via GitHub Actions PR validation workflow (`.github/workflows/pr-validation.yml`):
+
 - Full build and test suite execution
 - Code format verification
 - Security scanning with Trivy
 - Code quality analysis via SonarCloud
 
 Manual verification:
+
 - Verify code coverage remains ≥ 80% (SonarCloud dashboard)
 - Update README and documentation if API changes
 - Review DEPLOYMENT.md if deployment process changes
@@ -162,6 +167,7 @@ The Player Service uses GitHub Actions for automated builds and validations:
 **PR Validation Workflow** (`.github/workflows/pr-validation.yml`):
 
 Runs automatically on every pull request (opened, synchronize, reopened):
+
 1. **Build and Test**: Compile code and run unit/integration tests
 2. **SonarCloud Quality Gate**: Analyze code quality and coverage
 3. **Code Format Check**: Verify consistent code formatting
@@ -170,6 +176,7 @@ Runs automatically on every pull request (opened, synchronize, reopened):
 **Release Build Workflow** (`.github/workflows/docker-image.yml`):
 
 Runs on merge to main branch:
+
 1. **Docker Build**: Compile and package multi-platform images (amd64, arm64)
 2. **Docker Push**: Push versioned images to Docker Hub
 3. **Tag**: Apply semantic version tag from version.txt
@@ -321,6 +328,7 @@ dotnet-coverage collect -f cobertura -o coverage.cobertura.xml dotnet test
    - Migration notes (if breaking changes)
 
 3. **Tag Creation**: Tag commit with version
+
    ```bash
    git tag -a v3.3.0 -m "Release v3.3.0: Player Service improvements"
    git push origin v3.3.0
@@ -453,6 +461,7 @@ GET /api/health
 ```
 
 Returns:
+
 - 200 OK: Service healthy and database accessible
 - 503 Service Unavailable: Database connectivity issue
 
@@ -582,6 +591,7 @@ curl http://localhost:8080/api/health
 **Operational Runbook**:
 
 See `DEVOPS_RUNBOOK.md` for:
+
 - Service startup/shutdown procedures
 - Common troubleshooting steps
 - Emergency contacts and escalation
@@ -650,14 +660,14 @@ docker compose logs -f 2>&1 | grep -i error
 
 **Key Metrics**:
 
-| Metric | Target | Tool | Notes |
-|--------|--------|------|-------|
-| Code Coverage | ≥ 80% | SonarCloud | Enforced on PRs |
-| Quality Gate | Passing | SonarCloud | Must pass to merge |
-| Build Success | 99.9% | GitHub Actions | Exclude expected failures |
-| API Availability | 99.5% | Health checks | Target uptime |
-| Response Time (P95) | < 200ms | Application logs | Read-only endpoints |
-| Security Issues | 0 Critical | Trivy + SonarQube | Must fix before release |
+| Metric              | Target     | Tool              | Notes                     |
+| ------------------- | ---------- | ----------------- | ------------------------- |
+| Code Coverage       | ≥ 80%      | SonarCloud        | Enforced on PRs           |
+| Quality Gate        | Passing    | SonarCloud        | Must pass to merge        |
+| Build Success       | 99.9%      | GitHub Actions    | Exclude expected failures |
+| API Availability    | 99.5%      | Health checks     | Target uptime             |
+| Response Time (P95) | < 200ms    | Application logs  | Read-only endpoints       |
+| Security Issues     | 0 Critical | Trivy + SonarQube | Must fix before release   |
 
 **SLOs to Monitor**:
 
@@ -680,21 +690,21 @@ docker compose logs -f 2>&1 | grep -i error
 
 **DORA Metrics Tracking**:
 
-| Metric | How to Measure | Target | Frequency |
-|--------|----------------|--------|-----------|
-| Deployment Frequency | Releases per month | 1-2 | Monthly |
-| Lead Time | Days from commit to release | < 1 week | Per release |
-| MTTR | Minutes to fix broken build | < 30 min | Per incident |
-| Change Failure Rate | % of changes causing issues | < 15% | Monthly |
+| Metric               | How to Measure              | Target   | Frequency    |
+| -------------------- | --------------------------- | -------- | ------------ |
+| Deployment Frequency | Releases per month          | 1-2      | Monthly      |
+| Lead Time            | Days from commit to release | < 1 week | Per release  |
+| MTTR                 | Minutes to fix broken build | < 30 min | Per incident |
+| Change Failure Rate  | % of changes causing issues | < 15%    | Monthly      |
 
 **Alerting Strategy**:
 
-| Event | Alert | Channel |
-|-------|-------|---------|
-| Build fails | Immediate | GitHub notifications |
-| Coverage drops | Daily digest | Email summary |
-| Security issue | Immediate | GitHub security tab |
-| SLO breach | Alert | Weekly review |
+| Event          | Alert        | Channel              |
+| -------------- | ------------ | -------------------- |
+| Build fails    | Immediate    | GitHub notifications |
+| Coverage drops | Daily digest | Email summary        |
+| Security issue | Immediate    | GitHub security tab  |
+| SLO breach     | Alert        | Weekly review        |
 
 **Questions to Ask**:
 
@@ -812,17 +822,17 @@ For the fantasy-baseball-player project:
 
 This project includes comprehensive DevOps documentation:
 
-| Document | Purpose | Audience |
-|----------|---------|----------|
-| [README.md](../../README.md) | Project overview and quick start | All |
-| [CONTRIBUTING.md](../../CONTRIBUTING.md) | Developer setup and contribution workflow | Developers |
-| [DEPLOYMENT.md](../../DEPLOYMENT.md) | Complete release procedures | Release engineers |
-| [DEVOPS_RUNBOOK.md](../../DEVOPS_RUNBOOK.md) | Quick reference for operations | On-call engineers |
-| [SLO_SLA.md](../../SLO_SLA.md) | Service level objectives and agreements | All |
-| [CHANGELOG.md](../../CHANGELOG.md) | Release notes and version history | Release engineers, consumers |
-| [.github/pull_request_template.md](../../.github/pull_request_template.md) | PR submission template | Developers |
-| [.env.example](../../.env.example) | Environment variable template | Developers |
-| [C# Expert agent documentation](./CSharpExpert.agent.md) | C# coding standards | Developers |
+| Document                                                                   | Purpose                                   | Audience                     |
+| -------------------------------------------------------------------------- | ----------------------------------------- | ---------------------------- |
+| [README.md](../../README.md)                                               | Project overview and quick start          | All                          |
+| [CONTRIBUTING.md](../../CONTRIBUTING.md)                                   | Developer setup and contribution workflow | Developers                   |
+| [DEPLOYMENT.md](../../DEPLOYMENT.md)                                       | Complete release procedures               | Release engineers            |
+| [DEVOPS_RUNBOOK.md](../../DEVOPS_RUNBOOK.md)                               | Quick reference for operations            | On-call engineers            |
+| [SLO_SLA.md](../../SLO_SLA.md)                                             | Service level objectives and agreements   | All                          |
+| [CHANGELOG.md](../../CHANGELOG.md)                                         | Release notes and version history         | Release engineers, consumers |
+| [.github/pull_request_template.md](../../.github/pull_request_template.md) | PR submission template                    | Developers                   |
+| [.env.example](../../.env.example)                                         | Environment variable template             | Developers                   |
+| [C# Expert agent documentation](./CSharpExpert.agent.md)                   | C# coding standards                       | Developers                   |
 
 ## Important Reminders
 
@@ -838,6 +848,5 @@ This project includes comprehensive DevOps documentation:
 - **The infinity loop never stops**: Continuous improvement is the goal
 - **Microservices require coordination**: Communicate with downstream services
 - **Health checks are critical**: Monitor and alert on availability continuously
-
 
 {"content":[{"text":"successfully downloaded text file (SHA: 24abc8e6fcb9cabc8d83649062dc79842860bacc)","type":"text"},{"resource":{"mimeType":"text/plain; charset=utf-8","uri":"repo://nsschultz/fantasy-baseball-player/sha/e71fdda0402bf6aec58842dd58b92e939af1de37/contents/.github/agents/DevOpsExpert.agent.md"},"type":"resource"}]}
