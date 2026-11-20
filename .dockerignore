@@ -10,13 +10,15 @@ out/
 .devcontainer/
 .docker-compose/
 .git/
+.githooks/
+.github/
 .vscode/
 .dockerignore
+.env.example
 .gitignore
 Dockerfile
-Jenkinsfile
 LICENSE
-README.md
+*.md
 version.txt
 
 # scanning data
