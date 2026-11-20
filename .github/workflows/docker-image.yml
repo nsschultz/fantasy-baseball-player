@@ -29,6 +29,8 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
+          cache-from: type=gha,scope=fantasy-baseball-player
+          cache-to: type=gha,mode=max,scope=fantasy-baseball-player
           tags: |
             nschultz/fantasy-baseball-player:${{ env.VERSION }}
             nschultz/fantasy-baseball-player:latest

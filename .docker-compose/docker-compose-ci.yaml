@@ -5,6 +5,10 @@ services:
       context: ../
       dockerfile: Dockerfile
       target: ci
+      cache_from:
+        - type=gha,scope=fantasy-baseball-player-api
+      cache_to:
+        - type=gha,mode=max,scope=fantasy-baseball-player-api
       args:
         - GITHUB_USERNAME=${GITHUB_USERNAME}
         - GITHUB_TOKEN=${GITHUB_TOKEN}
@@ -27,7 +31,12 @@ services:
       - SONAR_TOKEN=${SONAR_TOKEN}
       - VERSION=${VERSION}
   database:
-    build: database/
+    build:
+      context: database/
+      cache_from:
+        - type=gha,scope=fantasy-baseball-player-database
+      cache_to:
+        - type=gha,mode=max,scope=fantasy-baseball-player-database
     restart: always
     user: postgres
     environment:
@@ -42,7 +51,12 @@ services:
     volumes:
       - data_volume:/var/lib/postgresql/data
   mountebank:
-    build: mountebank/
+    build:
+      context: mountebank/
+      cache_from:
+        - type=gha,scope=fantasy-baseball-player-mountebank
+      cache_to:
+        - type=gha,mode=max,scope=fantasy-baseball-player-mountebank
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/localhost/2525'"]
