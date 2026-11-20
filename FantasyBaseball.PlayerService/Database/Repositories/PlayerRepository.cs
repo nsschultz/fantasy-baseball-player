@@ -121,7 +121,8 @@ public class PlayerRepository(IPlayerContext context) : IPlayerRepository
           .Include(p => p.PlayerTeam)
           .Include(p => p.Positions)
           .Include(p => p.BattingStats)
-          .Include(p => p.PitchingStats);
+          .Include(p => p.PitchingStats)
+          .AsSplitQuery();
 
     private static (IEnumerable<PlayerEntity>, IEnumerable<PlayerEntity>) SplitPlayers(IEnumerable<PlayerEntity> entities)
     {
