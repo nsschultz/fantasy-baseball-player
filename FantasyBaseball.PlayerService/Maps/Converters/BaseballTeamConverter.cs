@@ -14,7 +14,7 @@ public class BaseballTeamConverter : DefaultTypeConverter
     /// <param name="memberMapData">The <see cref="MemberMapData"/> for the member being written.</param>
     /// <returns>The string representation of the object.</returns>
     public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData) =>
-        string.IsNullOrEmpty(text) ? new PlayerTeam() : new PlayerTeam { Code = text.Trim().ToUpper() };
+        string.IsNullOrWhiteSpace(text) ? new PlayerTeam { Code = null } : new PlayerTeam { Code = text.Trim().ToUpper() };
 
     /// <summary>Converts the string to an object.</summary>
     /// <param name="value">The object to convert to a string.</param>

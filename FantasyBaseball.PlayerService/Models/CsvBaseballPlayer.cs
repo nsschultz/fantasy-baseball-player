@@ -7,6 +7,13 @@ namespace FantasyBaseball.PlayerService.Models;
 /// <summary>A marker object for breaking up the mappers.</summary>
 public class CsvBaseballPlayer : Player
 {
+    /// <summary>Initializes a CSV baseball player with nullable name fields.</summary>
+    public CsvBaseballPlayer()
+    {
+        FirstName = null;
+        LastName = null;
+    }
+
     /// <summary>The fullname of the player.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     public string FullName
@@ -14,7 +21,12 @@ public class CsvBaseballPlayer : Player
         get { return !string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName) ? $"{LastName}, {FirstName}" : LastName; }
         set
         {
-            if (string.IsNullOrEmpty(value)) return;
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                FirstName = null;
+                LastName = null;
+                return;
+            }
             var parts = value.Split(',');
             LastName = parts[0].Trim();
             if (parts.Length == 2) FirstName = parts[1].Trim();
