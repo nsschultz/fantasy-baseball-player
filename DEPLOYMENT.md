@@ -92,13 +92,13 @@ Document changes in `CHANGELOG.md` following the format:
 ## [3.3.1] - 2024-11-18
 
 ### Added
-- TODO: Document new features
+- New feature description
 
 ### Fixed
-- TODO: Document bug fixes
+- Bug fix description
 
 ### Changed
-- TODO: Document behavior changes
+- Behavior change description
 
 ### Breaking Changes
 - None

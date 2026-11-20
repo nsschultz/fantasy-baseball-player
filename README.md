@@ -92,10 +92,17 @@ dotnet run
 
 ### Docker Image
 
+The service uses a multi-stage Docker build based on:
+- **Build Stage**: `nschultz/fantasy-baseball-common-backend:1.2.1` (includes .NET 10 SDK)
+- **Runtime Stage**: `mcr.microsoft.com/dotnet/aspnet:10.0` (minimal ASP.NET Core runtime)
+- **Database**: PostgreSQL 14.1-alpine
+
 **Build:**
 ```bash
 version=$(cat version.txt) && docker build -t nschultz/fantasy-baseball-player:$version .
 ```
+
+Builds multi-platform images for amd64 and arm64 architectures, with automatic tag management via CI/CD.
 
 **Development Containers:**
 ```bash
@@ -247,7 +254,7 @@ When running the service locally via Docker Compose:
 
 - **Framework**: xUnit
 - **Assertion Library**: xUnit.Assert with FluentAssertions patterns
-- **Coverage**: 50+ tests covering unit and integration scenarios
+- **Coverage**: 148 tests covering unit and integration scenarios
 
 ### Test Structure
 
@@ -267,7 +274,7 @@ dotnet-coverage collect -f cobertura -o coverage.cobertura.xml dotnet test
 ### Build Status
 
 - **Compilation**: 0 errors, 0 warnings
-- **Tests**: All passing (50+ total)
+- **Tests**: All passing (148+ total)
 - **Security**: No known vulnerabilities
 - **Code Quality**: SonarCloud quality gate passing with ≥ 80% coverage
 
