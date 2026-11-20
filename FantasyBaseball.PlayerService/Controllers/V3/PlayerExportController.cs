@@ -11,14 +11,14 @@ namespace FantasyBaseball.PlayerService.Controllers.V3;
 [ApiController]
 public class PlayerExportController(IGetPlayerService getService, ICsvFileWriterService writerService) : ControllerBase
 {
-  /// <summary>Exports the players as a CSV file.</summary>
-  /// <returns>A CSV file containing the players.</returns>
-  [HttpGet]
-  public async Task<IActionResult> ExportPlayers()
-  {
-    var players = await getService.GetPlayers();
-    var fileContent = writerService.WriteCsvData(players);
-    Response.Headers.Append("Content-Disposition", new ContentDisposition { FileName = "players.csv", Inline = false }.ToString());
-    return File(fileContent, "application/octet-stream", "players.csv");
-  }
+    /// <summary>Exports the players as a CSV file.</summary>
+    /// <returns>A CSV file containing the players.</returns>
+    [HttpGet]
+    public async Task<IActionResult> ExportPlayers()
+    {
+        var players = await getService.GetPlayers();
+        var fileContent = writerService.WriteCsvData(players);
+        Response.Headers.Append("Content-Disposition", new ContentDisposition { FileName = "players.csv", Inline = false }.ToString());
+        return File(fileContent, "application/octet-stream", "players.csv");
+    }
 }

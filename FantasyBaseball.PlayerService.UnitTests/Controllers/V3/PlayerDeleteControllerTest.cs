@@ -9,21 +9,21 @@ namespace FantasyBaseball.PlayerService.UnitTests.Controllers.V3;
 
 public class PlayerControllerTest
 {
-  [Fact]
-  public async Task DeleteAllPlayersTest()
-  {
-    var deleteService = new Mock<IDeletePlayerService>();
-    await new PlayerDeleteController(deleteService.Object).DeleteAllPlayers();
-    deleteService.VerifyAll();
-  }
+    [Fact]
+    public async Task DeleteAllPlayersTest()
+    {
+        var deleteService = new Mock<IDeletePlayerService>();
+        await new PlayerDeleteController(deleteService.Object).DeleteAllPlayers();
+        deleteService.VerifyAll();
+    }
 
-  [Fact]
-  public async Task DeletePlayerTest()
-  {
-    var id = Guid.NewGuid();
-    var deleteService = new Mock<IDeletePlayerService>();
-    deleteService.Setup(o => o.DeletePlayer(It.Is<Guid>(i => i == id))).Returns(Task.FromResult(0));
-    await new PlayerDeleteController(deleteService.Object).DeletePlayer(id);
-    deleteService.VerifyAll();
-  }
+    [Fact]
+    public async Task DeletePlayerTest()
+    {
+        var id = Guid.NewGuid();
+        var deleteService = new Mock<IDeletePlayerService>();
+        deleteService.Setup(o => o.DeletePlayer(It.Is<Guid>(i => i == id))).Returns(Task.FromResult(0));
+        await new PlayerDeleteController(deleteService.Object).DeletePlayer(id);
+        deleteService.VerifyAll();
+    }
 }

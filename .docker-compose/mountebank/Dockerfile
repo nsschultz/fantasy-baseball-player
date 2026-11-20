@@ -5,4 +5,4 @@ WORKDIR /app
 ENTRYPOINT ["mb"]
 CMD ["start", "--configfile", "/app/imposters.ejs", "--allowInjection"]
 USER mb
-COPY *.ejs .
+COPY *.ejs ./

@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Maps.Converters;
-using FantasyBaseball.PlayerService.Models;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.UnitTests.Maps.Converters;
 
 public class BaseballTeamConverterTest
 {
-  private static readonly List<BaseballTeam> TEAMS =
-  [
-    new() { Code = ""   , LeagueId = ""  , City = "Free Agent"   , Nickname = "Free Agent"                            },
+    private static readonly List<PlayerTeam> TEAMS =
+    [
+      new() { Code = ""   , LeagueId = ""  , City = "Free Agent"   , Nickname = "Free Agent"                            },
     new() { Code = "BAL", LeagueId = "AL", City = "Baltimore"    , Nickname = "Orioles"                               },
     new() { Code = "BOS", LeagueId = "AL", City = "Boston"       , Nickname = "Red Sox"                               },
     new() { Code = "NYY", LeagueId = "AL", City = "New York"     , Nickname = "Yankees"                               },
@@ -41,24 +41,24 @@ public class BaseballTeamConverterTest
     new() { Code = "LAD", LeagueId = "NL", City = "Los Angeles"  , Nickname = "Dodgers"     , AlternativeCode = "LA"  },
     new() { Code = "SD" , LeagueId = "NL", City = "San Diego"    , Nickname = "Padres"                                },
     new() { Code = "SF" , LeagueId = "NL", City = "San Francisco", Nickname = "Giants"                                }
-  ];
+    ];
 
-  [Theory]
-  [InlineData("MIL", "MIL")]
-  [InlineData("mIl", "MIL")]
-  [InlineData("", null)]
-  [InlineData(null, null)]
-  public void ConvertFromStringTest(string value, string expected) =>
-    Assert.Equal(expected, BuildBaseballTeamString(new BaseballTeamConverter().ConvertFromString(value, null, null)));
+    [Theory]
+    [InlineData("MIL", "MIL")]
+    [InlineData("mIl", "MIL")]
+    [InlineData("", null)]
+    [InlineData(null, null)]
+    public void ConvertFromStringTest(string value, string expected) =>
+      Assert.Equal(expected, BuildBaseballTeamString(new BaseballTeamConverter().ConvertFromString(value, null, null)));
 
-  [Theory]
-  [InlineData("MIL", "MIL")]
-  [InlineData("", "")]
-  [InlineData(null, "")]
-  public void ConvertToStringTest(string value, string expected) =>
-    Assert.Equal(expected, new BaseballTeamConverter().ConvertToString(BuildBaseballTeam(value), null, null));
+    [Theory]
+    [InlineData("MIL", "MIL")]
+    [InlineData("", "")]
+    [InlineData(null, "")]
+    public void ConvertToStringTest(string value, string expected) =>
+      Assert.Equal(expected, new BaseballTeamConverter().ConvertToString(BuildBaseballTeam(value), null, null));
 
-  private static string BuildBaseballTeamString(object team) => ((BaseballTeam)team).Code;
+    private static string BuildBaseballTeamString(object team) => ((PlayerTeam)team).Code;
 
-  private static BaseballTeam BuildBaseballTeam(string team) => TEAMS.FirstOrDefault(t => t.Code == team);
+    private static PlayerTeam BuildBaseballTeam(string team) => TEAMS.FirstOrDefault(t => t.Code == team);
 }

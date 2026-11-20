@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FantasyBaseball.PlayerService.Models;
-using FantasyBaseball.PlayerService.Models.Enums;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Services;
 using LazyCache;
 using Microsoft.Extensions.Configuration;
@@ -12,9 +12,9 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services;
 
 public class GetPositionServiceTest
 {
-  private static readonly List<BaseballPosition> POSITIONS =
-  [
-    new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
+    private static readonly List<Position> POSITIONS =
+    [
+      new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
     new() { Code = "C"   , FullName = "Catcher"          , PlayerType = PlayerType.B, SortOrder = 0            },
     new() { Code = "1B"  , FullName = "First Baseman"    , PlayerType = PlayerType.B, SortOrder = 1            },
     new() { Code = "2B"  , FullName = "Second Baseman"   , PlayerType = PlayerType.B, SortOrder = 2            },
@@ -32,19 +32,19 @@ public class GetPositionServiceTest
     new() { Code = "SP"  , FullName = "Starting Pitcher" , PlayerType = PlayerType.P, SortOrder = 100          },
     new() { Code = "RP"  , FullName = "Relief Pitcher"   , PlayerType = PlayerType.P, SortOrder = 101          },
     new() { Code = "P"   , FullName = "Pitcher"          , PlayerType = PlayerType.P, SortOrder = 102          }
-  ];
+    ];
 
-  [Fact]
-  public async Task GetPositionCacheTest()
-  {
-    var inMemorySettings = new Dictionary<string, string> { { "ServiceUrls:PositionEndpoint", "position-url" } };
-    var config = new ConfigurationBuilder().AddInMemoryCollection(inMemorySettings).Build();
-    var services = new ServiceCollection();
-    services.AddLazyCache();
-    var serviceProvider = services.BuildServiceProvider();
-    var memoryCache = serviceProvider.GetService<IAppCache>();
-    memoryCache.Add("positions", POSITIONS);
-    var service = new GetPositionService(config, memoryCache);
-    Assert.Equal(POSITIONS, await service.GetPositions());
-  }
+    [Fact]
+    public async Task GetPositionCacheTest()
+    {
+        var inMemorySettings = new Dictionary<string, string> { { "ServiceUrls:PositionEndpoint", "position-url" } };
+        var config = new ConfigurationBuilder().AddInMemoryCollection(inMemorySettings).Build();
+        var services = new ServiceCollection();
+        services.AddLazyCache();
+        var serviceProvider = services.BuildServiceProvider();
+        var memoryCache = serviceProvider.GetService<IAppCache>();
+        memoryCache.Add("positions", POSITIONS);
+        var service = new GetPositionService(config, memoryCache);
+        Assert.Equal(POSITIONS, await service.GetPositions());
+    }
 }

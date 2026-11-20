@@ -2,9 +2,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using FantasyBaseball.Common.Exceptions;
 using FantasyBaseball.PlayerService.Database;
 using FantasyBaseball.PlayerService.Database.Repositories;
-using FantasyBaseball.PlayerService.Exceptions;
+using FantasyBaseball.PlayerService.Maps;
 using FantasyBaseball.PlayerService.Services;
 using FantasyBaseball.PlayerService.Services.HealthChecks;
 using Microsoft.AspNetCore.Builder;
@@ -32,18 +33,18 @@ builder.Configuration["ServiceUrls:PositionHealthEndpoint"] = string.Format(
 // Setup Cors
 builder.Services.AddCors(options =>
 {
-  options.AddPolicy(
-    name: BaseballSpecificOrigins,
-    policy =>
-    {
-      policy.SetIsOriginAllowed(o =>
+    options.AddPolicy(
+      name: BaseballSpecificOrigins,
+      policy =>
       {
-        var host = new Uri(o).Host;
-        return host == "localhost" || host.Contains("schultz.local");
+          policy.SetIsOriginAllowed(o =>
+        {
+            var host = new Uri(o).Host;
+            return host == "localhost" || host.Contains("schultz.local");
+        });
+          policy.AllowAnyHeader();
+          policy.AllowAnyMethod();
       });
-      policy.AllowAnyHeader();
-      policy.AllowAnyMethod();
-    });
 });
 // Setup Database
 var connectionString = string.Format(
@@ -58,7 +59,7 @@ builder.Services.AddHealthChecks()
   .AddDbContextCheck<PlayerContext>()
   .AddCheck<PositionHealthCheck>("Position");
 // Setup Automapper
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(cfg => { }, typeof(BaseballPlayerProfile), typeof(CsvBaseballPlayerProfile), typeof(PlayerEntityProfile));
 // Setup DI
 builder.Services
   // Config
@@ -87,14 +88,14 @@ builder.Services
 // Setup Swagger
 builder.Services.AddSwaggerGen(o =>
 {
-  o.SwaggerDoc(SwaggerVersion, new OpenApiInfo { Title = SwaggerTitle, Version = SwaggerVersion });
-  var currentAssembly = Assembly.GetExecutingAssembly();
-  currentAssembly.GetReferencedAssemblies()
-    .Union([currentAssembly.GetName()])
-    .Select(a => Path.Combine(Path.GetDirectoryName(currentAssembly.Location), $"{a.Name}.xml"))
-    .Where(f => File.Exists(f))
-    .ToList()
-    .ForEach(f => o.IncludeXmlComments(f));
+    o.SwaggerDoc(SwaggerVersion, new OpenApiInfo { Title = SwaggerTitle, Version = SwaggerVersion });
+    var currentAssembly = Assembly.GetExecutingAssembly();
+    currentAssembly.GetReferencedAssemblies()
+      .Union([currentAssembly.GetName()])
+      .Select(a => Path.Combine(Path.GetDirectoryName(currentAssembly.Location), $"{a.Name}.xml"))
+      .Where(f => File.Exists(f))
+      .ToList()
+      .ForEach(f => o.IncludeXmlComments(f));
 });
 // Setup Controllers
 builder.Services.AddControllers(options => options.Filters.Add<ExceptionFilter>());
@@ -109,8 +110,8 @@ app.MapHealthChecks("/api/health", new HealthCheckOptions { AllowCachingResponse
 app.UseSwagger(c => c.RouteTemplate = SwaggerBasePath + "/swagger/{documentName}/swagger.json");
 app.UseSwaggerUI(c =>
 {
-  c.SwaggerEndpoint($"/{SwaggerBasePath}/swagger/{SwaggerVersion}/swagger.json", $"{SwaggerTitle} - {SwaggerVersion}");
-  c.RoutePrefix = $"{SwaggerBasePath}/swagger";
+    c.SwaggerEndpoint($"/{SwaggerBasePath}/swagger/{SwaggerVersion}/swagger.json", $"{SwaggerTitle} - {SwaggerVersion}");
+    c.RoutePrefix = $"{SwaggerBasePath}/swagger";
 });
 // Migrate Database on Startup
 using var scope = app.Services.CreateScope();

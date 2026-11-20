@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Maps.Converters;
-using FantasyBaseball.PlayerService.Models;
-using FantasyBaseball.PlayerService.Models.Enums;
 using Xunit;
 
 namespace FantasyBaseball.PlayerService.UnitTests.Maps.Converters;
 
 public class PositionListConverterTest
 {
-  private static readonly List<BaseballPosition> POSITIONS =
-  [
-    new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
+    private static readonly List<Position> POSITIONS =
+    [
+      new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
     new() { Code = "C"   , FullName = "Catcher"          , PlayerType = PlayerType.B, SortOrder = 0            },
     new() { Code = "1B"  , FullName = "First Baseman"    , PlayerType = PlayerType.B, SortOrder = 1            },
     new() { Code = "2B"  , FullName = "Second Baseman"   , PlayerType = PlayerType.B, SortOrder = 2            },
@@ -29,29 +29,29 @@ public class PositionListConverterTest
     new() { Code = "SP"  , FullName = "Starting Pitcher" , PlayerType = PlayerType.P, SortOrder = 100          },
     new() { Code = "RP"  , FullName = "Relief Pitcher"   , PlayerType = PlayerType.P, SortOrder = 101          },
     new() { Code = "P"   , FullName = "Pitcher"          , PlayerType = PlayerType.P, SortOrder = 102          }
-  ];
+    ];
 
-  [Theory]
-  [InlineData("ss-of", "SS-OF")]
-  [InlineData(" P ", "P")]
-  [InlineData("", "")]
-  [InlineData("-", "-")]
-  public void ConvertFromStringTest(string value, string expected) =>
-    Assert.Equal(expected, BuildPositionString(new PositionListConverter().ConvertFromString(value, null, null)));
+    [Theory]
+    [InlineData("ss-of", "SS-OF")]
+    [InlineData(" P ", "P")]
+    [InlineData("", "")]
+    [InlineData("-", "-")]
+    public void ConvertFromStringTest(string value, string expected) =>
+      Assert.Equal(expected, BuildPositionString(new PositionListConverter().ConvertFromString(value, null, null)));
 
-  [Theory]
-  [InlineData("SS-OF-1B-C", "C-1B-SS-OF")]
-  [InlineData("P", "P")]
-  [InlineData("", "")]
-  [InlineData(null, "")]
-  public void ConvertToStringTest(string value, string expected) =>
-    Assert.Equal(expected, new PositionListConverter().ConvertToString(BuildPositionList(value), null, null));
+    [Theory]
+    [InlineData("SS-OF-1B-C", "C-1B-SS-OF")]
+    [InlineData("P", "P")]
+    [InlineData("", "")]
+    [InlineData(null, "")]
+    public void ConvertToStringTest(string value, string expected) =>
+      Assert.Equal(expected, new PositionListConverter().ConvertToString(BuildPositionList(value), null, null));
 
-  private static string BuildPositionString(object positions) => string.Join("-", ((List<BaseballPosition>)positions).Select(p => p.Code));
+    private static string BuildPositionString(object positions) => string.Join("-", ((List<Position>)positions).Select(p => p.Code));
 
-  private static List<BaseballPosition> BuildPositionList(string positions)
-  {
-    if (positions == null) return null;
-    return [.. positions.Split("-").SelectMany(p => POSITIONS.Where(pp => pp.Code == p))];
-  }
+    private static List<Position> BuildPositionList(string positions)
+    {
+        if (positions == null) return null;
+        return [.. positions.Split("-").SelectMany(p => POSITIONS.Where(pp => pp.Code == p))];
+    }
 }

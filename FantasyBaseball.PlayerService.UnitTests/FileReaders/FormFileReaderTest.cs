@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using FantasyBaseball.PlayerService.Exceptions;
+using FantasyBaseball.Common.Exceptions;
 using FantasyBaseball.PlayerService.FileReaders;
 using Microsoft.AspNetCore.Http;
 using Moq;
@@ -9,15 +9,15 @@ namespace FantasyBaseball.PlayerService.UnitTests.FileReaders;
 
 public class FormFileReaderTest
 {
-  [Fact]
-  public async Task NoFilesTest()
-  {
-    var formFileCollection = new Mock<IFormFileCollection>();
-    formFileCollection.Setup(o => o.Count).Returns(0);
-    var formCollection = new Mock<IFormCollection>();
-    formCollection.Setup(o => o.Files).Returns(formFileCollection.Object);
-    var request = new Mock<HttpRequest>();
-    request.Setup(o => o.ReadFormAsync(default)).ReturnsAsync(formCollection.Object);
-    await Assert.ThrowsAsync<BadRequestException>(() => new FormFileReader(request.Object).ReadLines());
-  }
+    [Fact]
+    public async Task NoFilesTest()
+    {
+        var formFileCollection = new Mock<IFormFileCollection>();
+        formFileCollection.Setup(o => o.Count).Returns(0);
+        var formCollection = new Mock<IFormCollection>();
+        formCollection.Setup(o => o.Files).Returns(formFileCollection.Object);
+        var request = new Mock<HttpRequest>();
+        request.Setup(o => o.ReadFormAsync(default)).ReturnsAsync(formCollection.Object);
+        await Assert.ThrowsAsync<BadRequestException>(() => new FormFileReader(request.Object).ReadLines());
+    }
 }

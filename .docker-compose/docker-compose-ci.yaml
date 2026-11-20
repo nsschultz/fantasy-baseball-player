@@ -5,9 +5,18 @@ services:
       context: ../
       dockerfile: Dockerfile
       target: ci
-    command: sh /app/.docker-compose/scripts/scan.sh
+      cache_from:
+        - type=gha,scope=fantasy-baseball-player-api
+      cache_to:
+        - type=gha,mode=max,scope=fantasy-baseball-player-api
+      args:
+        - GITHUB_USERNAME=${GITHUB_USERNAME}
+        - GITHUB_TOKEN=${GITHUB_TOKEN}
+    command: sh /scripts/scan.sh
     depends_on:
       database:
+        condition: service_healthy
+      mountebank:
         condition: service_healthy
     environment:
       - ASPNETCORE_URLS=http://+:8080
@@ -17,12 +26,17 @@ services:
       - PLAYER_DATABASE_USER=postgres
       - POSITION_SERVICE_HOST=mountebank:5555
       - POSITION_SERVICE_VERSION=v1
+      - SERVICE=fantasy-baseball-player
       - GITHUB_TOKEN=${GITHUB_TOKEN}
       - SONAR_TOKEN=${SONAR_TOKEN}
-    volumes:
-      - ../:/app/
+      - VERSION=${VERSION}
   database:
-    build: database/
+    build:
+      context: database/
+      cache_from:
+        - type=gha,scope=fantasy-baseball-player-database
+      cache_to:
+        - type=gha,mode=max,scope=fantasy-baseball-player-database
     restart: always
     user: postgres
     environment:
@@ -37,7 +51,17 @@ services:
     volumes:
       - data_volume:/var/lib/postgresql/data
   mountebank:
-    build: mountebank/
+    build:
+      context: mountebank/
+      cache_from:
+        - type=gha,scope=fantasy-baseball-player-mountebank
+      cache_to:
+        - type=gha,mode=max,scope=fantasy-baseball-player-mountebank
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/localhost/2525'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 volumes:
   data_volume:

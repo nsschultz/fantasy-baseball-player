@@ -9,7 +9,7 @@ namespace FantasyBaseball.PlayerService.Database.Repositories;
 /// <param name="context">The player context.</param>
 public class TeamRepository(IPlayerContext context) : ITeamRepository
 {
-  /// <summary>Gets all of the teams in the database.</summary>
-  /// <returns>All of the teams in the database.</returns>
-  public async Task<List<TeamEntity>> GetAllTeams() => await context.Teams.ToListAsync();
+    /// <summary>Gets all of the teams in the database.</summary>
+    /// <returns>All of the teams in the database.</returns>
+    public async Task<List<TeamEntity>> GetAllTeams() => await context.Teams.ToListAsync();
 }

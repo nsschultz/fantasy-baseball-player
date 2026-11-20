@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FantasyBaseball.Common.Enums;
+using FantasyBaseball.Common.Models;
 using FantasyBaseball.PlayerService.Database.Entities;
 using FantasyBaseball.PlayerService.Maps;
-using FantasyBaseball.PlayerService.Models;
-using FantasyBaseball.PlayerService.Models.Enums;
 using FantasyBaseball.PlayerService.Services;
 using FantasyBaseball.PlayerService.Services.Mergers;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -15,11 +16,11 @@ namespace FantasyBaseball.PlayerService.UnitTests.Services;
 
 public class MergePlayerServiceTest
 {
-  private static readonly Dictionary<int, string> EXPECTED_TEAMS = new() { { 10, "MIL" }, { 100, "TB" }, { 123, "" } };
-  private static readonly IPlayerMerger MERGER = new FullPlayerMerger();
-  private static readonly List<BaseballPosition> POSITIONS =
-  [
-    new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
+    private static readonly Dictionary<int, string> EXPECTED_TEAMS = new() { { 10, "MIL" }, { 100, "TB" }, { 123, "" } };
+    private static readonly IPlayerMerger MERGER = new FullPlayerMerger();
+    private static readonly List<Position> POSITIONS =
+    [
+      new() { Code = ""    , FullName = "Unknown"          , PlayerType = PlayerType.U, SortOrder = int.MaxValue },
     new() { Code = "C"   , FullName = "Catcher"          , PlayerType = PlayerType.B, SortOrder = 0            },
     new() { Code = "1B"  , FullName = "First Baseman"    , PlayerType = PlayerType.B, SortOrder = 1            },
     new() { Code = "2B"  , FullName = "Second Baseman"   , PlayerType = PlayerType.B, SortOrder = 2            },
@@ -37,10 +38,10 @@ public class MergePlayerServiceTest
     new() { Code = "SP"  , FullName = "Starting Pitcher" , PlayerType = PlayerType.P, SortOrder = 100          },
     new() { Code = "RP"  , FullName = "Relief Pitcher"   , PlayerType = PlayerType.P, SortOrder = 101          },
     new() { Code = "P"   , FullName = "Pitcher"          , PlayerType = PlayerType.P, SortOrder = 102          }
-  ];
-  private static readonly List<TeamEntity> TEAMS =
-  [
-    new() { Code = ""   , LeagueId = ""  , City = "Free Agent"   , Nickname = "Free Agent"                            },
+    ];
+    private static readonly List<TeamEntity> TEAMS =
+    [
+      new() { Code = ""   , LeagueId = ""  , City = "Free Agent"   , Nickname = "Free Agent"                            },
     new() { Code = "BAL", LeagueId = "AL", City = "Baltimore"    , Nickname = "Orioles"                               },
     new() { Code = "BOS", LeagueId = "AL", City = "Boston"       , Nickname = "Red Sox"                               },
     new() { Code = "NYY", LeagueId = "AL", City = "New York"     , Nickname = "Yankees"                               },
@@ -71,240 +72,240 @@ public class MergePlayerServiceTest
     new() { Code = "LAD", LeagueId = "NL", City = "Los Angeles"  , Nickname = "Dodgers"     , AlternativeCode = "LA"  },
     new() { Code = "SD" , LeagueId = "NL", City = "San Diego"    , Nickname = "Padres"                                },
     new() { Code = "SF" , LeagueId = "NL", City = "San Francisco", Nickname = "Giants"                                }
-  ];
+    ];
 
-  [Fact]
-  public async Task MergePlayerEntityNullTest()
-  {
-    var existingPlayer = new PlayerEntity();
-    Assert.Equal(existingPlayer, await BuildPlayerEntityMergerService().MergePlayer(MERGER, null, existingPlayer));
-  }
+    [Fact]
+    public async Task MergePlayerEntityNullTest()
+    {
+        var existingPlayer = new PlayerEntity();
+        Assert.Equal(existingPlayer, await BuildPlayerEntityMergerService().MergePlayer(MERGER, null, existingPlayer));
+    }
 
-  [Theory]
-  [InlineData(10, PlayerType.B)]
-  [InlineData(100, PlayerType.P)]
-  [InlineData(123, PlayerType.U)]
-  public async Task MergePlayerEntityMatchMissingEntriesTest(int value, PlayerType type)
-  {
-    var player = BuildPlayer(value, type);
-    var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(MERGER, BuildPlayer(value == 10 ? 100 : 10, PlayerType.U), null);
-    ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, otherEntity));
-  }
+    [Theory]
+    [InlineData(10, PlayerType.B)]
+    [InlineData(100, PlayerType.P)]
+    [InlineData(123, PlayerType.U)]
+    public async Task MergePlayerEntityMatchMissingEntriesTest(int value, PlayerType type)
+    {
+        var player = BuildPlayer(value, type);
+        var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(MERGER, BuildPlayer(value == 10 ? 100 : 10, PlayerType.U), null);
+        ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, otherEntity));
+    }
 
-  [Theory]
-  [InlineData(10, PlayerType.B)]
-  [InlineData(100, PlayerType.P)]
-  [InlineData(123, PlayerType.U)]
-  public async Task MergePlayerEntityMatchSameEntriesTest(int value, PlayerType type)
-  {
-    var player = BuildPlayer(value, type);
-    var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(MERGER, BuildPlayer(value, type), null);
-    ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, otherEntity));
-  }
+    [Theory]
+    [InlineData(10, PlayerType.B)]
+    [InlineData(100, PlayerType.P)]
+    [InlineData(123, PlayerType.U)]
+    public async Task MergePlayerEntityMatchSameEntriesTest(int value, PlayerType type)
+    {
+        var player = BuildPlayer(value, type);
+        var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(MERGER, BuildPlayer(value, type), null);
+        ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, otherEntity));
+    }
 
-  [Theory]
-  [InlineData(10, PlayerType.B)]
-  [InlineData(100, PlayerType.P)]
-  [InlineData(123, PlayerType.U)]
-  public async Task MergePlayerEntityNoMatchTest(int value, PlayerType type)
-  {
-    var player = BuildPlayer(value, type);
-    ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, null));
-  }
+    [Theory]
+    [InlineData(10, PlayerType.B)]
+    [InlineData(100, PlayerType.P)]
+    [InlineData(123, PlayerType.U)]
+    public async Task MergePlayerEntityNoMatchTest(int value, PlayerType type)
+    {
+        var player = BuildPlayer(value, type);
+        ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, null));
+    }
 
-  [Theory]
-  [InlineData(10, PlayerType.B)]
-  [InlineData(100, PlayerType.P)]
-  [InlineData(123, PlayerType.U)]
-  public async Task MergePlayerEntityStatsMismatchTest(int value, PlayerType type)
-  {
-    var player = BuildPlayer(value, type);
-    var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(MERGER, BuildPlayer(value, type, true), null);
-    ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, otherEntity));
-  }
+    [Theory]
+    [InlineData(10, PlayerType.B)]
+    [InlineData(100, PlayerType.P)]
+    [InlineData(123, PlayerType.U)]
+    public async Task MergePlayerEntityStatsMismatchTest(int value, PlayerType type)
+    {
+        var player = BuildPlayer(value, type);
+        var otherEntity = await BuildPlayerEntityMergerService().MergePlayer(MERGER, BuildPlayer(value, type, true), null);
+        ValidatePlayer(value, player, await BuildPlayerEntityMergerService().MergePlayer(MERGER, player, otherEntity));
+    }
 
-  private static List<BattingStats> BuildBattingStats(int value, PlayerType type, bool bothStats)
-  {
-    if (!bothStats && PlayerType.U == type) return [];
-    return
-    [
-      bothStats || value == 10 ? BuildBattingStats(StatsType.YTD) : new BattingStats { StatsType = StatsType.YTD },
+    private static List<BattingStats> BuildBattingStats(int value, PlayerType type, bool bothStats)
+    {
+        if (!bothStats && PlayerType.U == type) return [];
+        return
+        [
+          bothStats || value == 10 ? BuildBattingStats(StatsType.YTD) : new BattingStats { StatsType = StatsType.YTD },
       bothStats || value != 10 ? BuildBattingStats(StatsType.PROJ) : new BattingStats { StatsType = StatsType.PROJ }
-    ];
-  }
+        ];
+    }
 
-  private static BattingStats BuildBattingStats(StatsType statsType) =>
-    new()
+    private static BattingStats BuildBattingStats(StatsType statsType) =>
+      new()
+      {
+          StatsType = statsType,
+          AtBats = 300,
+          Runs = 75,
+          Hits = 96,
+          Doubles = 24,
+          Triples = 6,
+          HomeRuns = 12,
+          RunsBattedIn = 48,
+          BaseOnBalls = 30,
+          StrikeOuts = 60,
+          StolenBases = 9,
+          CaughtStealing = 3,
+          Power = 100,
+          Speed = 61
+      };
+
+    private static List<PitchingStats> BuildPitchingStats(int value, PlayerType type, bool bothStats)
     {
-      StatsType = statsType,
-      AtBats = 300,
-      Runs = 75,
-      Hits = 96,
-      Doubles = 24,
-      Triples = 6,
-      HomeRuns = 12,
-      RunsBattedIn = 48,
-      BaseOnBalls = 30,
-      StrikeOuts = 60,
-      StolenBases = 9,
-      CaughtStealing = 3,
-      Power = 100,
-      Speed = 61
-    };
-
-  private static List<PitchingStats> BuildPitchingStats(int value, PlayerType type, bool bothStats)
-  {
-    if (!bothStats && PlayerType.U == type) return [];
-    return
-    [
-      bothStats || value == 10 ? BuildPitchingStats(StatsType.YTD) : new PitchingStats { StatsType = StatsType.YTD },
+        if (!bothStats && PlayerType.U == type) return [];
+        return
+        [
+          bothStats || value == 10 ? BuildPitchingStats(StatsType.YTD) : new PitchingStats { StatsType = StatsType.YTD },
       bothStats || value != 10 ? BuildPitchingStats(StatsType.PROJ) : new PitchingStats { StatsType = StatsType.PROJ }
-    ];
-  }
-
-  private static PitchingStats BuildPitchingStats(StatsType statsType) =>
-    new()
-    {
-      StatsType = statsType,
-      Wins = 12,
-      Losses = 6,
-      QualityStarts = 18,
-      Saves = 9,
-      BlownSaves = 3,
-      Holds = 15,
-      InningsPitched = 60,
-      HitsAllowed = 45,
-      EarnedRuns = 24,
-      HomeRunsAllowed = 1,
-      BaseOnBallsAllowed = 30,
-      StrikeOuts = 120,
-      FlyBallRate = 0.2,
-      GroundBallRate = 0.31
-    };
-
-  private static BaseballPlayer BuildPlayer(int value, PlayerType type, bool bothStats = false) =>
-    new()
-    {
-      MlbAmId = value,
-      FirstName = $"First-{value}",
-      LastName = $"Last-{value}",
-      Age = value,
-      Type = type,
-      Positions = BuildPositionList(type),
-      Team = new BaseballTeam { Code = GetTeamCode(type) },
-      Status = value == 10 ? PlayerStatus.XX : PlayerStatus.IL,
-      AverageDraftPick = value + 2,
-      AverageDraftPickMin = value + 1,
-      AverageDraftPickMax = value + 4,
-      MayberryMethod = value + 5,
-      Reliability = value + 6,
-      League1 = value == 10 ? LeagueStatus.R : LeagueStatus.A,
-      League2 = value != 10 ? LeagueStatus.X : LeagueStatus.A,
-      BattingStats = BuildBattingStats(value, type, bothStats),
-      PitchingStats = BuildPitchingStats(value, type, bothStats)
-    };
-
-  private static MergePlayerService BuildPlayerEntityMergerService()
-  {
-    var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile())).CreateMapper();
-    var positionService = new Mock<IGetPositionService>();
-    positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
-    var teamService = new Mock<IGetTeamsService>();
-    teamService.Setup(o => o.GetTeams()).ReturnsAsync(TEAMS);
-    return new MergePlayerService(mapper, positionService.Object, teamService.Object);
-  }
-
-  private static List<BaseballPosition> BuildPositionList(PlayerType type) =>
-    type switch
-    {
-      PlayerType.B => BuildPositionList(["XX", "OF", "1B"]),
-      PlayerType.P => BuildPositionList(["SP", "XX", "RP"]),
-      _ => BuildPositionList(["XX"]),
-    };
-
-  private static List<BaseballPosition> BuildPositionList(string[] positions) =>
-    [.. positions.SelectMany(p => POSITIONS.Where(pp => pp.Code == p))];
-
-  private static string BuildPositionString(List<BaseballPosition> positions) =>
-    string.Join("-", positions.OrderBy(p => p.SortOrder).Select(p => p.Code));
-
-  private static string BuildPositionString(List<PlayerPositionEntity> positions) =>
-    string.Join("-", positions
-      .SelectMany(p => POSITIONS.Where(pp => pp.Code == p.PositionCode))
-      .OrderBy(p => p.SortOrder)
-      .Select(p => p.Code));
-
-  private static string GetTeamCode(PlayerType type) =>
-    type switch
-    {
-      PlayerType.B => "MIL",
-      PlayerType.P => "TB",
-      _ => "XX",
-    };
-
-  private static void ValidatePlayer(int value, BaseballPlayer expected, PlayerEntity actual)
-  {
-    Assert.Equal(expected.MlbAmId, actual.MlbAmId);
-    Assert.Equal(expected.FirstName, actual.FirstName);
-    Assert.Equal(expected.LastName, actual.LastName);
-    Assert.Equal(expected.Age, actual.Age);
-    Assert.Equal(expected.Type, actual.Type);
-    Assert.Equal(BuildPositionString(expected.Positions), BuildPositionString(actual.Positions));
-    Assert.Equal(EXPECTED_TEAMS[value], actual.Team);
-    Assert.Equal(expected.Status, actual.Status);
-    Assert.Equal(expected.AverageDraftPick, actual.AverageDraftPick);
-    Assert.Equal(expected.AverageDraftPickMax, actual.AverageDraftPickMax);
-    Assert.Equal(expected.AverageDraftPickMin, actual.AverageDraftPickMin);
-    Assert.Equal(expected.MayberryMethod, actual.MayberryMethod);
-    Assert.Equal(expected.Reliability, actual.Reliability);
-    Assert.Equal(expected.League1, actual.LeagueStatuses.First(l => l.LeagueId == 1).LeagueStatus);
-    Assert.Equal(expected.League2, actual.LeagueStatuses.First(l => l.LeagueId == 2).LeagueStatus);
-    if (expected.Type != PlayerType.U)
-    {
-      ValidatePlayerBattingStats(expected.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD), actual.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD));
-      ValidatePlayerBattingStats(expected.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ), actual.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ));
-      ValidatePlayerPitchingStats(expected.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD), actual.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD));
-      ValidatePlayerPitchingStats(expected.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ), actual.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ));
+        ];
     }
-    else
+
+    private static PitchingStats BuildPitchingStats(StatsType statsType) =>
+      new()
+      {
+          StatsType = statsType,
+          Wins = 12,
+          Losses = 6,
+          QualityStarts = 18,
+          Saves = 9,
+          BlownSaves = 3,
+          Holds = 15,
+          InningsPitched = 60,
+          HitsAllowed = 45,
+          EarnedRuns = 24,
+          HomeRunsAllowed = 1,
+          BaseOnBallsAllowed = 30,
+          StrikeOuts = 120,
+          FlyBallRate = 0.2,
+          GroundBallRate = 0.31
+      };
+
+    private static Player BuildPlayer(int value, PlayerType type, bool bothStats = false) =>
+      new()
+      {
+          MlbAmId = value,
+          FirstName = $"First-{value}",
+          LastName = $"Last-{value}",
+          Age = value,
+          Type = type,
+          Positions = BuildPositionList(type),
+          Team = new PlayerTeam { Code = GetTeamCode(type) },
+          Status = value == 10 ? PlayerStatus.XX : PlayerStatus.IL,
+          AverageDraftPick = value + 2,
+          AverageDraftPickMin = value + 1,
+          AverageDraftPickMax = value + 4,
+          MayberryMethod = value + 5,
+          Reliability = value + 6,
+          League1 = value == 10 ? LeagueStatus.R : LeagueStatus.A,
+          League2 = value != 10 ? LeagueStatus.X : LeagueStatus.A,
+          BattingStats = BuildBattingStats(value, type, bothStats),
+          PitchingStats = BuildPitchingStats(value, type, bothStats)
+      };
+
+    private static MergePlayerService BuildPlayerEntityMergerService()
     {
-      Assert.Empty(actual.BattingStats);
-      Assert.Empty(actual.PitchingStats);
+        var mapper = new MapperConfiguration(cfg => cfg.AddProfile(new PlayerEntityProfile()), new LoggerFactory()).CreateMapper();
+        var positionService = new Mock<IGetPositionService>();
+        positionService.Setup(o => o.GetPositions()).ReturnsAsync(POSITIONS);
+        var teamService = new Mock<IGetTeamsService>();
+        teamService.Setup(o => o.GetTeams()).ReturnsAsync(TEAMS);
+        return new MergePlayerService(mapper, positionService.Object, teamService.Object);
     }
-  }
 
-  private static void ValidatePlayerBattingStats(BattingStats expected, BattingStatsEntity actual)
-  {
-    Assert.Equal(expected.AtBats, actual.AtBats);
-    Assert.Equal(expected.Runs, actual.Runs);
-    Assert.Equal(expected.Hits, actual.Hits);
-    Assert.Equal(expected.Doubles, actual.Doubles);
-    Assert.Equal(expected.Triples, actual.Triples);
-    Assert.Equal(expected.HomeRuns, actual.HomeRuns);
-    Assert.Equal(expected.RunsBattedIn, actual.RunsBattedIn);
-    Assert.Equal(expected.BaseOnBalls, actual.BaseOnBalls);
-    Assert.Equal(expected.StrikeOuts, actual.StrikeOuts);
-    Assert.Equal(expected.StolenBases, actual.StolenBases);
-    Assert.Equal(expected.CaughtStealing, actual.CaughtStealing);
-    Assert.Equal(expected.Power, actual.Power);
-    Assert.Equal(expected.Speed, actual.Speed);
-  }
+    private static List<Position> BuildPositionList(PlayerType type) =>
+      type switch
+      {
+          PlayerType.B => BuildPositionList(["XX", "OF", "1B"]),
+          PlayerType.P => BuildPositionList(["SP", "XX", "RP"]),
+          _ => BuildPositionList(["XX"]),
+      };
 
-  private static void ValidatePlayerPitchingStats(PitchingStats expected, PitchingStatsEntity actual)
-  {
-    Assert.Equal(expected.Wins, actual.Wins);
-    Assert.Equal(expected.Losses, actual.Losses);
-    Assert.Equal(expected.QualityStarts, actual.QualityStarts);
-    Assert.Equal(expected.Saves, actual.Saves);
-    Assert.Equal(expected.BlownSaves, actual.BlownSaves);
-    Assert.Equal(expected.Holds, actual.Holds);
-    Assert.Equal(expected.InningsPitched, actual.InningsPitched);
-    Assert.Equal(expected.HitsAllowed, actual.HitsAllowed);
-    Assert.Equal(expected.EarnedRuns, actual.EarnedRuns);
-    Assert.Equal(expected.HomeRunsAllowed, actual.HomeRunsAllowed);
-    Assert.Equal(expected.BaseOnBallsAllowed, actual.BaseOnBallsAllowed);
-    Assert.Equal(expected.StrikeOuts, actual.StrikeOuts);
-    Assert.Equal(expected.FlyBallRate, actual.FlyBallRate);
-    Assert.Equal(expected.GroundBallRate, actual.GroundBallRate);
-  }
+    private static List<Position> BuildPositionList(string[] positions) =>
+      [.. positions.SelectMany(p => POSITIONS.Where(pp => pp.Code == p))];
+
+    private static string BuildPositionString(List<Position> positions) =>
+      string.Join("-", positions.OrderBy(p => p.SortOrder).Select(p => p.Code));
+
+    private static string BuildPositionString(List<PlayerPositionEntity> positions) =>
+      string.Join("-", positions
+        .SelectMany(p => POSITIONS.Where(pp => pp.Code == p.PositionCode))
+        .OrderBy(p => p.SortOrder)
+        .Select(p => p.Code));
+
+    private static string GetTeamCode(PlayerType type) =>
+      type switch
+      {
+          PlayerType.B => "MIL",
+          PlayerType.P => "TB",
+          _ => "XX",
+      };
+
+    private static void ValidatePlayer(int value, Player expected, PlayerEntity actual)
+    {
+        Assert.Equal(expected.MlbAmId, actual.MlbAmId);
+        Assert.Equal(expected.FirstName, actual.FirstName);
+        Assert.Equal(expected.LastName, actual.LastName);
+        Assert.Equal(expected.Age, actual.Age);
+        Assert.Equal(expected.Type, actual.Type);
+        Assert.Equal(BuildPositionString(expected.Positions), BuildPositionString(actual.Positions));
+        Assert.Equal(EXPECTED_TEAMS[value], actual.Team);
+        Assert.Equal(expected.Status, actual.Status);
+        Assert.Equal(expected.AverageDraftPick, actual.AverageDraftPick);
+        Assert.Equal(expected.AverageDraftPickMax, actual.AverageDraftPickMax);
+        Assert.Equal(expected.AverageDraftPickMin, actual.AverageDraftPickMin);
+        Assert.Equal(expected.MayberryMethod, actual.MayberryMethod);
+        Assert.Equal(expected.Reliability, actual.Reliability);
+        Assert.Equal(expected.League1, actual.LeagueStatuses.First(l => l.LeagueId == 1).LeagueStatus);
+        Assert.Equal(expected.League2, actual.LeagueStatuses.First(l => l.LeagueId == 2).LeagueStatus);
+        if (expected.Type != PlayerType.U)
+        {
+            ValidatePlayerBattingStats(expected.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD), actual.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD));
+            ValidatePlayerBattingStats(expected.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ), actual.BattingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ));
+            ValidatePlayerPitchingStats(expected.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD), actual.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.YTD));
+            ValidatePlayerPitchingStats(expected.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ), actual.PitchingStats.FirstOrDefault(s => s.StatsType == StatsType.PROJ));
+        }
+        else
+        {
+            Assert.Empty(actual.BattingStats);
+            Assert.Empty(actual.PitchingStats);
+        }
+    }
+
+    private static void ValidatePlayerBattingStats(BattingStats expected, BattingStatsEntity actual)
+    {
+        Assert.Equal(expected.AtBats, actual.AtBats);
+        Assert.Equal(expected.Runs, actual.Runs);
+        Assert.Equal(expected.Hits, actual.Hits);
+        Assert.Equal(expected.Doubles, actual.Doubles);
+        Assert.Equal(expected.Triples, actual.Triples);
+        Assert.Equal(expected.HomeRuns, actual.HomeRuns);
+        Assert.Equal(expected.RunsBattedIn, actual.RunsBattedIn);
+        Assert.Equal(expected.BaseOnBalls, actual.BaseOnBalls);
+        Assert.Equal(expected.StrikeOuts, actual.StrikeOuts);
+        Assert.Equal(expected.StolenBases, actual.StolenBases);
+        Assert.Equal(expected.CaughtStealing, actual.CaughtStealing);
+        Assert.Equal(expected.Power, actual.Power);
+        Assert.Equal(expected.Speed, actual.Speed);
+    }
+
+    private static void ValidatePlayerPitchingStats(PitchingStats expected, PitchingStatsEntity actual)
+    {
+        Assert.Equal(expected.Wins, actual.Wins);
+        Assert.Equal(expected.Losses, actual.Losses);
+        Assert.Equal(expected.QualityStarts, actual.QualityStarts);
+        Assert.Equal(expected.Saves, actual.Saves);
+        Assert.Equal(expected.BlownSaves, actual.BlownSaves);
+        Assert.Equal(expected.Holds, actual.Holds);
+        Assert.Equal(expected.InningsPitched, actual.InningsPitched);
+        Assert.Equal(expected.HitsAllowed, actual.HitsAllowed);
+        Assert.Equal(expected.EarnedRuns, actual.EarnedRuns);
+        Assert.Equal(expected.HomeRunsAllowed, actual.HomeRunsAllowed);
+        Assert.Equal(expected.BaseOnBallsAllowed, actual.BaseOnBallsAllowed);
+        Assert.Equal(expected.StrikeOuts, actual.StrikeOuts);
+        Assert.Equal(expected.FlyBallRate, actual.FlyBallRate);
+        Assert.Equal(expected.GroundBallRate, actual.GroundBallRate);
+    }
 }
